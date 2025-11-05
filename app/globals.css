@@ -1,0 +1,148 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Import Inter Font */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+/* Base Styles - Apple-Clean Aesthetic */
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply font-sans text-text-primary bg-bg-primary antialiased;
+  }
+
+  /* Heading Defaults */
+  h1 {
+    @apply text-hero-mobile md:text-hero-desktop;
+  }
+
+  h2 {
+    @apply text-section-mobile md:text-section-desktop;
+  }
+
+  h3 {
+    @apply text-feature-mobile md:text-feature-desktop;
+  }
+}
+
+/* Custom Component Styles */
+@layer components {
+  /* Container */
+  .container-custom {
+    @apply max-w-container mx-auto px-section-x-mobile md:px-section-x-desktop;
+  }
+
+  /* Section Spacing */
+  .section-spacing {
+    @apply py-section-mobile md:py-section-desktop;
+  }
+
+  /* Primary Button */
+  .btn-primary {
+    @apply bg-primary text-text-inverse px-8 py-4 rounded-button font-semibold text-body transition-all duration-200 hover:bg-primary-hover hover:-translate-y-0.5 hover:shadow-button;
+  }
+
+  /* Secondary Button */
+  .btn-secondary {
+    @apply bg-transparent text-primary border-2 border-primary px-8 py-3.5 rounded-button font-semibold text-body transition-all duration-200 hover:bg-primary hover:text-text-inverse;
+  }
+
+  /* Accent Button */
+  .btn-accent {
+    @apply bg-accent text-white px-6 py-3 rounded-lg font-semibold text-body-sm transition-all duration-200 hover:bg-accent-hover;
+  }
+
+  /* Feature Card */
+  .feature-card {
+    @apply bg-white border border-border-light rounded-card p-8 shadow-card transition-all duration-300 hover:shadow-card-hover hover:-translate-y-1;
+  }
+
+  /* Pricing Card */
+  .pricing-card {
+    @apply bg-white border-2 border-border-light rounded-pricing p-10;
+  }
+
+  /* Pricing Card Featured */
+  .pricing-card-featured {
+    @apply border-accent shadow-pricing;
+  }
+
+  /* Badge */
+  .badge {
+    @apply bg-accent text-white px-3 py-1 rounded-badge text-xs font-semibold uppercase tracking-wider inline-block;
+  }
+
+  /* Icon Style */
+  .icon {
+    @apply w-12 h-12 flex items-center justify-center bg-bg-secondary rounded-xl;
+  }
+
+  /* Accordion Item */
+  .accordion-item {
+    @apply border-b border-border-light last:border-b-0;
+  }
+
+  /* Link Style */
+  .link {
+    @apply text-text-primary hover:text-accent underline-offset-4 hover:underline transition-colors duration-200;
+  }
+}
+
+/* Utility Classes */
+@layer utilities {
+  /* Scroll Reveal Animation */
+  .scroll-reveal {
+    @apply opacity-0 translate-y-10 transition-all duration-700 ease-out;
+  }
+
+  .scroll-reveal.is-visible {
+    @apply opacity-100 translate-y-0;
+  }
+
+  /* Text Gradient */
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent;
+  }
+
+  /* Dark Section */
+  .section-dark {
+    @apply bg-bg-dark text-text-inverse;
+  }
+}
+
+/* Custom Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+/* Smooth Scrollbar (Webkit) */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-bg-secondary;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-text-secondary rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-primary;
+}

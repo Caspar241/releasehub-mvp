@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx create-next-app@latest releasehub --typescript --tailwind --app --no-src --import-alias \"@/*\" --use-npm --eslint)",
+      "Bash(npm install:*)",
+      "Bash(npm run dev)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
