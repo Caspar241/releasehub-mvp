@@ -69,7 +69,7 @@ export default function ThreePillars() {
 
   return (
     <section className="section-spacing bg-bg-secondary" id="features">
-      <div className="container-custom">
+      <div className="container-custom scroll-reveal">
         <h2 className="text-center mb-4">Wie ReleaseHub funktioniert</h2>
         <p className="text-body-lg text-text-secondary text-center max-w-2xl mx-auto mb-12">
           Drei Säulen. Ein System. Kein Chaos.

@@ -9,8 +9,8 @@ export default function DashboardPage() {
       <div className="space-y-6">
         {/* Welcome Section */}
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-          <p className="text-gray-600 mt-2">Willkommen zurück! Hier ist deine Release-Übersicht.</p>
+          <h1 className="text-3xl font-bold text-text-primary">Dashboard</h1>
+          <p className="text-text-secondary mt-2">Willkommen zurück! Hier ist deine Release-Übersicht.</p>
         </div>
 
         {/* Quick Stats */}

@@ -6,8 +6,8 @@ export default function SettingsPage() {
     <DashboardLayout>
       <div className="max-w-4xl">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Einstellungen</h1>
-          <p className="text-gray-600 mt-2">Verwalte dein Profil und deine Präferenzen.</p>
+          <h1 className="text-3xl font-bold text-text-primary">Einstellungen</h1>
+          <p className="text-text-secondary mt-2">Verwalte dein Profil und deine Präferenzen.</p>
         </div>
 
         <SettingsForm />

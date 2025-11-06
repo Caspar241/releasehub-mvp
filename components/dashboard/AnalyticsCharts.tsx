@@ -20,18 +20,18 @@ export default function AnalyticsCharts() {
   return (
     <div className="space-y-6">
       {/* Time Range Selector */}
-      <div className="bg-white rounded-xl border border-gray-200 p-6">
+      <div className="feature-card">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-lg font-semibold text-gray-900">Streams Übersicht</h2>
+          <h2 className="text-lg font-semibold text-text-primary">Streams Übersicht</h2>
           <div className="flex gap-2">
             {['7d', '30d', '90d', '1y'].map((range) => (
               <button
                 key={range}
                 onClick={() => setTimeRange(range)}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                className={`px-4 py-2 rounded-button text-sm font-medium transition-colors ${
                   timeRange === range
-                    ? 'bg-indigo-600 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    ? 'bg-primary text-text-inverse'
+                    : 'bg-bg-secondary text-text-primary hover:bg-border-light'
                 }`}
               >
                 {range === '7d' && 'Letzte 7 Tage'}
@@ -47,10 +47,10 @@ export default function AnalyticsCharts() {
         <div className="space-y-4">
           {streamData.map((data, idx) => (
             <div key={idx} className="flex items-center gap-4">
-              <div className="w-16 text-sm text-gray-600">{data.date}</div>
-              <div className="flex-1 h-8 bg-gray-100 rounded-lg overflow-hidden">
+              <div className="w-16 text-sm text-text-secondary">{data.date}</div>
+              <div className="flex-1 h-8 bg-bg-secondary rounded-button overflow-hidden">
                 <div
-                  className="h-full bg-gradient-to-r from-indigo-500 to-purple-600 rounded-lg transition-all duration-500 flex items-center justify-end pr-3"
+                  className="h-full bg-gradient-to-r from-primary to-accent rounded-button transition-all duration-500 flex items-center justify-end pr-3"
                   style={{ width: `${(data.streams / maxStreams) * 100}%` }}
                 >
                   <span className="text-white text-sm font-medium">
@@ -63,43 +63,43 @@ export default function AnalyticsCharts() {
         </div>
 
         {/* Summary Stats */}
-        <div className="grid grid-cols-3 gap-4 mt-6 pt-6 border-t border-gray-200">
+        <div className="grid grid-cols-3 gap-4 mt-6 pt-6 border-t border-border-light">
           <div>
-            <p className="text-sm text-gray-600">Gesamt Streams</p>
-            <p className="text-2xl font-bold text-gray-900">106K</p>
-            <p className="text-sm text-green-600">+12% vs. vorher</p>
+            <p className="text-sm text-text-secondary">Gesamt Streams</p>
+            <p className="text-2xl font-bold text-text-primary">106K</p>
+            <p className="text-sm text-accent">+12% vs. vorher</p>
           </div>
           <div>
-            <p className="text-sm text-gray-600">Durchschnitt/Tag</p>
-            <p className="text-2xl font-bold text-gray-900">17.7K</p>
-            <p className="text-sm text-green-600">+8% vs. vorher</p>
+            <p className="text-sm text-text-secondary">Durchschnitt/Tag</p>
+            <p className="text-2xl font-bold text-text-primary">17.7K</p>
+            <p className="text-sm text-accent">+8% vs. vorher</p>
           </div>
           <div>
-            <p className="text-sm text-gray-600">Top Tag</p>
-            <p className="text-2xl font-bold text-gray-900">25K</p>
-            <p className="text-sm text-gray-500">06.11.2025</p>
+            <p className="text-sm text-text-secondary">Top Tag</p>
+            <p className="text-2xl font-bold text-text-primary">25K</p>
+            <p className="text-sm text-text-secondary">06.11.2025</p>
           </div>
         </div>
       </div>
 
       {/* Platform Breakdown */}
-      <div className="bg-white rounded-xl border border-gray-200 p-6">
-        <h2 className="text-lg font-semibold text-gray-900 mb-6">Streams nach Plattform</h2>
+      <div className="feature-card">
+        <h2 className="text-lg font-semibold text-text-primary mb-6">Streams nach Plattform</h2>
         <div className="space-y-4">
           {[
-            { platform: 'Spotify', streams: 45000, percentage: 42, color: 'bg-green-500' },
-            { platform: 'Apple Music', streams: 28000, percentage: 26, color: 'bg-pink-500' },
-            { platform: 'YouTube Music', streams: 21000, percentage: 20, color: 'bg-red-500' },
-            { platform: 'Amazon Music', streams: 12000, percentage: 12, color: 'bg-blue-500' },
+            { platform: 'Spotify', streams: 45000, percentage: 42, color: 'bg-accent' },
+            { platform: 'Apple Music', streams: 28000, percentage: 26, color: 'bg-primary' },
+            { platform: 'YouTube Music', streams: 21000, percentage: 20, color: 'bg-text-primary' },
+            { platform: 'Amazon Music', streams: 12000, percentage: 12, color: 'bg-text-secondary' },
           ].map((item) => (
             <div key={item.platform}>
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-medium text-gray-700">{item.platform}</span>
-                <span className="text-sm text-gray-600">
+                <span className="text-sm font-medium text-text-primary">{item.platform}</span>
+                <span className="text-sm text-text-secondary">
                   {item.streams.toLocaleString()} ({item.percentage}%)
                 </span>
               </div>
-              <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+              <div className="h-2 bg-bg-secondary rounded-full overflow-hidden">
                 <div
                   className={`h-full ${item.color} rounded-full transition-all duration-500`}
                   style={{ width: `${item.percentage}%` }}

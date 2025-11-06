@@ -5,15 +5,63 @@ import Navigation from '@/components/Navigation';
 import Hero from '@/components/Hero';
 import ThreePillars from '@/components/ThreePillars';
 import FeatureCard from '@/components/FeatureCard';
-import PricingCard from '@/components/PricingCard';
 import FAQAccordion from '@/components/FAQAccordion';
 import Footer from '@/components/Footer';
 import AuthModals from '@/components/AuthModals';
 import Link from 'next/link';
+import { useScrollReveal } from '@/hooks/useScrollReveal';
 
 export default function Home() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isSignupOpen, setIsSignupOpen] = useState(false);
+
+  useScrollReveal();
+
+  const vsComparison = [
+    {
+      criterion: 'Rights Taken',
+      releasehub: '0%',
+      indieflow: '0%',
+      label: '10–50% Master + Publishing',
+    },
+    {
+      criterion: 'Distribution Fee',
+      releasehub: '0%',
+      indieflow: '5% (Free) / 0% (Paid)',
+      label: 'Versteckt in Deal',
+    },
+    {
+      criterion: 'Monatspreis',
+      releasehub: '29–129 €/Monat',
+      indieflow: 'Free–Premium ($10–30/mo)',
+      label: '❌ (aber % auf alles)',
+    },
+    {
+      criterion: 'Release-System',
+      releasehub: '✓ Strukturiert, Templates',
+      indieflow: '⚠️ Feature-Zoo',
+      label: '❌ Chaos',
+    },
+    {
+      criterion: 'Team-Collaboration',
+      releasehub: '✓ Zentral',
+      indieflow: '✓ Teilweise',
+      label: '⚠️ Email/Meetings',
+    },
+    {
+      criterion: 'Europäisch/DACH',
+      releasehub: '✓ EU-Steuern, DE-Support',
+      indieflow: '❌ US-zentrisch',
+      label: '⚠️ Abhängig',
+    },
+    {
+      criterion: 'Kein Gatekeeper',
+      releasehub: '✓ Fair, transparent',
+      indieflow: '✓ Fair',
+      label: '❌ A&R entscheidet',
+    },
+  ];
+
   const features = [
     {
       icon: '📅',
@@ -138,72 +186,90 @@ ReleaseHub nimmt keine Rechte, also behältst du deine PRO-Mitgliedschaft (GEMA,
         {/* Hero */}
         <Hero variant="A" />
 
-        {/* Problem → Lösung */}
+        {/* Warum ReleaseHub? */}
+        <section className="section-spacing bg-bg-secondary">
+          <div className="container-custom scroll-reveal">
+            <h2 className="text-center mb-4">Warum ReleaseHub?</h2>
+            <p className="text-body-lg text-text-secondary text-center max-w-2xl mx-auto mb-12">
+              Transparenter Vergleich mit Alternativen.
+            </p>
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse">
+                <thead>
+                  <tr className="border-b-2 border-border-light">
+                    <th className="p-4 text-left font-semibold w-1/4">Kriterium</th>
+                    <th className="p-4 text-center font-semibold w-1/4 bg-accent/10">ReleaseHub</th>
+                    <th className="p-4 text-center font-semibold w-1/4">IndieFlow</th>
+                    <th className="p-4 text-center font-semibold w-1/4">Label-Deal</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {vsComparison.map((row, index) => (
+                    <tr key={index} className="border-b border-border-light">
+                      <td className="p-4 font-medium">{row.criterion}</td>
+                      <td className="p-4 text-center bg-accent/5 font-semibold">{row.releasehub}</td>
+                      <td className="p-4 text-center">{row.indieflow}</td>
+                      <td className="p-4 text-center">{row.label}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        {/* Wann macht ReleaseHub Sinn? */}
         <section className="section-spacing bg-bg-primary">
-          <div className="container-custom">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-12">
-              <div>
-                <h2 className="mb-6">Du weißt, wie es läuft:</h2>
-                <ul className="space-y-4 text-body">
-                  <li className="flex items-start gap-3">
-                    <span className="text-accent text-2xl">✗</span>
-                    <span>Release-Deadlines in Google Sheets</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-accent text-2xl">✗</span>
-                    <span>Marketing-Assets in 5 verschiedenen Canva-Tabs</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-accent text-2xl">✗</span>
-                    <span>Feedback per WhatsApp-Sprachnachricht</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-accent text-2xl">✗</span>
-                    <span>Distributor-Portal + Spotify for Artists + TikTok Creator + ...</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-accent text-2xl">✗</span>
-                    <span>ChatGPT für jeden Bio-Text neu aufmachen</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-accent text-2xl">✗</span>
-                    <span>Keine Ahnung, ob dein Plan realistisch ist</span>
-                  </li>
-                </ul>
-                <p className="text-2xl font-bold mt-8 text-accent">Das ist kein System. Das ist Overwhelm.</p>
-              </div>
-              <div>
-                <h2 className="mb-6">ReleaseHub macht Schluss damit.</h2>
-                <ul className="space-y-4 text-body">
-                  <li className="flex items-start gap-3">
-                    <span className="text-primary text-2xl">✓</span>
-                    <span><strong>Ein Dashboard</strong> für alle Release-Schritte</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-primary text-2xl">✓</span>
-                    <span><strong>Strukturierte Workflows</strong> (Templates, Checklisten, Deadlines)</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-primary text-2xl">✓</span>
-                    <span><strong>Zentrale Assets</strong> (Cover, Promo-Texte, Pressekit)</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-primary text-2xl">✓</span>
-                    <span><strong>Release-Kalender</strong> mit Sync zu deinem Leben</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-primary text-2xl">✓</span>
-                    <span><strong>Guidance ohne Gatekeeper</strong> (Best Practices, keine Rechte-Abgabe)</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <span className="text-primary text-2xl">✓</span>
-                    <span><strong>Europäisch & Fair</strong> (keine versteckten % Cuts)</span>
-                  </li>
-                </ul>
-                <Link href="/pricing" className="btn-primary inline-block mt-8">
-                  Abo wählen und starten →
-                </Link>
-              </div>
+          <div className="container-custom scroll-reveal">
+            <h2 className="text-center mb-4">Wann macht ReleaseHub Sinn?</h2>
+            <p className="text-body-lg text-text-secondary text-center max-w-2xl mx-auto mb-12">
+              Fünf klare Gründe für ReleaseHub.
+            </p>
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse">
+                <tbody>
+                  <tr className="border-b border-border-light">
+                    <td className="p-4 text-center w-16">
+                      <span className="text-accent text-2xl">✓</span>
+                    </td>
+                    <td className="p-4">
+                      Du willst <strong>0% Rights abgeben</strong> (weder Master noch Publishing)
+                    </td>
+                  </tr>
+                  <tr className="border-b border-border-light">
+                    <td className="p-4 text-center">
+                      <span className="text-accent text-2xl">✓</span>
+                    </td>
+                    <td className="p-4">
+                      Du brauchst <strong>Struktur</strong>, nicht noch mehr Tools
+                    </td>
+                  </tr>
+                  <tr className="border-b border-border-light">
+                    <td className="p-4 text-center">
+                      <span className="text-accent text-2xl">✓</span>
+                    </td>
+                    <td className="p-4">
+                      Du bist <strong>bereit, für Professionalität zu zahlen</strong> (kein Free-Plan-Chaos)
+                    </td>
+                  </tr>
+                  <tr className="border-b border-border-light">
+                    <td className="p-4 text-center">
+                      <span className="text-accent text-2xl">✓</span>
+                    </td>
+                    <td className="p-4">
+                      Du willst eine <strong>europäische Lösung</strong> (DACH-Support, EU-Steuern)
+                    </td>
+                  </tr>
+                  <tr className="border-b border-border-light">
+                    <td className="p-4 text-center">
+                      <span className="text-accent text-2xl">✓</span>
+                    </td>
+                    <td className="p-4">
+                      Du bist <strong>serious</strong> über deine Karriere (keine Hobby-Artists)
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </section>
@@ -213,7 +279,7 @@ ReleaseHub nimmt keine Rechte, also behältst du deine PRO-Mitgliedschaft (GEMA,
 
         {/* Feature Breakdown */}
         <section className="section-spacing bg-bg-primary">
-          <div className="container-custom">
+          <div className="container-custom scroll-reveal">
             <h2 className="text-center mb-4">Was du bekommst</h2>
             <p className="text-body-lg text-text-secondary text-center max-w-2xl mx-auto mb-12">
               Alles, was du brauchst, um professionell zu releasen.
@@ -231,67 +297,9 @@ ReleaseHub nimmt keine Rechte, also behältst du deine PRO-Mitgliedschaft (GEMA,
           </div>
         </section>
 
-        {/* Pricing Preview */}
-        <section className="section-spacing bg-bg-secondary">
-          <div className="container-custom">
-            <h2 className="text-center mb-4">Pricing – Fair, transparent, ohne versteckte Cuts</h2>
-            <p className="text-body-lg text-text-secondary text-center max-w-2xl mx-auto mb-12">
-              Wähle den Plan, der zu dir passt.
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <PricingCard
-                name="Basic"
-                price="29,99 €"
-                description="New Artists, 1-Person-Setup, 1–4 Releases/Jahr"
-                features={[
-                  '4 Singles pro Jahr',
-                  '1 Team-Mitglied',
-                  '5 GB Storage',
-                  '1 aktiver Smart Link',
-                  'Email Support (48h)',
-                ]}
-              />
-              <PricingCard
-                name="Premium"
-                price="79,99 €"
-                description="Serious Artists, DIY-Labels, kleine Managements"
-                features={[
-                  'Unlimited Singles/EPs/Alben',
-                  '3 Team-Mitglieder',
-                  '50 GB Storage',
-                  'Unlimited Smart Links',
-                  'EPK-Builder',
-                  'Full Analytics',
-                  'Priority Support',
-                ]}
-                featured={true}
-              />
-              <PricingCard
-                name="Label"
-                price="129,99 €"
-                description="Kleine Labels, Studios, Multi-Artist-Rosters"
-                features={[
-                  'Unlimited (Multi-Artist)',
-                  '10 Team-Mitglieder',
-                  '200 GB Storage',
-                  'Unlimited Smart Links',
-                  'EPK-Builder',
-                  'Full Analytics + Reporting',
-                  '1:1 Onboarding Call',
-                ]}
-              />
-            </div>
-            <div className="text-center mt-12">
-              <Link href="/pricing" className="btn-secondary">
-                Kompletten Vergleich ansehen →
-              </Link>
-            </div>
-          </div>
-        </section>
-
         {/* FAQ */}
-        <section className="section-spacing bg-bg-primary" id="faq">
-          <div className="container-custom">
+        <section className="section-spacing bg-bg-secondary" id="faq">
+          <div className="container-custom scroll-reveal">
             <h2 className="text-center mb-4">Häufige Fragen</h2>
             <p className="text-body-lg text-text-secondary text-center max-w-2xl mx-auto mb-12">
               Alles, was du wissen musst.
@@ -308,7 +316,7 @@ ReleaseHub nimmt keine Rechte, also behältst du deine PRO-Mitgliedschaft (GEMA,
 
         {/* Final CTA */}
         <section className="section-spacing bg-bg-dark text-text-inverse">
-          <div className="container-custom text-center">
+          <div className="container-custom text-center scroll-reveal">
             <h2 className="mb-6">Bereit, professionell zu releasen?</h2>
             <p className="text-body-lg mb-8 max-w-2xl mx-auto">
               Keine Labels. Keine % Cuts. Keine Ausreden. <br />

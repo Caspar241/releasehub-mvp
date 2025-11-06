@@ -6,8 +6,8 @@ export default function DistributionPage() {
     <DashboardLayout>
       <div className="space-y-6">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Vertriebskanäle</h1>
-          <p className="text-gray-600 mt-2">
+          <h1 className="text-3xl font-bold text-text-primary">Vertriebskanäle</h1>
+          <p className="text-text-secondary mt-2">
             Verwalte deine Verbindungen zu Streaming-Plattformen.
           </p>
         </div>

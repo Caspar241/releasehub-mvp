@@ -2,14 +2,17 @@
 
 import { useState } from 'react';
 import Navigation from '@/components/Navigation';
-import PricingCard from '@/components/PricingCard';
+import PricingCards from '@/components/PricingCards';
 import Footer from '@/components/Footer';
 import AuthModals from '@/components/AuthModals';
 import Link from 'next/link';
+import { useScrollReveal } from '@/hooks/useScrollReveal';
 
 export default function PricingPage() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isSignupOpen, setIsSignupOpen] = useState(false);
+
+  useScrollReveal();
   const comparisonData = {
     headers: ['Feature', 'Basic', 'Premium', 'Label'],
     rows: [
@@ -93,80 +96,21 @@ export default function PricingPage() {
       />
       <main className="min-h-screen">
         {/* Hero */}
-        <section className="section-spacing bg-bg-primary">
+        <section className="pt-24 pb-12 bg-bg-primary">
           <div className="container-custom text-center">
-            <h1 className="mb-6">Pricing – Fair, transparent, ohne versteckte Cuts</h1>
-            <p className="text-body-lg text-text-secondary max-w-2xl mx-auto mb-12">
-              Wähle den Plan, der zu dir passt. Alle Pläne: 0% Rights Taken, 0% Distribution-Fee.
+            <h1 className="mb-4">Pricing</h1>
+            <p className="text-body-lg text-text-secondary max-w-2xl mx-auto">
+              Fair, transparent, ohne versteckte Cuts. Alle Pläne: 0% Rights Taken.
             </p>
           </div>
         </section>
 
         {/* Pricing Cards */}
-        <section className="section-spacing bg-bg-secondary">
-          <div className="container-custom">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-              <PricingCard
-                name="Basic"
-                price="29,99 €"
-                description="New Artists, 1-Person-Setup, 1–4 Releases/Jahr"
-                features={[
-                  '4 Singles pro Jahr',
-                  '1 Team-Mitglied',
-                  '5 GB Storage',
-                  '1 aktiver Smart Link',
-                  'Email Support (48h)',
-                  'Release-Templates & Checklisten',
-                  'Basis Analytics (Spotify + Apple)',
-                  '0% Distribution-Fee',
-                ]}
-                ctaText="Basic wählen"
-                stripePriceId="basic"
-              />
-              <PricingCard
-                name="Premium"
-                price="79,99 €"
-                description="Serious Artists, DIY-Labels, kleine Managements"
-                features={[
-                  'Unlimited Singles/EPs/Alben',
-                  '3 Team-Mitglieder',
-                  '50 GB Storage',
-                  'Unlimited Smart Links',
-                  'EPK-Builder',
-                  'Full Analytics (alle Plattformen)',
-                  'Priority Support (Email + Chat)',
-                  'Premium Templates + Custom',
-                  '0% Distribution-Fee',
-                ]}
-                featured={true}
-                ctaText="Premium wählen"
-                stripePriceId="premium"
-              />
-              <PricingCard
-                name="Label"
-                price="129,99 €"
-                description="Kleine Labels, Studios, Multi-Artist-Rosters"
-                features={[
-                  'Unlimited (Multi-Artist)',
-                  '10 Team-Mitglieder',
-                  '200 GB Storage',
-                  'Unlimited Smart Links',
-                  'EPK-Builder',
-                  'Full Analytics + Label-Reporting',
-                  '1:1 Onboarding Call',
-                  'Premium Templates + Custom',
-                  '0% Distribution-Fee',
-                ]}
-                ctaText="Label wählen"
-                stripePriceId="label"
-              />
-            </div>
-          </div>
-        </section>
+        <PricingCards />
 
         {/* Feature-Matrix */}
         <section className="section-spacing bg-bg-primary">
-          <div className="container-custom">
+          <div className="container-custom scroll-reveal">
             <h2 className="text-center mb-12">Komplette Feature-Matrix</h2>
             <div className="overflow-x-auto">
               <table className="w-full border-collapse">
@@ -202,7 +146,7 @@ export default function PricingPage() {
 
         {/* Vergleich ReleaseHub vs IndieFlow vs Label */}
         <section className="section-spacing bg-bg-secondary">
-          <div className="container-custom">
+          <div className="container-custom scroll-reveal">
             <h2 className="text-center mb-4">Warum ReleaseHub?</h2>
             <p className="text-body-lg text-text-secondary text-center max-w-2xl mx-auto mb-12">
               Transparenter Vergleich mit Alternativen.
@@ -229,47 +173,68 @@ export default function PricingPage() {
                 </tbody>
               </table>
             </div>
-            <div className="mt-12 max-w-3xl mx-auto">
-              <h3 className="text-2xl font-bold mb-6">Wann macht ReleaseHub Sinn?</h3>
-              <ul className="space-y-4">
-                <li className="flex items-start gap-3">
-                  <span className="text-accent text-2xl">✓</span>
-                  <span>
-                    Du willst <strong>0% Rights abgeben</strong> (weder Master noch Publishing)
-                  </span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-accent text-2xl">✓</span>
-                  <span>
-                    Du brauchst <strong>Struktur</strong>, nicht noch mehr Tools
-                  </span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-accent text-2xl">✓</span>
-                  <span>
-                    Du bist <strong>bereit, für Professionalität zu zahlen</strong> (kein Free-Plan-Chaos)
-                  </span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-accent text-2xl">✓</span>
-                  <span>
-                    Du willst eine <strong>europäische Lösung</strong> (DACH-Support, EU-Steuern)
-                  </span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <span className="text-accent text-2xl">✓</span>
-                  <span>
-                    Du bist <strong>serious</strong> über deine Karriere (keine Hobby-Artists)
-                  </span>
-                </li>
-              </ul>
+          </div>
+        </section>
+
+        {/* Wann macht ReleaseHub Sinn? */}
+        <section className="section-spacing bg-bg-primary">
+          <div className="container-custom scroll-reveal">
+            <h2 className="text-center mb-4">Wann macht ReleaseHub Sinn?</h2>
+            <p className="text-body-lg text-text-secondary text-center max-w-2xl mx-auto mb-12">
+              Fünf klare Gründe für ReleaseHub.
+            </p>
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse">
+                <tbody>
+                  <tr className="border-b border-border-light">
+                    <td className="p-4 text-center w-16">
+                      <span className="text-accent text-2xl">✓</span>
+                    </td>
+                    <td className="p-4">
+                      Du willst <strong>0% Rights abgeben</strong> (weder Master noch Publishing)
+                    </td>
+                  </tr>
+                  <tr className="border-b border-border-light">
+                    <td className="p-4 text-center">
+                      <span className="text-accent text-2xl">✓</span>
+                    </td>
+                    <td className="p-4">
+                      Du brauchst <strong>Struktur</strong>, nicht noch mehr Tools
+                    </td>
+                  </tr>
+                  <tr className="border-b border-border-light">
+                    <td className="p-4 text-center">
+                      <span className="text-accent text-2xl">✓</span>
+                    </td>
+                    <td className="p-4">
+                      Du bist <strong>bereit, für Professionalität zu zahlen</strong> (kein Free-Plan-Chaos)
+                    </td>
+                  </tr>
+                  <tr className="border-b border-border-light">
+                    <td className="p-4 text-center">
+                      <span className="text-accent text-2xl">✓</span>
+                    </td>
+                    <td className="p-4">
+                      Du willst eine <strong>europäische Lösung</strong> (DACH-Support, EU-Steuern)
+                    </td>
+                  </tr>
+                  <tr className="border-b border-border-light">
+                    <td className="p-4 text-center">
+                      <span className="text-accent text-2xl">✓</span>
+                    </td>
+                    <td className="p-4">
+                      Du bist <strong>serious</strong> über deine Karriere (keine Hobby-Artists)
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </section>
 
         {/* Final CTA */}
         <section className="section-spacing bg-bg-dark text-text-inverse">
-          <div className="container-custom text-center">
+          <div className="container-custom text-center scroll-reveal">
             <h2 className="mb-6">Bereit anzufangen?</h2>
             <p className="text-body-lg mb-8 max-w-2xl mx-auto">
               Wähle deinen Plan und starte strukturiert. <br />

@@ -43,7 +43,7 @@ export default function Hero({ variant = 'A' }: HeroProps) {
   return (
     <section className="section-spacing bg-bg-primary">
       <div className="container-custom">
-        <div className="max-w-hero mx-auto text-center">
+        <div className="max-w-hero mx-auto text-center scroll-reveal">
           <h1 className="mb-6">{content.title}</h1>
           <p className="text-body-lg text-text-secondary mb-8">{content.description}</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
