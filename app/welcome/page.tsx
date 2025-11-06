@@ -1,5 +1,6 @@
 'use client';
 
+import { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Navigation from '@/components/Navigation';
@@ -7,9 +8,9 @@ import Footer from '@/components/Footer';
 import AuthModals from '@/components/AuthModals';
 import Link from 'next/link';
 
-export default function WelcomePage() {
+function WelcomeContent() {
   const searchParams = useSearchParams();
-  const sessionId = searchParams.get('session_id');
+  const sessionId = searchParams?.get('session_id');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -239,5 +240,20 @@ export default function WelcomePage() {
       </main>
       <Footer />
     </>
+  );
+}
+
+export default function WelcomePage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-indigo-600 mx-auto mb-4"></div>
+          <p className="text-lg text-gray-600">Wird geladen...</p>
+        </div>
+      </div>
+    }>
+      <WelcomeContent />
+    </Suspense>
   );
 }
