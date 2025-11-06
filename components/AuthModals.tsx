@@ -1,6 +1,8 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { signIn, signUp } from '@/lib/auth';
 
 interface AuthModalsProps {
   isLoginOpen: boolean;
@@ -19,25 +21,57 @@ export default function AuthModals({
   onSwitchToSignup,
   onSwitchToLogin,
 }: AuthModalsProps) {
+  const router = useRouter();
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const [signupEmail, setSignupEmail] = useState('');
   const [signupPassword, setSignupPassword] = useState('');
   const [signupName, setSignupName] = useState('');
+  const [loginError, setLoginError] = useState('');
+  const [signupError, setSignupError] = useState('');
+  const [loginLoading, setLoginLoading] = useState(false);
+  const [signupLoading, setSignupLoading] = useState(false);
 
-  const handleLoginSubmit = (e: React.FormEvent) => {
+  const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Implement Supabase Auth
-    console.log('Login:', { loginEmail, loginPassword });
-    alert('Login-Funktion kommt in Phase 2 (Supabase Auth Integration)');
+    setLoginError('');
+    setLoginLoading(true);
+
+    const { user, error } = await signIn(loginEmail, loginPassword);
+
+    setLoginLoading(false);
+
+    if (error) {
+      setLoginError(error.message);
+      return;
+    }
+
+    if (user) {
+      onCloseLogin();
+      router.push('/dashboard');
+      router.refresh();
+    }
   };
 
-  const handleSignupSubmit = (e: React.FormEvent) => {
+  const handleSignupSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Implement Supabase Auth + Stripe
-    console.log('Signup:', { signupName, signupEmail, signupPassword });
-    alert('Sign-up wird zu Pricing weitergeleitet (Phase 2)');
-    window.location.href = '/pricing';
+    setSignupError('');
+    setSignupLoading(true);
+
+    const { user, error } = await signUp(signupEmail, signupPassword, signupName);
+
+    setSignupLoading(false);
+
+    if (error) {
+      setSignupError(error.message);
+      return;
+    }
+
+    if (user) {
+      onCloseSignup();
+      // Redirect to pricing to choose a plan
+      router.push('/pricing');
+    }
   };
 
   return (
@@ -90,8 +124,18 @@ export default function AuthModals({
                 />
               </div>
 
-              <button type="submit" className="btn-primary w-full mb-4">
-                Log in
+              {loginError && (
+                <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm">
+                  {loginError}
+                </div>
+              )}
+
+              <button
+                type="submit"
+                className="btn-primary w-full mb-4 disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={loginLoading}
+              >
+                {loginLoading ? 'Einloggen...' : 'Log in'}
               </button>
 
               <div className="text-center text-sm text-text-secondary">
@@ -174,8 +218,18 @@ export default function AuthModals({
                 <p className="text-xs text-text-secondary mt-1">Mindestens 8 Zeichen</p>
               </div>
 
-              <button type="submit" className="btn-primary w-full mb-4">
-                Weiter zu Pricing →
+              {signupError && (
+                <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm">
+                  {signupError}
+                </div>
+              )}
+
+              <button
+                type="submit"
+                className="btn-primary w-full mb-4 disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={signupLoading}
+              >
+                {signupLoading ? 'Account wird erstellt...' : 'Weiter zu Pricing →'}
               </button>
 
               <div className="text-center text-sm text-text-secondary">

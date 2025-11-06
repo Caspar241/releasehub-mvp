@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Navigation from '@/components/Navigation';
 import Hero from '@/components/Hero';
 import ThreePillars from '@/components/ThreePillars';
@@ -11,11 +12,19 @@ import AuthModals from '@/components/AuthModals';
 import Link from 'next/link';
 import { useScrollReveal } from '@/hooks/useScrollReveal';
 
-export default function Home() {
+function HomeContent() {
+  const searchParams = useSearchParams();
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isSignupOpen, setIsSignupOpen] = useState(false);
 
   useScrollReveal();
+
+  // Check if we should open the login modal (from protected route redirect)
+  useEffect(() => {
+    if (searchParams?.get('login') === 'true') {
+      setIsLoginOpen(true);
+    }
+  }, [searchParams]);
 
   const vsComparison = [
     {
@@ -340,5 +349,13 @@ ReleaseHub nimmt keine Rechte, also behältst du deine PRO-Mitgliedschaft (GEMA,
       </main>
       <Footer />
     </>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-bg-primary"></div>}>
+      <HomeContent />
+    </Suspense>
   );
 }
