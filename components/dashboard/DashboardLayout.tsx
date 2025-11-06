@@ -13,6 +13,7 @@ const navigation = [
   { name: 'Meine Releases', href: '/dashboard/releases', icon: '🎵' },
   { name: 'Neuer Release', href: '/dashboard/upload', icon: '⬆️' },
   { name: 'Analytics', href: '/dashboard/analytics', icon: '📈' },
+  { name: 'Einnahmen', href: '/dashboard/earnings', icon: '💰' },
   { name: 'Vertriebskanäle', href: '/dashboard/distribution', icon: '🌐' },
   { name: 'Einstellungen', href: '/dashboard/settings', icon: '⚙️' },
 ];
