@@ -9,12 +9,12 @@ import { RefObject } from 'react';
 // ====== EASING CURVES ======
 
 // Apple-like easing curve (primary)
-export const easing = [0.22, 1, 0.36, 1];
+export const easing = [0.22, 1, 0.36, 1] as const;
 
 // Alternative easing curves
-export const easingSmooth = [0.25, 0.46, 0.45, 0.94];
-export const easingSnappy = [0.34, 1.56, 0.64, 1];
-export const easingCinematic = [0.16, 1, 0.3, 1];
+export const easingSmooth = [0.25, 0.46, 0.45, 0.94] as const;
+export const easingSnappy = [0.34, 1.56, 0.64, 1] as const;
+export const easingCinematic = [0.16, 1, 0.3, 1] as const;
 
 // ====== FADE ANIMATIONS ======
 

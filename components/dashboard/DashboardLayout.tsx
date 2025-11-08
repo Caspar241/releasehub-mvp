@@ -126,8 +126,17 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         </div>
 
         {/* Page content */}
-        <main className="p-4 lg:p-8 bg-bg-secondary min-h-screen">
-          {children}
+        <main className="p-4 lg:p-8 bg-bg-secondary min-h-screen relative overflow-hidden">
+          {/* Background Lighting Effects */}
+          <div className="absolute top-0 right-0 w-[600px] h-[600px] gradient-orb-cyan opacity-20 pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-[500px] h-[500px] gradient-orb-purple opacity-15 pointer-events-none" />
+          <div className="absolute top-1/2 left-1/3 w-[450px] h-[450px] gradient-orb-blue opacity-12 pointer-events-none" />
+          <div className="absolute bottom-1/3 right-1/4 w-[400px] h-[400px] gradient-orb-pink opacity-10 pointer-events-none" />
+
+          {/* Content */}
+          <div className="relative z-10">
+            {children}
+          </div>
         </main>
       </div>
     </div>

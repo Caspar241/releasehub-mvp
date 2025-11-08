@@ -27,7 +27,7 @@ export default function Testimonial({
       whileInView="visible"
       viewport={{ once: true, margin: '-50px' }}
       variants={fadeInUp}
-      className={`glass rounded-2xl p-8 shadow-2 hover:shadow-3 transition-all duration-300 ${className}`}
+      className={`glass-card p-8 shadow-e2 hover:shadow-e3 transition-all duration-300 ${className}`}
     >
       {/* Rating Stars */}
       {rating > 0 && (
@@ -48,7 +48,7 @@ export default function Testimonial({
       )}
 
       {/* Quote */}
-      <blockquote className="text-body text-text-secondary mb-6 leading-relaxed">
+      <blockquote className="text-body text-text-secondary mb-6 leading-relaxed break-words">
         "{quote}"
       </blockquote>
 
@@ -65,7 +65,7 @@ export default function Testimonial({
             />
           </div>
         ) : (
-          <div className="w-12 h-12 rounded-full bg-accent-subtle flex items-center justify-center border-2 border-border-strong">
+          <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center border-2 border-accent/30">
             <span className="text-accent font-semibold text-lg">
               {author.charAt(0).toUpperCase()}
             </span>

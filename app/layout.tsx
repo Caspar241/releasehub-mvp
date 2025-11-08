@@ -10,21 +10,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "ReleaseHub - Dein Release-System. Keine Labels. Keine Prozente.",
-  description: "Das Operating System für Independent Artists. Struktur statt Chaos. Fairness statt Gatekeeper. 0% Rights Taken. 100% deine Musik.",
-  keywords: ["music release", "independent artists", "release management", "music distribution", "artist tools", "diy music"],
-  authors: [{ name: "ReleaseHub" }],
-  openGraph: {
-    title: "ReleaseHub - Artist Operating System",
-    description: "Struktur statt Chaos. 0% Rights Taken.",
-    type: "website",
-    locale: "de_DE",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "ReleaseHub - Artist Operating System",
-    description: "Struktur statt Chaos. 0% Rights Taken.",
-  },
+  title: "ReleaseHub",
+  description: "Release Management System",
 };
 
 export default function RootLayout({

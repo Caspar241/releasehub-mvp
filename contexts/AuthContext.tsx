@@ -16,21 +16,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check initial session
-    getCurrentUser().then((currentUser) => {
-      setUser(currentUser);
-      setLoading(false);
-    });
+    // Check initial session with error handling
+    getCurrentUser()
+      .then((currentUser) => {
+        setUser(currentUser);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error('Auth initialization error:', error);
+        setLoading(false);
+      });
 
-    // Subscribe to auth changes
-    const subscription = onAuthStateChange((newUser) => {
-      setUser(newUser);
-      setLoading(false);
-    });
+    // Subscribe to auth changes with error handling
+    try {
+      const subscription = onAuthStateChange((newUser) => {
+        setUser(newUser);
+        setLoading(false);
+      });
 
-    return () => {
-      subscription.unsubscribe();
-    };
+      return () => {
+        subscription.unsubscribe();
+      };
+    } catch (error) {
+      console.error('Auth subscription error:', error);
+      setLoading(false);
+    }
   }, []);
 
   const handleSignOut = async () => {

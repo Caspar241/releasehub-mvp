@@ -8,7 +8,22 @@
       "Bash(git commit:*)",
       "Bash(git push:*)",
       "Bash(lsof:*)",
-      "Bash(npm run build:*)"
+      "Bash(npm run build:*)",
+      "Bash(pkill:*)",
+      "Bash(curl:*)",
+      "Bash(kill:*)",
+      "Bash(xargs kill:*)",
+      "Bash(test:*)",
+      "Bash(npm cache clean:*)",
+      "Bash(cat:*)",
+      "Bash(timeout 30 npm run dev)",
+      "Bash(rm:*)",
+      "Bash(npx tsc:*)",
+      "Bash(killall:*)",
+      "WebFetch(domain:code.claude.com)",
+      "Bash(jobs:*)",
+      "Bash(npm ci:*)",
+      "Bash(mv:*)"
     ],
     "deny": [],
     "ask": []

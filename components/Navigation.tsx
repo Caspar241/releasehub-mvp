@@ -76,10 +76,10 @@ export default function Navigation({ onLoginClick, onSignupClick }: NavigationPr
 
   return (
     <nav
-      className={`sticky top-0 z-navigation transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-navigation transition-all duration-300 ${
         scrolled
-          ? 'bg-surface-raised/95 backdrop-blur-glass border-b border-border shadow-2'
-          : 'bg-transparent border-b border-border-subtle'
+          ? 'bg-surface-primary/95 backdrop-blur-glass-lg border-b border-border shadow-e3'
+          : 'bg-transparent border-b border-border-muted'
       }`}
     >
       <div className="container-custom">
@@ -122,12 +122,12 @@ export default function Navigation({ onLoginClick, onSignupClick }: NavigationPr
                     {/* Dropdown Menu */}
                     {activeDropdown === item.label && (
                       <div className="absolute top-full left-0 pt-2 w-72 z-dropdown">
-                        <div className="bg-surface-overlay/95 backdrop-blur-glass rounded-xl shadow-3 border border-border py-2 animate-fadeIn">
+                        <div className="glass-card rounded-xl shadow-e3 border border-border py-2">
                           {item.dropdown.map((dropdownItem) => (
                             <Link
                               key={dropdownItem.href}
                               href={dropdownItem.href}
-                              className="block px-4 py-3 hover:bg-accent-subtle transition-colors duration-150 rounded-lg mx-1 group"
+                              className="block px-4 py-3 hover:bg-accent/10 transition-colors duration-150 rounded-lg mx-1 group"
                             >
                               <div className="font-semibold text-text-primary group-hover:text-accent transition-colors duration-150">{dropdownItem.label}</div>
                               {dropdownItem.description && (
@@ -150,7 +150,7 @@ export default function Navigation({ onLoginClick, onSignupClick }: NavigationPr
             {/* Auth Buttons */}
             <button
               onClick={onLoginClick}
-              className="px-6 py-2.5 rounded-full border-2 border-border-strong text-text-primary font-semibold hover:bg-surface-base hover:border-accent transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary"
+              className="px-6 py-2.5 rounded-full border-2 border-border text-text-primary font-semibold hover:bg-surface-raised hover:border-accent transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary"
             >
               Log in
             </button>
