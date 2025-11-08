@@ -119,7 +119,7 @@ export default function EarningsBreakdown() {
         <div className="space-y-4">
           {storesData.map((store, idx) => (
             <div key={idx} className="flex items-center gap-4 p-4 border border-border-light rounded-card hover:border-accent/20 hover:shadow-glow transition-all duration-200 cursor-pointer active:scale-[0.99]"
-              style={{ transform: 'translateZ(0)', willChange: 'transform, border-color, box-shadow' }}>
+              style={{ transform: 'translateZ(0)' }}>
               <div className="flex-1">
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="font-semibold text-text-primary">{store.store}</h3>

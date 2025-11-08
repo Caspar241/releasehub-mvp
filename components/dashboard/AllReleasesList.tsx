@@ -138,7 +138,7 @@ export default function AllReleasesList() {
           <div
             key={release.id}
             className="glass-card p-6 rounded-2xl transition-all duration-200 hover:border-accent/20 hover:shadow-glow hover:-translate-y-1 cursor-pointer active:scale-[0.99]"
-            style={{ transform: 'translateZ(0)', willChange: 'transform, border-color, box-shadow' }}
+            style={{ transform: 'translateZ(0)' }}
           >
             {/* Cover */}
             <div className="h-48 bg-gradient-to-br from-primary to-accent rounded-card flex items-center justify-center mb-4">

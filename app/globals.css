@@ -204,7 +204,7 @@
   .btn {
     @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-medium transition-all duration-150 ease-apple;
     transform: translateZ(0);
-    will-change: transform;
+    /* will-change removed - only set on hover via JS if needed */
   }
 
   .btn-primary {
@@ -258,7 +258,7 @@
   .card-interactive {
     @apply card transition-all duration-200 hover:border-accent/30 hover:shadow-glow cursor-pointer;
     transform: translateZ(0);
-    will-change: transform, border-color, box-shadow;
+    /* will-change removed - GPU acceleration via translateZ is sufficient */
   }
 
   /* ===== BORDER GLOW (Animated) ===== */
@@ -445,7 +445,7 @@
   /* ===== TRANSFORM GPU ===== */
   .gpu {
     transform: translateZ(0);
-    will-change: transform;
+    /* will-change removed - translateZ provides GPU acceleration */
   }
 
   /* ===== SAFE AREA (Mobile) ===== */

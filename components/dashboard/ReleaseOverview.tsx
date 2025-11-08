@@ -86,7 +86,7 @@ export default function ReleaseOverview() {
               <div
                 key={release.id}
                 className="flex items-center gap-4 p-4 border border-border-light rounded-card hover:border-accent/20 hover:shadow-glow transition-all duration-200 cursor-pointer active:scale-[0.99]"
-                style={{ transform: 'translateZ(0)', willChange: 'transform, border-color, box-shadow' }}
+                style={{ transform: 'translateZ(0)' }}
               >
                 <div className="w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-card flex-shrink-0" />
                 <div className="flex-1 min-w-0">
@@ -141,7 +141,7 @@ export default function ReleaseOverview() {
               <div
                 key={release.id}
                 className="flex items-center gap-4 p-4 border border-border-light rounded-card hover:border-accent/20 hover:shadow-glow transition-all duration-200 cursor-pointer active:scale-[0.99]"
-                style={{ transform: 'translateZ(0)', willChange: 'transform, border-color, box-shadow' }}
+                style={{ transform: 'translateZ(0)' }}
               >
                 <div className="w-16 h-16 bg-gradient-to-br from-accent to-primary rounded-card flex-shrink-0" />
                 <div className="flex-1 min-w-0">

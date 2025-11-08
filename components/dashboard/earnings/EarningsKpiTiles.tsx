@@ -15,7 +15,7 @@ function KpiTile({ value, label, helpText, trend, icon }: KpiTileProps) {
   return (
     <div className="glass-card p-6 rounded-2xl transition-all duration-200 hover:border-accent/20 hover:shadow-glow cursor-pointer active:scale-[0.98]"
       title={helpText}
-      style={{ transform: 'translateZ(0)', willChange: 'transform, border-color, box-shadow' }}>
+      style={{ transform: 'translateZ(0)' }}>
       <div className="flex items-center justify-between mb-4">
         <div className="icon text-2xl transition-transform duration-200 hover:scale-110">{icon}</div>
       </div>
