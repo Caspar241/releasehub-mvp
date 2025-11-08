@@ -8,10 +8,10 @@ export default function FeatureCard({ icon, title, description }: FeatureCardPro
   return (
     <div className="feature-card">
       <div className="icon mb-4">
-        <span className="text-2xl">{icon}</span>
+        <span className="text-2xl text-accent">{icon}</span>
       </div>
-      <h3 className="text-2xl font-semibold mb-3">{title}</h3>
-      <p className="text-text-secondary">{description}</p>
+      <h3 className="text-feature-md md:text-title text-text-primary font-semibold mb-3">{title}</h3>
+      <p className="text-body-sm md:text-body text-text-secondary leading-relaxed">{description}</p>
     </div>
   );
 }

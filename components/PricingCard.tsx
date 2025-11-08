@@ -22,27 +22,31 @@ export default function PricingCard({
   return (
     <div className={`pricing-card ${featured ? 'pricing-card-featured' : ''}`}>
       {featured && (
-        <div className="mb-4">
-          <span className="badge">Beliebtester Plan</span>
-        </div>
+        <span className="absolute top-4 right-4 badge">
+          Beliebt
+        </span>
       )}
-      <h3 className="text-3xl font-bold mb-2">{name}</h3>
+      <h3 className="text-feature-md text-text-primary font-bold mb-2">{name}</h3>
       <div className="mb-4">
-        <span className="text-5xl font-bold">{price}</span>
-        <span className="text-text-secondary">/Monat</span>
+        <span className="text-section-lg md:text-section-xl text-text-primary font-bold">{price}</span>
+        <span className="text-body text-text-muted">/Monat</span>
       </div>
-      <p className="text-text-secondary mb-6">{description}</p>
+      <p className="text-body text-text-secondary mb-6 leading-relaxed">{description}</p>
       <Link
         href={stripePriceId ? `/pricing?plan=${stripePriceId}` : '/pricing'}
-        className={featured ? 'btn-primary w-full block text-center' : 'btn-secondary w-full block text-center'}
+        className={`w-full py-3.5 rounded-lg font-semibold text-center block transition-all duration-200 ${
+          featured
+            ? 'bg-accent text-text-inverse hover:bg-accent-hover hover:shadow-glow'
+            : 'bg-transparent text-accent border-2 border-accent hover:bg-accent hover:text-text-inverse'
+        }`}
       >
         {ctaText}
       </Link>
-      <ul className="mt-8 space-y-4">
+      <ul className="mt-8 space-y-3">
         {features.map((feature, index) => (
-          <li key={index} className="flex items-start gap-3">
-            <span className="text-accent mt-1">✓</span>
-            <span className="text-text-primary">{feature}</span>
+          <li key={index} className="flex items-start gap-3 text-body-sm md:text-body text-text-secondary">
+            <span className="w-5 h-5 text-accent flex-shrink-0 mt-0.5">✓</span>
+            <span>{feature}</span>
           </li>
         ))}
       </ul>

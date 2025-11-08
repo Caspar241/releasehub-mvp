@@ -74,16 +74,16 @@ export default function Navigation({ onLoginClick, onSignupClick }: NavigationPr
 
   return (
     <nav
-      className={`sticky top-0 z-50 transition-all duration-300 ${
+      className={`sticky top-0 z-navigation transition-all duration-300 ${
         scrolled
-          ? 'bg-white shadow-lg border-b border-border-light'
-          : 'bg-bg-primary/95 backdrop-blur-sm border-b border-transparent'
+          ? 'bg-surface-raised/95 backdrop-blur-glass border-b border-border-default shadow-2'
+          : 'bg-transparent border-b border-border-subtle'
       }`}
     >
       <div className="container-custom">
         <div className="flex items-center justify-between py-4">
           {/* Logo */}
-          <Link href="/" className="text-2xl font-bold text-primary hover:text-accent transition-colors">
+          <Link href="/" className="text-2xl font-bold text-text-primary hover:text-accent transition-colors">
             ReleaseHub
           </Link>
 
@@ -99,7 +99,7 @@ export default function Navigation({ onLoginClick, onSignupClick }: NavigationPr
                 {item.dropdown ? (
                   <>
                     <button
-                      className="flex items-center gap-1 text-text-primary hover:text-accent transition-colors"
+                      className="flex items-center gap-1 text-text-secondary hover:text-accent transition-colors font-medium"
                     >
                       {item.label}
                       <svg
@@ -119,17 +119,17 @@ export default function Navigation({ onLoginClick, onSignupClick }: NavigationPr
 
                     {/* Dropdown Menu */}
                     {activeDropdown === item.label && (
-                      <div className="absolute top-full left-0 pt-2 w-72">
-                        <div className="bg-white rounded-lg shadow-xl border border-border-light py-2 animate-fade-in">
+                      <div className="absolute top-full left-0 pt-2 w-72 z-dropdown">
+                        <div className="bg-surface-overlay/95 backdrop-blur-glass rounded-xl shadow-3 border border-border-default py-2 animate-fadeIn">
                           {item.dropdown.map((dropdownItem) => (
                             <Link
                               key={dropdownItem.href}
                               href={dropdownItem.href}
-                              className="block px-4 py-3 hover:bg-bg-secondary transition-colors"
+                              className="block px-4 py-3 hover:bg-accent-subtle transition-colors duration-150 rounded-lg mx-1 group"
                             >
-                              <div className="font-semibold text-text-primary">{dropdownItem.label}</div>
+                              <div className="font-semibold text-text-primary group-hover:text-accent transition-colors duration-150">{dropdownItem.label}</div>
                               {dropdownItem.description && (
-                                <div className="text-sm text-text-secondary mt-1">{dropdownItem.description}</div>
+                                <div className="text-body-sm text-text-muted mt-1">{dropdownItem.description}</div>
                               )}
                             </Link>
                           ))}
@@ -138,7 +138,7 @@ export default function Navigation({ onLoginClick, onSignupClick }: NavigationPr
                     )}
                   </>
                 ) : (
-                  <Link href={item.href!} className="text-text-primary hover:text-accent transition-colors">
+                  <Link href={item.href!} className="text-text-secondary hover:text-accent transition-colors font-medium">
                     {item.label}
                   </Link>
                 )}
@@ -148,13 +148,13 @@ export default function Navigation({ onLoginClick, onSignupClick }: NavigationPr
             {/* Auth Buttons */}
             <button
               onClick={onLoginClick}
-              className="px-6 py-2.5 rounded-full border-2 border-primary text-primary font-semibold hover:bg-primary hover:text-white transition-all duration-200"
+              className="px-6 py-2.5 rounded-full border-2 border-border-strong text-text-primary font-semibold hover:bg-surface-base hover:border-accent transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary"
             >
               Log in
             </button>
             <button
               onClick={onSignupClick}
-              className="px-6 py-2.5 rounded-full bg-primary text-white font-semibold hover:bg-primary-hover transition-all duration-200"
+              className="px-6 py-2.5 rounded-full bg-accent text-text-inverse font-semibold hover:bg-accent-hover hover:shadow-glow transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary"
             >
               Sign up
             </button>
@@ -186,7 +186,7 @@ export default function Navigation({ onLoginClick, onSignupClick }: NavigationPr
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden py-4 border-t border-border-light">
+          <div className="md:hidden py-4 border-t border-border-default">
             <div className="flex flex-col gap-4">
               {navItems.map((item) => (
                 <div key={item.label}>
@@ -194,7 +194,7 @@ export default function Navigation({ onLoginClick, onSignupClick }: NavigationPr
                     <>
                       <button
                         onClick={() => handleMobileDropdownClick(item.label)}
-                        className="flex items-center justify-between w-full text-text-primary hover:text-accent transition-colors"
+                        className="flex items-center justify-between w-full text-text-primary hover:text-accent transition-colors font-medium"
                       >
                         {item.label}
                         <svg
@@ -231,7 +231,7 @@ export default function Navigation({ onLoginClick, onSignupClick }: NavigationPr
                   ) : (
                     <Link
                       href={item.href!}
-                      className="text-text-primary hover:text-accent transition-colors"
+                      className="text-text-primary hover:text-accent transition-colors font-medium"
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       {item.label}
@@ -246,7 +246,7 @@ export default function Navigation({ onLoginClick, onSignupClick }: NavigationPr
                   onLoginClick?.();
                   setMobileMenuOpen(false);
                 }}
-                className="px-6 py-2.5 rounded-full border-2 border-primary text-primary font-semibold hover:bg-primary hover:text-white transition-all duration-200 text-center"
+                className="px-6 py-2.5 rounded-full border-2 border-border-strong text-text-primary font-semibold hover:bg-surface-base hover:border-accent transition-all duration-200 text-center"
               >
                 Log in
               </button>
@@ -255,7 +255,7 @@ export default function Navigation({ onLoginClick, onSignupClick }: NavigationPr
                   onSignupClick?.();
                   setMobileMenuOpen(false);
                 }}
-                className="px-6 py-2.5 rounded-full bg-primary text-white font-semibold hover:bg-primary-hover transition-all duration-200"
+                className="px-6 py-2.5 rounded-full bg-accent text-text-inverse font-semibold hover:bg-accent-hover hover:shadow-glow transition-all duration-200"
               >
                 Sign up
               </button>
