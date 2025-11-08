@@ -6,6 +6,7 @@
     "dev": "next dev",
     "dev:clean": "bash scripts/dev-clean.sh",
     "dev:safe": "killall -9 node 2>/dev/null || true && sleep 2 && rm -rf .next && npm run dev",
+    "dev:build": "npm run build && npm run dev",
     "health": "bash scripts/health-check.sh",
     "predev": "mkdir -p .next/server && test -f .next/server/middleware-manifest.json || echo '{\"sortedMiddleware\":[],\"middleware\":{},\"functions\":{},\"version\":2}' > .next/server/middleware-manifest.json",
     "build": "next build",
