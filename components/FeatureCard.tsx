@@ -6,7 +6,7 @@ interface FeatureCardProps {
 
 export default function FeatureCard({ icon, title, description }: FeatureCardProps) {
   return (
-    <div className="feature-card">
+    <div className="feature-card group">
       <div className="icon mb-4">
         <span className="text-2xl text-accent">{icon}</span>
       </div>

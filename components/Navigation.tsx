@@ -76,7 +76,7 @@ export default function Navigation({ onLoginClick, onSignupClick }: NavigationPr
     <nav
       className={`sticky top-0 z-navigation transition-all duration-300 ${
         scrolled
-          ? 'bg-surface-raised/95 backdrop-blur-glass border-b border-border-default shadow-2'
+          ? 'bg-surface-raised/95 backdrop-blur-glass border-b border-border shadow-2'
           : 'bg-transparent border-b border-border-subtle'
       }`}
     >
@@ -120,7 +120,7 @@ export default function Navigation({ onLoginClick, onSignupClick }: NavigationPr
                     {/* Dropdown Menu */}
                     {activeDropdown === item.label && (
                       <div className="absolute top-full left-0 pt-2 w-72 z-dropdown">
-                        <div className="bg-surface-overlay/95 backdrop-blur-glass rounded-xl shadow-3 border border-border-default py-2 animate-fadeIn">
+                        <div className="bg-surface-overlay/95 backdrop-blur-glass rounded-xl shadow-3 border border-border py-2 animate-fadeIn">
                           {item.dropdown.map((dropdownItem) => (
                             <Link
                               key={dropdownItem.href}
@@ -186,7 +186,7 @@ export default function Navigation({ onLoginClick, onSignupClick }: NavigationPr
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden py-4 border-t border-border-default">
+          <div className="md:hidden py-4 border-t border-border">
             <div className="flex flex-col gap-4">
               {navItems.map((item) => (
                 <div key={item.label}>

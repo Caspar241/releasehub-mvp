@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export default function Footer() {
   return (
-    <footer className="bg-surface-raised border-t border-border-default section-spacing">
+    <footer className="bg-surface-raised border-t border-border section-spacing">
       <div className="container-custom">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
           {/* Produkt */}
@@ -89,7 +89,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="pt-8 border-t border-border-default text-center">
+        <div className="pt-8 border-t border-border text-center">
           <p className="text-text-muted text-body-sm">© 2025 ReleaseHub – Artist Operating System</p>
           <p className="mt-2 text-text-muted text-body-sm">Made in Europe. 0% Rights Taken.</p>
         </div>
