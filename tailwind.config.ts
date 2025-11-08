@@ -134,6 +134,8 @@ const config: Config = {
       },
       backdropBlur: {
         'glass': '12px',
+        'glass-light': '8px',
+        'glass-heavy': '16px',
       },
       zIndex: {
         'dropdown': '10',

@@ -2,174 +2,33 @@
 
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
+import { motion } from 'framer-motion';
 import Navigation from '@/components/Navigation';
-import Hero from '@/components/Hero';
-import ThreePillars from '@/components/ThreePillars';
-import FeatureCard from '@/components/FeatureCard';
-import FAQAccordion from '@/components/FAQAccordion';
 import Footer from '@/components/Footer';
 import AuthModals from '@/components/AuthModals';
+import CTAButton from '@/components/CTAButton';
+import ParallaxLayer from '@/components/ParallaxLayer';
+import Marquee from '@/components/Marquee';
+import MockupFrame from '@/components/MockupFrame';
+import {
+  fadeInUp,
+  fadeIn,
+  scaleUp,
+  staggerContainer,
+  scrollViewport,
+} from '@/lib/animations';
 import Link from 'next/link';
-import { useScrollReveal } from '@/hooks/useScrollReveal';
 
 function HomeContent() {
   const searchParams = useSearchParams();
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isSignupOpen, setIsSignupOpen] = useState(false);
 
-  useScrollReveal();
-
-  // Check if we should open the login modal (from protected route redirect)
   useEffect(() => {
     if (searchParams?.get('login') === 'true') {
       setIsLoginOpen(true);
     }
   }, [searchParams]);
-
-  const vsComparison = [
-    {
-      criterion: 'Rights Taken',
-      releasehub: '0%',
-      indieflow: '0%',
-      label: '10–50% Master + Publishing',
-    },
-    {
-      criterion: 'Distribution Fee',
-      releasehub: '0%',
-      indieflow: '5% (Free) / 0% (Paid)',
-      label: 'Versteckt in Deal',
-    },
-    {
-      criterion: 'Monatspreis',
-      releasehub: '29–129 €/Monat',
-      indieflow: 'Free–Premium ($10–30/mo)',
-      label: '❌ (aber % auf alles)',
-    },
-    {
-      criterion: 'Release-System',
-      releasehub: '✓ Strukturiert, Templates',
-      indieflow: '⚠️ Feature-Zoo',
-      label: '❌ Chaos',
-    },
-    {
-      criterion: 'Team-Collaboration',
-      releasehub: '✓ Zentral',
-      indieflow: '✓ Teilweise',
-      label: '⚠️ Email/Meetings',
-    },
-    {
-      criterion: 'Europäisch/DACH',
-      releasehub: '✓ EU-Steuern, DE-Support',
-      indieflow: '❌ US-zentrisch',
-      label: '⚠️ Abhängig',
-    },
-    {
-      criterion: 'Kein Gatekeeper',
-      releasehub: '✓ Fair, transparent',
-      indieflow: '✓ Fair',
-      label: '❌ A&R entscheidet',
-    },
-  ];
-
-  const features = [
-    {
-      icon: '📅',
-      title: 'Release-Kalender',
-      description: 'Alle Deadlines, Meilensteine und To-dos auf einen Blick. Sync mit Google Calendar / iCal.',
-    },
-    {
-      icon: '📦',
-      title: 'Asset-Management',
-      description: 'Cover, Pressefotos, Promo-Texte, Social-Posts – alles zentral. Keine verlorenen Canva-Links mehr.',
-    },
-    {
-      icon: '🎯',
-      title: 'Templates & Checklisten',
-      description: 'Bewährte Release-Pläne für Singles, EPs, Alben. Nichts vergessen, nichts improvisieren müssen.',
-    },
-    {
-      icon: '🤝',
-      title: 'Team-Collaboration',
-      description: 'Producer, Designer, Manager, Features – alle auf einer Seite. Kommentare, Feedback, File-Sharing.',
-    },
-    {
-      icon: '🚀',
-      title: 'Distribution (ohne % Cuts)',
-      description: 'Upload zu Spotify, Apple Music, TikTok, Deezer etc. 0% Fee. 0% Rights Taken. Nur dein Abo.',
-    },
-    {
-      icon: '📊',
-      title: 'Analytics-Dashboard',
-      description: 'Spotify for Artists, Apple Music, TikTok, Instagram – alles an einem Ort. (Integration über API, keine % auf Streams.)',
-    },
-    {
-      icon: '🎤',
-      title: 'EPK-Builder',
-      description: 'Electronic Press Kit für Medien, Promoter, Playlist-Curator. Professionell, exportierbar, teilbar.',
-    },
-    {
-      icon: '🔗',
-      title: 'Smart Links',
-      description: 'Bio-Links, Pre-Save-Kampagnen, Release-Links. Custom Domain (premium.releasehub.io/yourartistname).',
-    },
-  ];
-
-  const faqItems = [
-    {
-      question: 'Nehmt ihr % auf meine Rechte (Master, Publishing, Streams)?',
-      answer: `Nein. 0%. Nie.
-
-Du zahlst dein Monats-Abo (29–129 €), und das war's. Keine versteckten Cuts auf Streams, keine Rechte-Abgabe, keine „Fair-Trade"-% auf Publishing. ReleaseHub ist ein Tool, kein Label.`,
-    },
-    {
-      question: 'Wie funktioniert Distribution? Brauche ich noch einen Distro-Partner?',
-      answer: `Ja, du brauchst noch einen Distributor (z. B. DistroKid, TuneCore, Believe, etc.).
-
-ReleaseHub ist kein Distributor, sondern ein Release-Management-System. Wir helfen dir, alle Schritte zu strukturieren, Metadata zu managen und Deadlines einzuhalten – aber das Hochladen zu Spotify/Apple läuft über deinen Distro.
-
-→ Roadmap: API-Integrationen zu Distributoren kommen später (Phase 2).`,
-    },
-    {
-      question: 'Was passiert, wenn ich kündige?',
-      answer: `Du behältst alle deine Rechte (logisch, wir haben nie welche genommen).
-
-Deine Releases bleiben live (über deinen Distributor), aber dein Zugang zu ReleaseHub endet mit dem Abo. Du kannst vorher alle Daten exportieren (CSV, PDF).`,
-    },
-    {
-      question: 'Ist ReleaseHub für Anfänger oder nur für Pros?',
-      answer: `Für alle, die serious sind.
-
-Du musst kein 50k-Listener-Artist sein – aber du solltest bereit sein, strukturiert zu arbeiten. Wenn du nur „mal gucken" willst, bleib bei Free-Tools. Wenn du deine Karriere ernst nimmst, bist du hier richtig.`,
-    },
-    {
-      question: 'Warum kein Free-Plan?',
-      answer: `Weil Free-Plans verwässern die Qualität und ziehen Leute an, die nicht wirklich committen.
-
-ReleaseHub ist für Artists, die bereit sind, in ihr Business zu investieren. 29 €/Monat sind weniger als ein Spotify-Abo + Netflix – aber dafür bekommst du ein System, das deine Karriere strukturiert.`,
-    },
-    {
-      question: 'Kann ich mein Team hinzufügen (Producer, Manager, Designer)?',
-      answer: `Ja, ab Premium-Plan.
-
-Basic = 1 Person (nur du).
-Premium = 3 Team-Mitglieder.
-Label = 10 Team-Mitglieder + Multi-Artist-Support.`,
-    },
-    {
-      question: 'Unterstützt ihr TikTok, Instagram, YouTube?',
-      answer: `Ja, über deinen Distributor.
-
-ReleaseHub hilft dir, alle Plattformen im Release-Plan zu berücksichtigen (Deadlines, Assets, Links) – aber das Hochladen läuft über deinen Distro (z. B. DistroKid → TikTok/Instagram).
-
-→ Analytics-Integration für TikTok/Instagram kommt in Phase 2 (API).`,
-    },
-    {
-      question: 'Ist ReleaseHub GEMA/AKM/SUISA-kompatibel?',
-      answer: `Ja.
-
-ReleaseHub nimmt keine Rechte, also behältst du deine PRO-Mitgliedschaft (GEMA, AKM, SUISA etc.). Wir helfen dir, alle Metadaten korrekt zu erfassen (Songwriter-Splits, ISWC etc.), damit deine Tantiemen ankommen.`,
-    },
-  ];
 
   return (
     <>
@@ -191,162 +50,397 @@ ReleaseHub nimmt keine Rechte, also behältst du deine PRO-Mitgliedschaft (GEMA,
           setIsLoginOpen(true);
         }}
       />
-      <main className="min-h-screen">
-        {/* Hero */}
-        <Hero variant="A" />
 
-        {/* Warum ReleaseHub? */}
-        <section className="section-spacing bg-bg-secondary">
-          <div className="container-custom scroll-reveal">
-            <h2 className="text-center mb-4">Warum ReleaseHub?</h2>
-            <p className="text-body-lg text-text-secondary text-center max-w-2xl mx-auto mb-12">
-              Transparenter Vergleich mit Alternativen.
-            </p>
-            <div className="overflow-x-auto">
-              <table className="w-full border-collapse">
-                <thead>
-                  <tr className="border-b-2 border-border-light">
-                    <th className="p-4 text-left font-semibold w-1/4">Kriterium</th>
-                    <th className="p-4 text-center font-semibold w-1/4 bg-accent/10">ReleaseHub</th>
-                    <th className="p-4 text-center font-semibold w-1/4">IndieFlow</th>
-                    <th className="p-4 text-center font-semibold w-1/4">Label-Deal</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {vsComparison.map((row, index) => (
-                    <tr key={index} className="border-b border-border-light">
-                      <td className="p-4 font-medium">{row.criterion}</td>
-                      <td className="p-4 text-center bg-accent/5 font-semibold">{row.releasehub}</td>
-                      <td className="p-4 text-center">{row.indieflow}</td>
-                      <td className="p-4 text-center">{row.label}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+      <main className="min-h-screen overflow-hidden">
+        {/* ====== HERO SECTION (FULLSCREEN) ====== */}
+        <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-bg-primary via-bg-secondary to-bg-primary">
+          {/* Background Gradient Orbs */}
+          <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] gradient-orb-cyan pointer-events-none" />
+          <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] gradient-orb-accent pointer-events-none" />
+
+          {/* Cyan Accent Bar */}
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-accent to-transparent opacity-50" />
+
+          <div className="container-custom relative z-10">
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
+              {/* Left Content */}
+              <motion.div
+                variants={staggerContainer}
+                initial="hidden"
+                animate="visible"
+                className="text-center lg:text-left"
+              >
+                {/* Badge */}
+                <motion.div variants={fadeInUp} className="mb-6">
+                  <span className="inline-block badge bg-accent text-text-inverse">
+                    0% RIGHTS TAKEN
+                  </span>
+                </motion.div>
+
+                {/* Hero Headline - EXACT */}
+                <motion.h1
+                  variants={fadeInUp}
+                  className="text-hero-mobile md:text-hero-xl mb-6 leading-tight"
+                >
+                  We scale the new gen of artists
+                </motion.h1>
+
+                {/* Subhead */}
+                <motion.p
+                  variants={fadeInUp}
+                  className="text-lead text-text-secondary mb-8 max-w-xl lg:mx-0 mx-auto"
+                >
+                  The first release management system built for independent artists.
+                  Structure without gatekeepers. Transparency without revenue cuts.
+                  European. Fair. Made for real work.
+                </motion.p>
+
+                {/* CTAs */}
+                <motion.div
+                  variants={fadeInUp}
+                  className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-8"
+                >
+                  <CTAButton
+                    text="Start Free Trial"
+                    onClick={() => setIsSignupOpen(true)}
+                    variant="primary"
+                    size="lg"
+                    icon={
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                      </svg>
+                    }
+                  />
+                  <CTAButton
+                    text="Explore Features"
+                    href="/features"
+                    variant="secondary"
+                    size="lg"
+                  />
+                </motion.div>
+
+                {/* Trust Indicators */}
+                <motion.div
+                  variants={fadeInUp}
+                  className="flex items-center gap-6 justify-center lg:justify-start text-text-muted text-body-sm"
+                >
+                  <div className="flex items-center gap-2">
+                    <svg className="w-5 h-5 text-accent" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                    <span>No contracts</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <svg className="w-5 h-5 text-accent" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                    <span>Cancel monthly</span>
+                  </div>
+                </motion.div>
+              </motion.div>
+
+              {/* Right Mockups with Parallax */}
+              <motion.div
+                variants={scaleUp}
+                initial="hidden"
+                animate="visible"
+                className="relative hidden lg:block"
+              >
+                <ParallaxLayer speed="slow">
+                  <div className="relative">
+                    <MockupFrame variant="desktop" floatAnimation={true}>
+                      <div className="space-y-4 p-6">
+                        <div className="h-8 w-3/4 bg-accent rounded-lg" />
+                        <div className="h-6 w-1/2 bg-surface-raised rounded-lg" />
+                        <div className="grid grid-cols-3 gap-3 mt-6">
+                          {[...Array(6)].map((_, i) => (
+                            <div key={i} className="h-20 glass-card rounded-lg p-3">
+                              <div className="h-3 w-full bg-accent-subtle rounded mb-2" />
+                              <div className="h-2 w-2/3 bg-surface-raised rounded" />
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </MockupFrame>
+
+                    <div className="absolute -bottom-12 -left-12 z-20">
+                      <ParallaxLayer speed="fast">
+                        <MockupFrame variant="phone" className="max-w-[180px]">
+                          <div className="space-y-3 p-4">
+                            <div className="h-6 w-2/3 bg-accent rounded mx-auto" />
+                            <div className="h-4 w-1/2 bg-surface-raised rounded mx-auto" />
+                            <div className="space-y-2 mt-4">
+                              {[...Array(3)].map((_, i) => (
+                                <div key={i} className="h-12 glass-card rounded-lg" />
+                              ))}
+                            </div>
+                          </div>
+                        </MockupFrame>
+                      </ParallaxLayer>
+                    </div>
+                  </div>
+                </ParallaxLayer>
+              </motion.div>
             </div>
           </div>
-        </section>
 
-        {/* Wann macht ReleaseHub Sinn? */}
-        <section className="section-spacing bg-bg-primary">
-          <div className="container-custom scroll-reveal">
-            <h2 className="text-center mb-4">Wann macht ReleaseHub Sinn?</h2>
-            <p className="text-body-lg text-text-secondary text-center max-w-2xl mx-auto mb-12">
-              Fünf klare Gründe für ReleaseHub.
-            </p>
-            <div className="overflow-x-auto">
-              <table className="w-full border-collapse">
-                <tbody>
-                  <tr className="border-b border-border-light">
-                    <td className="p-4 text-center w-16">
-                      <span className="text-accent text-2xl">✓</span>
-                    </td>
-                    <td className="p-4">
-                      Du willst <strong>0% Rights abgeben</strong> (weder Master noch Publishing)
-                    </td>
-                  </tr>
-                  <tr className="border-b border-border-light">
-                    <td className="p-4 text-center">
-                      <span className="text-accent text-2xl">✓</span>
-                    </td>
-                    <td className="p-4">
-                      Du brauchst <strong>Struktur</strong>, nicht noch mehr Tools
-                    </td>
-                  </tr>
-                  <tr className="border-b border-border-light">
-                    <td className="p-4 text-center">
-                      <span className="text-accent text-2xl">✓</span>
-                    </td>
-                    <td className="p-4">
-                      Du bist <strong>bereit, für Professionalität zu zahlen</strong> (kein Free-Plan-Chaos)
-                    </td>
-                  </tr>
-                  <tr className="border-b border-border-light">
-                    <td className="p-4 text-center">
-                      <span className="text-accent text-2xl">✓</span>
-                    </td>
-                    <td className="p-4">
-                      Du willst eine <strong>europäische Lösung</strong> (DACH-Support, EU-Steuern)
-                    </td>
-                  </tr>
-                  <tr className="border-b border-border-light">
-                    <td className="p-4 text-center">
-                      <span className="text-accent text-2xl">✓</span>
-                    </td>
-                    <td className="p-4">
-                      Du bist <strong>serious</strong> über deine Karriere (keine Hobby-Artists)
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+          {/* Scroll Indicator */}
+          <motion.div
+            className="absolute bottom-8 left-1/2 -translate-x-1/2"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1, duration: 0.5 }}
+          >
+            <div className="flex flex-col items-center gap-2 text-text-muted">
+              <span className="text-body-sm">Scroll to explore</span>
+              <motion.div
+                animate={{ y: [0, 8, 0] }}
+                transition={{ repeat: Infinity, duration: 1.5 }}
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </motion.div>
             </div>
-          </div>
+          </motion.div>
         </section>
 
-        {/* 3-Säulen Story */}
-        <ThreePillars />
+        {/* ====== VALUE STRIP (MARQUEE) ====== */}
+        <section className="section-spacing bg-bg-dark">
+          <Marquee speed={30} pauseOnHover>
+            {[
+              { text: 'Own your masters.', icon: '🎵' },
+              { text: 'Control your revenue.', icon: '💰' },
+              { text: 'Scale your audience.', icon: '📈' },
+              { text: 'Keep 100% of your rights.', icon: '✓' },
+              { text: 'No gatekeepers.', icon: '🚀' },
+              { text: 'European platform.', icon: '🇪🇺' },
+            ].map((item, i) => (
+              <div
+                key={i}
+                className="flex items-center gap-3 text-text-inverse text-title font-bold whitespace-nowrap"
+              >
+                <span>{item.icon}</span>
+                <span>{item.text}</span>
+              </div>
+            ))}
+          </Marquee>
+        </section>
 
-        {/* Feature Breakdown */}
+        {/* ====== FEATURE OVERVIEW ====== */}
         <section className="section-spacing bg-bg-primary">
-          <div className="container-custom scroll-reveal">
-            <h2 className="text-center mb-4">Was du bekommst</h2>
-            <p className="text-body-lg text-text-secondary text-center max-w-2xl mx-auto mb-12">
-              Alles, was du brauchst, um professionell zu releasen.
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {features.map((feature, index) => (
-                <FeatureCard key={index} {...feature} />
+          <div className="container-custom">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={scrollViewport}
+              variants={staggerContainer}
+              className="text-center mb-16"
+            >
+              <motion.div variants={fadeInUp} className="mb-4">
+                <span className="badge bg-surface-raised text-accent border border-accent">
+                  CORE PLATFORM
+                </span>
+              </motion.div>
+              <motion.h2 variants={fadeInUp} className="mb-6">
+                Everything you need to release professionally
+              </motion.h2>
+              <motion.p variants={fadeInUp} className="text-body-lg text-text-secondary max-w-2xl mx-auto">
+                Built for independent artists who are serious about their careers.
+                No fluff, no feature-zoo—just the essentials done right.
+              </motion.p>
+            </motion.div>
+
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={scrollViewport}
+              variants={staggerContainer}
+              className="grid grid-cols-1 md:grid-cols-3 gap-8"
+            >
+              {[
+                {
+                  icon: '📋',
+                  title: 'Release Planner',
+                  description: 'Step-by-step workflow from production to launch. Automated deadlines, task management, and team collaboration.',
+                  badge: 'Core',
+                },
+                {
+                  icon: '🤖',
+                  title: 'AI Release Coach',
+                  description: 'Machine learning-based strategy recommendations, streaming forecasts, and performance insights.',
+                  badge: 'Coming Soon',
+                },
+                {
+                  icon: '📊',
+                  title: 'Cashboard Dashboard',
+                  description: 'Real-time revenue tracking, payout automation, and transparent analytics. No hidden cuts.',
+                  badge: 'Core',
+                },
+              ].map((feature, i) => (
+                <motion.div key={i} variants={fadeInUp}>
+                  <div className="glass-card rounded-xl p-8 h-full hover:border-accent transition-all duration-300 glow-hover">
+                    <div className="text-5xl mb-4">{feature.icon}</div>
+                    <div className="flex items-center gap-3 mb-3">
+                      <h3 className="text-feature-md">{feature.title}</h3>
+                      <span className={`badge text-caption ${feature.badge === 'Core' ? 'bg-accent text-text-inverse' : 'bg-surface-raised text-accent border border-accent'}`}>
+                        {feature.badge}
+                      </span>
+                    </div>
+                    <p className="text-body text-text-secondary">
+                      {feature.description}
+                    </p>
+                  </div>
+                </motion.div>
               ))}
-            </div>
-            <div className="text-center mt-12">
-              <Link href="/pricing" className="btn-primary">
-                Abo starten →
-              </Link>
-            </div>
+            </motion.div>
+
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={scrollViewport}
+              variants={fadeInUp}
+              className="text-center mt-12"
+            >
+              <CTAButton
+                text="View all features"
+                href="/features"
+                variant="secondary"
+                size="md"
+                icon={
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                  </svg>
+                }
+              />
+            </motion.div>
           </div>
         </section>
 
-        {/* FAQ */}
-        <section className="section-spacing bg-bg-secondary" id="faq">
-          <div className="container-custom scroll-reveal">
-            <h2 className="text-center mb-4">Häufige Fragen</h2>
-            <p className="text-body-lg text-text-secondary text-center max-w-2xl mx-auto mb-12">
-              Alles, was du wissen musst.
-            </p>
-            <FAQAccordion items={faqItems} />
-            <div className="text-center mt-12">
-              <p className="text-text-secondary mb-4">Noch Fragen?</p>
-              <a href="mailto:support@releasehub.com" className="link">
-                support@releasehub.com
-              </a>
-            </div>
+        {/* ====== PHILOSOPHY STATEMENT ====== */}
+        <section className="section-spacing bg-gradient-to-b from-bg-dark via-bg-secondary to-bg-dark relative overflow-hidden">
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] gradient-orb-cyan" />
+          </div>
+
+          <div className="container-custom relative z-10">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={scrollViewport}
+              variants={staggerContainer}
+              className="text-center max-w-4xl mx-auto"
+            >
+              <motion.h2 variants={fadeInUp} className="text-hero-md mb-8 text-text-inverse">
+                Labels used to own the system. <br />
+                <span className="text-gradient">Now artists own the system.</span>
+              </motion.h2>
+              <motion.p variants={fadeInUp} className="text-body-lg text-text-secondary mb-8">
+                For decades, the music industry ran on gatekeepers. Labels controlled distribution,
+                took percentages, and owned your masters. That era is over. ReleaseHub gives you
+                the infrastructure labels used to monopolize—without taking a single percent of your rights.
+              </motion.p>
+              <motion.div variants={fadeInUp}>
+                <CTAButton
+                  text="Start building your career"
+                  onClick={() => setIsSignupOpen(true)}
+                  variant="primary"
+                  size="lg"
+                />
+              </motion.div>
+            </motion.div>
           </div>
         </section>
 
-        {/* Final CTA */}
+        {/* ====== PRICING TEASER ====== */}
+        <section className="section-spacing bg-bg-primary">
+          <div className="container-custom">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={scrollViewport}
+              variants={staggerContainer}
+              className="text-center mb-12"
+            >
+              <motion.h2 variants={fadeInUp} className="mb-6">
+                Simple, transparent pricing
+              </motion.h2>
+              <motion.p variants={fadeInUp} className="text-body-lg text-text-secondary max-w-2xl mx-auto">
+                No revenue cuts. No hidden fees. Choose your plan and scale your career.
+              </motion.p>
+            </motion.div>
+
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={scrollViewport}
+              variants={fadeInUp}
+              className="max-w-4xl mx-auto glass-card rounded-2xl p-12 text-center"
+            >
+              <div className="grid md:grid-cols-3 gap-8 mb-8">
+                {[
+                  { plan: 'Starter', price: '€29', features: '1 artist, core features' },
+                  { plan: 'Pro', price: '€79', features: '3 team members, priority support', featured: true },
+                  { plan: 'Label', price: '€129', features: '10 artists, white-label' },
+                ].map((tier, i) => (
+                  <div key={i} className={`${tier.featured ? 'border-2 border-accent rounded-xl p-6 -m-2' : 'p-4'}`}>
+                    <h3 className="text-title mb-2">{tier.plan}</h3>
+                    <div className="text-hero-md text-accent mb-2">{tier.price}</div>
+                    <p className="text-body-sm text-text-secondary">{tier.features}</p>
+                  </div>
+                ))}
+              </div>
+              <CTAButton
+                text="View full pricing"
+                href="/pricing"
+                variant="primary"
+                size="lg"
+              />
+            </motion.div>
+          </div>
+        </section>
+
+        {/* ====== FINAL CTA ====== */}
         <section className="section-spacing bg-bg-dark text-text-inverse">
-          <div className="container-custom text-center scroll-reveal">
-            <h2 className="mb-6">Bereit, professionell zu releasen?</h2>
-            <p className="text-body-lg mb-8 max-w-2xl mx-auto">
-              Keine Labels. Keine % Cuts. Keine Ausreden. <br />
-              Wähle dein Abo und starte strukturiert.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/pricing" className="btn-accent">
-                Abo wählen (29–129 €/Monat) →
-              </Link>
-              <Link href="/resources" className="btn-secondary">
-                Release-Checkliste gratis downloaden →
-              </Link>
-            </div>
-            <div className="mt-12 text-text-secondary space-y-2">
-              <p>🔒 Sicher bezahlen mit Stripe</p>
-              <p>🇪🇺 Europäisches Unternehmen, EU-Steuern</p>
-              <p>📧 Support: support@releasehub.com</p>
-            </div>
+          <div className="container-custom">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={scrollViewport}
+              variants={staggerContainer}
+              className="text-center max-w-3xl mx-auto"
+            >
+              <motion.h2 variants={fadeInUp} className="mb-6">
+                Start building your artist business today
+              </motion.h2>
+              <motion.p variants={fadeInUp} className="text-body-lg mb-8">
+                No labels. No revenue cuts. No excuses. <br />
+                Join the new generation of independent artists.
+              </motion.p>
+              <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+                <CTAButton
+                  text="Start Free Trial"
+                  onClick={() => setIsSignupOpen(true)}
+                  variant="primary"
+                  size="lg"
+                />
+                <CTAButton
+                  text="Download Release Checklist"
+                  href="/resources"
+                  variant="ghost"
+                  size="lg"
+                />
+              </motion.div>
+              <motion.div variants={fadeInUp} className="text-text-secondary space-y-2 text-body-sm">
+                <p>🔒 Secure payments via Stripe</p>
+                <p>🇪🇺 European company, GDPR compliant</p>
+                <p>📧 Support: support@releasehub.com</p>
+              </motion.div>
+            </motion.div>
           </div>
         </section>
       </main>
+
       <Footer />
     </>
   );
@@ -354,7 +448,7 @@ ReleaseHub nimmt keine Rechte, also behältst du deine PRO-Mitgliedschaft (GEMA,
 
 export default function Home() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-bg-primary"></div>}>
+    <Suspense fallback={<div className="min-h-screen bg-bg-primary" />}>
       <HomeContent />
     </Suspense>
   );
