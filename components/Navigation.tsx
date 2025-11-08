@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import SideNavigation from './SideNavigation';
 
 interface NavigationProps {
   onLoginClick?: () => void;
@@ -25,6 +26,7 @@ export default function Navigation({ onLoginClick, onSignupClick }: NavigationPr
   const [scrolled, setScrolled] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [mobileActiveDropdown, setMobileActiveDropdown] = useState<string | null>(null);
+  const [sideNavOpen, setSideNavOpen] = useState(false);
 
   // Scroll-Animation
   useEffect(() => {
@@ -163,7 +165,7 @@ export default function Navigation({ onLoginClick, onSignupClick }: NavigationPr
           {/* Mobile Menu Button */}
           <button
             className="md:hidden p-2"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            onClick={() => setSideNavOpen(true)}
             aria-label="Toggle menu"
           >
             <svg
@@ -175,94 +177,20 @@ export default function Navigation({ onLoginClick, onSignupClick }: NavigationPr
               viewBox="0 0 24 24"
               stroke="currentColor"
             >
-              {mobileMenuOpen ? (
-                <path d="M6 18L18 6M6 6l12 12" />
-              ) : (
-                <path d="M4 6h16M4 12h16M4 18h16" />
-              )}
+              <path d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
         </div>
 
-        {/* Mobile Menu */}
-        {mobileMenuOpen && (
-          <div className="md:hidden py-4 border-t border-border">
-            <div className="flex flex-col gap-4">
-              {navItems.map((item) => (
-                <div key={item.label}>
-                  {item.dropdown ? (
-                    <>
-                      <button
-                        onClick={() => handleMobileDropdownClick(item.label)}
-                        className="flex items-center justify-between w-full text-text-primary hover:text-accent transition-colors font-medium"
-                      >
-                        {item.label}
-                        <svg
-                          className={`w-4 h-4 transition-transform ${
-                            mobileActiveDropdown === item.label ? 'rotate-180' : ''
-                          }`}
-                          fill="none"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth="2"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path d="M19 9l-7 7-7-7" />
-                        </svg>
-                      </button>
-
-                      {/* Mobile Dropdown */}
-                      {mobileActiveDropdown === item.label && (
-                        <div className="mt-2 ml-4 space-y-3">
-                          {item.dropdown.map((dropdownItem) => (
-                            <Link
-                              key={dropdownItem.href}
-                              href={dropdownItem.href}
-                              className="block text-text-secondary hover:text-accent transition-colors"
-                              onClick={() => setMobileMenuOpen(false)}
-                            >
-                              {dropdownItem.label}
-                            </Link>
-                          ))}
-                        </div>
-                      )}
-                    </>
-                  ) : (
-                    <Link
-                      href={item.href!}
-                      className="text-text-primary hover:text-accent transition-colors font-medium"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      {item.label}
-                    </Link>
-                  )}
-                </div>
-              ))}
-
-              {/* Mobile Auth Buttons */}
-              <button
-                onClick={() => {
-                  onLoginClick?.();
-                  setMobileMenuOpen(false);
-                }}
-                className="px-6 py-2.5 rounded-full border-2 border-border-strong text-text-primary font-semibold hover:bg-surface-base hover:border-accent transition-all duration-200 text-center"
-              >
-                Log in
-              </button>
-              <button
-                onClick={() => {
-                  onSignupClick?.();
-                  setMobileMenuOpen(false);
-                }}
-                className="px-6 py-2.5 rounded-full bg-accent text-text-inverse font-semibold hover:bg-accent-hover hover:shadow-glow transition-all duration-200"
-              >
-                Sign up
-              </button>
-            </div>
-          </div>
-        )}
       </div>
+
+      {/* Side Navigation */}
+      <SideNavigation
+        isOpen={sideNavOpen}
+        onClose={() => setSideNavOpen(false)}
+        onLoginClick={onLoginClick}
+        onSignupClick={onSignupClick}
+      />
     </nav>
   );
 }
