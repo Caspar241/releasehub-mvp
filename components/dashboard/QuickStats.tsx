@@ -16,15 +16,19 @@ export default function QuickStats() {
           className="glass-card p-6 rounded-2xl transition-all duration-200 hover:border-accent/20 hover:shadow-glow cursor-pointer active:scale-[0.98]"
           style={{ transform: 'translateZ(0)' }}
         >
-          <div className="flex items-center justify-between">
-            <div className="text-2xl transition-transform duration-200 hover:scale-110">
+          <div className="flex items-center justify-between mb-4">
+            <div className="text-3xl transition-transform duration-200 hover:scale-110">
               {stat.icon}
             </div>
           </div>
-          <div className="mt-4">
-            <p className="text-sm font-medium text-text-secondary">{stat.label}</p>
-            <p className="text-2xl font-bold text-text-primary mt-1">{stat.value}</p>
-            <p className="text-sm text-text-secondary mt-1">{stat.change}</p>
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wider text-text-muted mb-2">
+              {stat.label}
+            </p>
+            <p className="text-4xl md:text-5xl font-bold text-text-primary mb-2">
+              {stat.value}
+            </p>
+            <p className="text-sm text-text-secondary/80">{stat.change}</p>
           </div>
         </div>
       ))}

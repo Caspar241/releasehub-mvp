@@ -69,9 +69,9 @@ export default function ReleaseOverview() {
   return (
     <div className="space-y-6">
       {/* Upcoming Releases */}
-      <div className="glass-card p-6 rounded-2xl">
+      <div className="glass-card p-8 rounded-2xl">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-bold text-text-primary">Kommende Releases</h2>
+          <h2 className="text-2xl md:text-3xl font-bold text-text-primary">Kommende Releases</h2>
           <Link
             href="/dashboard/upload"
             className="btn-primary"
@@ -124,9 +124,9 @@ export default function ReleaseOverview() {
       </div>
 
       {/* Recent Releases */}
-      <div className="glass-card p-6 rounded-2xl">
+      <div className="glass-card p-8 rounded-2xl">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-bold text-text-primary">Aktuelle Releases</h2>
+          <h2 className="text-2xl md:text-3xl font-bold text-text-primary">Aktuelle Releases</h2>
           <Link
             href="/dashboard/releases"
             className="link text-accent text-sm font-medium hover:text-accent-hover transition-colors duration-150"

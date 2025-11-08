@@ -7,11 +7,11 @@ import PayoutSection from '@/components/dashboard/earnings/PayoutSection';
 export default function EarningsPage() {
   return (
     <DashboardLayout>
-      <div className="space-y-6">
+      <div className="space-y-8">
         {/* Header */}
         <div>
-          <h1 className="text-3xl font-bold text-text-primary">Einnahmen</h1>
-          <p className="text-text-secondary mt-2">
+          <h1 className="text-5xl md:text-6xl font-bold text-text-primary mb-3">Einnahmen</h1>
+          <p className="text-lg text-text-secondary/90">
             Überblick über deine Einnahmen, Auszahlungen und Statements.
           </p>
         </div>

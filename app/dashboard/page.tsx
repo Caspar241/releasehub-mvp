@@ -6,11 +6,11 @@ import QuickStats from '@/components/dashboard/QuickStats';
 export default function DashboardPage() {
   return (
     <DashboardLayout>
-      <div className="space-y-6">
+      <div className="space-y-8">
         {/* Welcome Section */}
         <div>
-          <h1 className="text-3xl font-bold text-text-primary">Dashboard</h1>
-          <p className="text-text-secondary mt-2">Willkommen zurück! Hier ist deine Release-Übersicht.</p>
+          <h1 className="text-5xl md:text-6xl font-bold text-text-primary mb-3">Dashboard</h1>
+          <p className="text-lg text-text-secondary/90">Willkommen zurück! Hier ist deine Release-Übersicht.</p>
         </div>
 
         {/* Quick Stats */}

@@ -17,13 +17,13 @@ function KpiTile({ value, label, helpText, trend, icon }: KpiTileProps) {
       title={helpText}
       style={{ transform: 'translateZ(0)' }}>
       <div className="flex items-center justify-between mb-4">
-        <div className="icon text-2xl transition-transform duration-200 hover:scale-110">{icon}</div>
+        <div className="icon text-3xl transition-transform duration-200 hover:scale-110">{icon}</div>
       </div>
       <div>
-        <p className="text-sm font-medium text-text-secondary">{label}</p>
-        <p className="text-3xl font-bold text-text-primary mt-2">{value}</p>
+        <p className="text-xs font-semibold uppercase tracking-wider text-text-muted mb-2">{label}</p>
+        <p className="text-4xl md:text-5xl font-bold text-text-primary mb-2">{value}</p>
         {trend && (
-          <p className={`text-sm mt-2 ${
+          <p className={`text-sm ${
             trend.direction === 'up' ? 'text-accent' :
             trend.direction === 'down' ? 'text-text-secondary' :
             'text-text-secondary'
