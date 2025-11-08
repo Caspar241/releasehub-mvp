@@ -97,7 +97,7 @@ export default function AllReleasesList() {
   return (
     <div className="space-y-6">
       {/* Filters */}
-      <div className="feature-card">
+      <div className="glass-card p-6 rounded-2xl">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="flex gap-2">
             {[
@@ -109,11 +109,12 @@ export default function AllReleasesList() {
               <button
                 key={item.value}
                 onClick={() => setFilter(item.value as any)}
-                className={`px-4 py-2 rounded-button text-sm font-medium transition-colors ${
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-150 active:scale-95 ${
                   filter === item.value
-                    ? 'bg-primary text-text-inverse'
-                    : 'bg-bg-secondary text-text-primary hover:bg-border-light'
+                    ? 'bg-accent text-text-inverse shadow-glow'
+                    : 'bg-surface-raised text-text-primary hover:bg-surface-elevated hover:border-accent/20'
                 }`}
+                style={{ transform: 'translateZ(0)' }}
               >
                 {item.label}
               </button>
@@ -136,7 +137,8 @@ export default function AllReleasesList() {
         {sortedReleases.map((release) => (
           <div
             key={release.id}
-            className="feature-card"
+            className="glass-card p-6 rounded-2xl transition-all duration-200 hover:border-accent/20 hover:shadow-glow hover:-translate-y-1 cursor-pointer active:scale-[0.99]"
+            style={{ transform: 'translateZ(0)', willChange: 'transform, border-color, box-shadow' }}
           >
             {/* Cover */}
             <div className="h-48 bg-gradient-to-br from-primary to-accent rounded-card flex items-center justify-center mb-4">
@@ -184,10 +186,11 @@ export default function AllReleasesList() {
 
               {/* Actions */}
               <div className="flex gap-2 pt-2">
-                <button className="flex-1 btn-accent">
+                <button className="flex-1 btn-primary text-sm">
                   Details
                 </button>
-                <button className="px-3 py-2 border border-border-light text-text-primary rounded-button hover:bg-bg-secondary transition-colors text-sm">
+                <button className="px-3 py-2 border border-border-light text-text-primary rounded-button hover:bg-bg-secondary transition-all duration-150 text-sm active:scale-95"
+                  style={{ transform: 'translateZ(0)' }}>
                   ⚙️
                 </button>
               </div>

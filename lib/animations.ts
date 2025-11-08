@@ -270,7 +270,7 @@ export const cardHover: Variants = {
   hover: {
     y: -8,
     scale: 1.02,
-    transition: { duration: 0.3, ease: easing },
+    transition: { duration: 0.15, ease: easing },
   },
 };
 
@@ -279,7 +279,7 @@ export const glowHover: Variants = {
   rest: { filter: 'brightness(1)' },
   hover: {
     filter: 'brightness(1.1)',
-    transition: { duration: 0.2 },
+    transition: { duration: 0.15 },
   },
 };
 

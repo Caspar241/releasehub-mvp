@@ -13,10 +13,11 @@ export default function QuickStats() {
       {stats.map((stat) => (
         <div
           key={stat.label}
-          className="feature-card"
+          className="glass-card p-6 rounded-2xl transition-all duration-200 hover:border-accent/20 hover:shadow-glow cursor-pointer active:scale-[0.98]"
+          style={{ transform: 'translateZ(0)', willChange: 'transform, border-color, box-shadow' }}
         >
           <div className="flex items-center justify-between">
-            <div className="icon text-2xl">
+            <div className="text-2xl transition-transform duration-200 hover:scale-110">
               {stat.icon}
             </div>
           </div>

@@ -20,7 +20,7 @@ export default function AnalyticsCharts() {
   return (
     <div className="space-y-6">
       {/* Time Range Selector */}
-      <div className="feature-card">
+      <div className="glass-card p-6 rounded-2xl">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-lg font-semibold text-text-primary">Streams Übersicht</h2>
           <div className="flex gap-2">
@@ -28,11 +28,12 @@ export default function AnalyticsCharts() {
               <button
                 key={range}
                 onClick={() => setTimeRange(range)}
-                className={`px-4 py-2 rounded-button text-sm font-medium transition-colors ${
+                className={`px-4 py-2 rounded-button text-sm font-medium transition-all duration-150 active:scale-95 ${
                   timeRange === range
-                    ? 'bg-primary text-text-inverse'
+                    ? 'bg-primary text-text-inverse shadow-glow'
                     : 'bg-bg-secondary text-text-primary hover:bg-border-light'
                 }`}
+                style={{ transform: 'translateZ(0)' }}
               >
                 {range === '7d' && 'Letzte 7 Tage'}
                 {range === '30d' && 'Letzte 30 Tage'}
@@ -83,7 +84,7 @@ export default function AnalyticsCharts() {
       </div>
 
       {/* Platform Breakdown */}
-      <div className="feature-card">
+      <div className="glass-card p-6 rounded-2xl">
         <h2 className="text-lg font-semibold text-text-primary mb-6">Streams nach Plattform</h2>
         <div className="space-y-4">
           {[

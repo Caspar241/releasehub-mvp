@@ -132,7 +132,8 @@
   }
 
   .glow-hover {
-    @apply transition-shadow duration-300;
+    @apply transition-shadow duration-200;
+    transform: translateZ(0);
   }
 
   .glow-hover:hover {
@@ -201,7 +202,9 @@
 
   /* ===== BUTTONS ===== */
   .btn {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-medium transition-all duration-300 ease-apple;
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-medium transition-all duration-150 ease-apple;
+    transform: translateZ(0);
+    will-change: transform;
   }
 
   .btn-primary {
@@ -253,7 +256,9 @@
   }
 
   .card-interactive {
-    @apply card transition-all duration-300 hover:border-accent/30 hover:shadow-glow cursor-pointer;
+    @apply card transition-all duration-200 hover:border-accent/30 hover:shadow-glow cursor-pointer;
+    transform: translateZ(0);
+    will-change: transform, border-color, box-shadow;
   }
 
   /* ===== BORDER GLOW (Animated) ===== */
@@ -269,7 +274,7 @@
     -webkit-mask-composite: xor;
     mask-composite: exclude;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.2s ease;
     pointer-events: none;
   }
 

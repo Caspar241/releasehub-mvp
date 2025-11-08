@@ -37,7 +37,7 @@ export default function EarningsBreakdown() {
   ];
 
   return (
-    <div className="feature-card">
+    <div className="glass-card p-6 rounded-2xl">
       {/* Tab Navigation */}
       <div className="border-b border-border-light mb-6">
         <nav className="flex gap-8">
@@ -45,11 +45,12 @@ export default function EarningsBreakdown() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`pb-4 text-sm font-medium transition-colors ${
+              className={`pb-4 text-sm font-medium transition-all duration-150 active:scale-95 ${
                 activeTab === tab.id
                   ? 'text-accent border-b-2 border-accent'
                   : 'text-text-secondary hover:text-text-primary'
               }`}
+              style={{ transform: 'translateZ(0)' }}
             >
               {tab.label}
             </button>
@@ -93,7 +94,7 @@ export default function EarningsBreakdown() {
             </thead>
             <tbody>
               {tracksData.map((track, idx) => (
-                <tr key={idx} className="border-b border-border-light hover:bg-bg-secondary transition-colors">
+                <tr key={idx} className="border-b border-border-light hover:bg-bg-secondary transition-all duration-150 cursor-pointer">
                   <td className="py-3 px-4 text-sm font-medium text-text-primary">{track.track}</td>
                   <td className="py-3 px-4 text-sm text-text-secondary">{track.release}</td>
                   <td className="py-3 px-4 text-sm text-text-secondary">{track.store}</td>
@@ -117,7 +118,8 @@ export default function EarningsBreakdown() {
       {activeTab === 'stores' && (
         <div className="space-y-4">
           {storesData.map((store, idx) => (
-            <div key={idx} className="flex items-center gap-4 p-4 border border-border-light rounded-card hover:shadow-card-hover transition-all">
+            <div key={idx} className="flex items-center gap-4 p-4 border border-border-light rounded-card hover:border-accent/20 hover:shadow-glow transition-all duration-200 cursor-pointer active:scale-[0.99]"
+              style={{ transform: 'translateZ(0)', willChange: 'transform, border-color, box-shadow' }}>
               <div className="flex-1">
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="font-semibold text-text-primary">{store.store}</h3>

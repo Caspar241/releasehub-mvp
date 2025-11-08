@@ -20,13 +20,14 @@ export default function TopPerformers() {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       {/* Top Songs */}
-      <div className="feature-card">
+      <div className="glass-card p-6 rounded-2xl">
         <h2 className="text-lg font-semibold text-text-primary mb-6">Top Performing Songs</h2>
         <div className="space-y-4">
           {topSongs.map((song) => (
             <div
               key={song.rank}
-              className="flex items-center gap-4 p-3 hover:bg-bg-secondary rounded-button transition-colors"
+              className="flex items-center gap-4 p-3 hover:bg-bg-secondary rounded-button transition-all duration-150 cursor-pointer active:scale-[0.98]"
+              style={{ transform: 'translateZ(0)' }}
             >
               <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-primary to-accent rounded-button flex items-center justify-center text-white font-bold text-sm">
                 {song.rank}
@@ -51,7 +52,7 @@ export default function TopPerformers() {
       </div>
 
       {/* Top Countries */}
-      <div className="feature-card">
+      <div className="glass-card p-6 rounded-2xl">
         <h2 className="text-lg font-semibold text-text-primary mb-6">Top Länder</h2>
         <div className="space-y-4">
           {topCountries.map((country, idx) => (

@@ -69,12 +69,12 @@ export default function ReleaseOverview() {
   return (
     <div className="space-y-6">
       {/* Upcoming Releases */}
-      <div className="feature-card">
+      <div className="glass-card p-6 rounded-2xl">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl font-bold text-text-primary">Kommende Releases</h2>
           <Link
             href="/dashboard/upload"
-            className="btn-accent"
+            className="btn-primary"
           >
             + Neuer Release
           </Link>
@@ -85,7 +85,8 @@ export default function ReleaseOverview() {
             {upcomingReleases.map((release) => (
               <div
                 key={release.id}
-                className="flex items-center gap-4 p-4 border border-border-light rounded-card hover:shadow-card-hover transition-all"
+                className="flex items-center gap-4 p-4 border border-border-light rounded-card hover:border-accent/20 hover:shadow-glow transition-all duration-200 cursor-pointer active:scale-[0.99]"
+                style={{ transform: 'translateZ(0)', willChange: 'transform, border-color, box-shadow' }}
               >
                 <div className="w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-card flex-shrink-0" />
                 <div className="flex-1 min-w-0">
@@ -123,12 +124,12 @@ export default function ReleaseOverview() {
       </div>
 
       {/* Recent Releases */}
-      <div className="feature-card">
+      <div className="glass-card p-6 rounded-2xl">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl font-bold text-text-primary">Aktuelle Releases</h2>
           <Link
             href="/dashboard/releases"
-            className="link text-accent text-sm font-medium"
+            className="link text-accent text-sm font-medium hover:text-accent-hover transition-colors duration-150"
           >
             Alle anzeigen →
           </Link>
@@ -139,7 +140,8 @@ export default function ReleaseOverview() {
             {recentReleases.map((release) => (
               <div
                 key={release.id}
-                className="flex items-center gap-4 p-4 border border-border-light rounded-card hover:shadow-card-hover transition-all"
+                className="flex items-center gap-4 p-4 border border-border-light rounded-card hover:border-accent/20 hover:shadow-glow transition-all duration-200 cursor-pointer active:scale-[0.99]"
+                style={{ transform: 'translateZ(0)', willChange: 'transform, border-color, box-shadow' }}
               >
                 <div className="w-16 h-16 bg-gradient-to-br from-accent to-primary rounded-card flex-shrink-0" />
                 <div className="flex-1 min-w-0">
