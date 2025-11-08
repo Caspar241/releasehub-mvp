@@ -345,8 +345,42 @@
 
 @layer utilities {
   /* ===== TEXT UTILITIES ===== */
+
+  /* Headline Variants */
+  .heading-default {
+    @apply text-white;
+  }
+
+  .heading-muted {
+    @apply text-text-graphite;
+  }
+
+  /* Gradient Text Highlights */
   .text-gradient {
     @apply bg-gradient-to-r from-accent to-accent-hover bg-clip-text text-transparent;
+  }
+
+  .text-gradient-blue {
+    background: linear-gradient(
+      90deg,
+      #37C8ED 0%,
+      #4FD1FF 50%,
+      #1290FF 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-gradient-cyan {
+    background: linear-gradient(
+      90deg,
+      #37C8ED 0%,
+      #4FD1FF 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 
   .text-balance {

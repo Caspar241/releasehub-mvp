@@ -28,6 +28,13 @@ const config: Config = {
           secondary: '#B5BDC9',
           muted: '#7A8594',
           inverse: '#000000',
+          graphite: '#E6E8EB', // Premium muted white (Apple-style)
+        },
+        // Gradient colors for text highlights
+        gradient: {
+          cyan: '#37C8ED',
+          blue: '#4FD1FF',
+          'blue-deep': '#1290FF',
         },
         // Accent
         accent: {

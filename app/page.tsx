@@ -79,9 +79,9 @@ export default function Home() {
                 {/* EXACT HERO HEADLINE */}
                 <motion.h1
                   variants={fadeInUp}
-                  className="text-hero-mobile md:text-hero-xl mb-8 leading-tight text-balance"
+                  className="text-hero-mobile md:text-hero-xl mb-8 leading-tight text-balance heading-default"
                 >
-                  We scale the new gen of artists
+                  We scale the new gen of <span className="text-gradient-blue">artists</span>
                 </motion.h1>
 
                 {/* Subheadline */}
