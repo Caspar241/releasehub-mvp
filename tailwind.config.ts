@@ -74,8 +74,8 @@ const config: Config = {
         '9xl': '96rem',
       },
       backdropBlur: {
-        'glass': '12px',
-        'glass-lg': '16px',
+        'glass': '8px',       // Optimized for Safari (was 12px)
+        'glass-lg': '10px',   // Optimized for Safari (was 16px)
       },
       boxShadow: {
         'e1': '0 2px 8px rgba(0, 0, 0, 0.45)',
