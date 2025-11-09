@@ -1,74 +1,116 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import Link from 'next/link';
+import { Release } from '@/lib/types/dashboard';
+import ReleaseCard from './ReleaseCard';
 
-// Mock data - später durch echte Daten aus einer API ersetzen
-const upcomingReleases = [
+/**
+ * ReleaseOverview Component
+ *
+ * Displays upcoming and recent releases using ReleaseCard:
+ * - Upcoming releases show health scores
+ * - Recent releases show stream counts
+ * - Collapsible sections
+ * - Mock data until API is available
+ */
+
+// TODO: Replace with real API data
+const mockReleases: Release[] = [
   {
-    id: 1,
+    id: 'rel-1',
     title: '4L',
     artist: 'Mando47',
-    releaseDate: '2025-11-15',
-    coverUrl: '/cover-mando47.jpg',
+    coverArt: '/cover-mando47.jpg',
+    releaseDate: new Date('2025-11-15'),
     status: 'scheduled',
-    platforms: ['Spotify', 'Apple Music', 'YouTube Music'],
+    platforms: [
+      { id: 'spotify', name: 'Spotify', icon: 'S' },
+      { id: 'apple', name: 'Apple Music', icon: 'A' },
+      { id: 'youtube', name: 'YouTube Music', icon: 'Y' },
+    ],
+    healthScore: {
+      score: 75,
+      criteria: {
+        artwork: true,
+        master: true,
+        presave: true,
+        pitch: false,
+        budget: true,
+        campaign: false,
+      },
+      lastUpdated: new Date(),
+    },
   },
   {
-    id: 2,
+    id: 'rel-2',
     title: 'Beachclub',
     artist: 'Mando47',
-    releaseDate: '2025-11-22',
-    coverUrl: '/cover-mando47.jpg',
+    coverArt: '/cover-mando47.jpg',
+    releaseDate: new Date('2025-11-22'),
     status: 'processing',
-    platforms: ['Spotify', 'Apple Music'],
+    platforms: [
+      { id: 'spotify', name: 'Spotify', icon: 'S' },
+      { id: 'apple', name: 'Apple Music', icon: 'A' },
+    ],
+    healthScore: {
+      score: 45,
+      criteria: {
+        artwork: true,
+        master: true,
+        presave: false,
+        pitch: false,
+        budget: false,
+        campaign: false,
+      },
+      lastUpdated: new Date(),
+    },
   },
-];
-
-const recentReleases = [
   {
-    id: 3,
+    id: 'rel-3',
     title: 'More Money More Problems',
     artist: 'Mando47',
-    releaseDate: '2025-10-28',
-    coverUrl: '/cover-mando47.jpg',
+    coverArt: '/cover-mando47.jpg',
+    releaseDate: new Date('2025-10-28'),
     status: 'live',
-    streams: '45.2K',
-    platforms: ['Spotify', 'Apple Music', 'YouTube Music', 'Amazon Music'],
+    platforms: [
+      { id: 'spotify', name: 'Spotify', icon: 'S' },
+      { id: 'apple', name: 'Apple Music', icon: 'A' },
+      { id: 'youtube', name: 'YouTube Music', icon: 'Y' },
+      { id: 'amazon', name: 'Amazon Music', icon: 'M' },
+    ],
+    streams: 45200,
   },
   {
-    id: 4,
+    id: 'rel-4',
     title: 'Freak Like Me',
     artist: 'Mando47',
-    releaseDate: '2025-10-15',
-    coverUrl: '/cover-mando47.jpg',
+    coverArt: '/cover-mando47.jpg',
+    releaseDate: new Date('2025-10-15'),
     status: 'live',
-    streams: '128.5K',
-    platforms: ['Spotify', 'Apple Music', 'YouTube Music'],
+    platforms: [
+      { id: 'spotify', name: 'Spotify', icon: 'S' },
+      { id: 'apple', name: 'Apple Music', icon: 'A' },
+      { id: 'youtube', name: 'YouTube Music', icon: 'Y' },
+    ],
+    streams: 128500,
   },
 ];
-
-const getStatusBadge = (status: string) => {
-  const styles = {
-    scheduled: 'bg-bg-secondary text-text-primary',
-    processing: 'bg-bg-secondary text-accent',
-    live: 'bg-accent text-white',
-  };
-  const labels = {
-    scheduled: 'Geplant',
-    processing: 'In Bearbeitung',
-    live: 'Live',
-  };
-  return (
-    <span className={`badge ${styles[status as keyof typeof styles]}`}>
-      {labels[status as keyof typeof labels]}
-    </span>
-  );
-};
 
 export default function ReleaseOverview() {
   const [upcomingExpanded, setUpcomingExpanded] = useState(true);
   const [recentExpanded, setRecentExpanded] = useState(true);
+
+  // Separate upcoming and recent
+  const upcomingReleases = useMemo(
+    () => mockReleases.filter((r) => r.status === 'scheduled' || r.status === 'processing'),
+    []
+  );
+
+  const recentReleases = useMemo(
+    () => mockReleases.filter((r) => r.status === 'live'),
+    []
+  );
 
   return (
     <div className="space-y-4">
@@ -98,44 +140,11 @@ export default function ReleaseOverview() {
             upcomingExpanded ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
           }`}
         >
-
-          <div className="p-4 pt-0">
+          <div className="p-4 pt-0 space-y-2">
             {upcomingReleases.length > 0 ? (
-              <div className="space-y-2">
-                {upcomingReleases.map((release) => (
-                  <div
-                    key={release.id}
-                    className="flex items-center gap-3 p-3 border border-border rounded-lg hover:border-accent/30 transition-all duration-150 cursor-pointer"
-                  >
-                    <img
-                      src={release.coverUrl}
-                      alt={release.title}
-                      className="w-12 h-12 object-cover rounded-lg flex-shrink-0"
-                    />
-                    <div className="flex-1 min-w-0">
-                      <h4 className="text-sm font-semibold text-text-primary truncate">{release.title}</h4>
-                      <p className="text-xs text-text-secondary">{release.artist}</p>
-                      <p className="text-xs text-text-secondary mt-0.5">
-                        {new Date(release.releaseDate).toLocaleDateString('de-DE')}
-                      </p>
-                    </div>
-                    <div className="flex flex-col items-end gap-1.5">
-                      {getStatusBadge(release.status)}
-                      <div className="flex gap-1">
-                        {release.platforms.slice(0, 3).map((platform, idx) => (
-                          <div
-                            key={idx}
-                            className="w-5 h-5 bg-bg-secondary rounded-full flex items-center justify-center text-[10px] text-text-primary"
-                            title={platform}
-                          >
-                            {platform[0]}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              upcomingReleases.map((release) => (
+                <ReleaseCard key={release.id} release={release} showHealthScore />
+              ))
             ) : (
               <div className="text-center py-8 text-text-secondary">
                 <p className="text-sm">Keine kommenden Releases geplant.</p>
@@ -183,46 +192,11 @@ export default function ReleaseOverview() {
             recentExpanded ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
           }`}
         >
-          <div className="p-4 pt-0">
+          <div className="p-4 pt-0 space-y-2">
             {recentReleases.length > 0 ? (
-              <div className="space-y-2">
-                {recentReleases.map((release) => (
-                  <div
-                    key={release.id}
-                    className="flex items-center gap-3 p-3 border border-border rounded-lg hover:border-accent/30 transition-all duration-150 cursor-pointer"
-                  >
-                    <img
-                      src={release.coverUrl}
-                      alt={release.title}
-                      className="w-12 h-12 object-cover rounded-lg flex-shrink-0"
-                    />
-                    <div className="flex-1 min-w-0">
-                      <h4 className="text-sm font-semibold text-text-primary truncate">{release.title}</h4>
-                      <p className="text-xs text-text-secondary">{release.artist}</p>
-                      <p className="text-xs text-text-secondary mt-0.5">
-                        {new Date(release.releaseDate).toLocaleDateString('de-DE')}
-                      </p>
-                    </div>
-                    <div className="flex flex-col items-end gap-1.5">
-                      <div className="text-right">
-                        <p className="text-xs font-semibold text-text-primary">{release.streams}</p>
-                        <p className="text-[10px] text-text-secondary">Streams</p>
-                      </div>
-                      <div className="flex gap-1">
-                        {release.platforms.slice(0, 4).map((platform, idx) => (
-                          <div
-                            key={idx}
-                            className="w-5 h-5 bg-bg-secondary rounded-full flex items-center justify-center text-[10px] text-text-primary"
-                            title={platform}
-                          >
-                            {platform[0]}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              recentReleases.map((release) => (
+                <ReleaseCard key={release.id} release={release} showStreams />
+              ))
             ) : (
               <div className="text-center py-8 text-text-secondary">
                 <p className="text-sm">Noch keine Releases veröffentlicht.</p>
