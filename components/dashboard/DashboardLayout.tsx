@@ -40,6 +40,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
   // Hover intent delays
   let notificationHoverTimeout: NodeJS.Timeout;
+  let userMenuHoverTimeout: NodeJS.Timeout;
 
   const handleSignOut = async () => {
     await signOut();
@@ -230,7 +231,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               {/* Command Palette Button */}
               <button
                 onClick={() => setCommandPaletteOpen(true)}
-                className="hidden lg:flex items-center gap-2 px-3 py-1.5 text-sm text-gray-300 hover:text-gray-100 bg-[#111214]/80 border border-[#1F1F1F] rounded-xl transition-all hover:border-[#2A2A2A] focus-within:border-[#2A2A2A]"
+                className="hidden lg:flex items-center gap-2 px-3 py-1.5 text-sm text-gray-300 hover:text-gray-100 bg-[#111214]/80 border border-[#1F1F1F] rounded-xl transition-all duration-150 hover:border-accent hover:shadow-[0_0_14px_rgba(79,209,255,0.18)] focus-within:ring-1 focus-within:ring-accent"
                 title="Search"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -301,6 +302,17 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               <div
                 ref={userButtonRef}
                 onClick={() => setUserMenuOpen(!userMenuOpen)}
+                onMouseEnter={() => {
+                  // Only use hover on desktop (not touch devices)
+                  if (window.matchMedia('(pointer: fine)').matches) {
+                    userMenuHoverTimeout = setTimeout(() => setUserMenuOpen(true), 150);
+                  }
+                }}
+                onMouseLeave={() => {
+                  if (window.matchMedia('(pointer: fine)').matches) {
+                    clearTimeout(userMenuHoverTimeout);
+                  }
+                }}
                 className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-surface-overlay transition-all cursor-pointer group"
               >
                 <div className="hidden md:block text-right">
@@ -369,6 +381,16 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
             top: `${userButtonRef.current.getBoundingClientRect().bottom + 8}px`,
             right: `${window.innerWidth - userButtonRef.current.getBoundingClientRect().right}px`,
           }}
+          onMouseEnter={() => {
+            if (window.matchMedia('(pointer: fine)').matches) {
+              clearTimeout(userMenuHoverTimeout);
+            }
+          }}
+          onMouseLeave={() => {
+            if (window.matchMedia('(pointer: fine)').matches) {
+              setUserMenuOpen(false);
+            }
+          }}
           role="menu"
           aria-label="User menu"
         >
@@ -382,10 +404,13 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
             {/* Menu Items */}
             <Link
               href="/dashboard/settings"
-              className="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-200 hover:bg-[#111318] transition-all duration-150 hover:translate-x-[1px]"
+              className="group relative flex items-center gap-2 px-3 py-2 rounded-lg text-gray-200 hover:text-[#EAEAEA] hover:bg-[#111318] transition-all duration-150 hover:translate-x-[1px] group-hover:shadow-[0_0_12px_rgba(79,209,255,0.25)]"
               role="menuitem"
               onClick={() => setUserMenuOpen(false)}
             >
+              {/* Blue Accent Bar */}
+              <div className="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-[2px] bg-accent opacity-0 group-hover:opacity-100 transition-opacity duration-150" />
+
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
@@ -394,10 +419,13 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
             <Link
               href="/dashboard/settings"
-              className="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-200 hover:bg-[#111318] transition-all duration-150 hover:translate-x-[1px]"
+              className="group relative flex items-center gap-2 px-3 py-2 rounded-lg text-gray-200 hover:text-[#EAEAEA] hover:bg-[#111318] transition-all duration-150 hover:translate-x-[1px] group-hover:shadow-[0_0_12px_rgba(79,209,255,0.25)]"
               role="menuitem"
               onClick={() => setUserMenuOpen(false)}
             >
+              {/* Blue Accent Bar */}
+              <div className="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-[2px] bg-accent opacity-0 group-hover:opacity-100 transition-opacity duration-150" />
+
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -412,9 +440,12 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                 handleSignOut();
                 setUserMenuOpen(false);
               }}
-              className="flex items-center gap-2 w-full px-3 py-2 rounded-lg text-gray-400 hover:text-accent hover:bg-[#111318] transition-all duration-150 hover:translate-x-[1px]"
+              className="group relative flex items-center gap-2 w-full px-3 py-2 rounded-lg text-gray-400 hover:text-[#EAEAEA] hover:bg-[#111318] transition-all duration-150 hover:translate-x-[1px] group-hover:shadow-[0_0_12px_rgba(79,209,255,0.25)]"
               role="menuitem"
             >
+              {/* Blue Accent Bar */}
+              <div className="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-[2px] bg-accent opacity-0 group-hover:opacity-100 transition-opacity duration-150" />
+
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
               </svg>
