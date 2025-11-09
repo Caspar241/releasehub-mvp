@@ -1,10 +1,5 @@
-import StayTuned from '@/components/EmptyStates/StayTuned';
+import TasksPlaceholder from '@/components/dashboard/TasksPlaceholder';
 
 export default function CampaignsPage() {
-  return (
-    <StayTuned
-      title="Campaign Builder wird bald freigeschaltet"
-      subtitle="Stay tuned – der Marketing-Kampagnen-Builder kommt in Kürze."
-    />
-  );
+  return <TasksPlaceholder featureName="Campaign Builder" />;
 }

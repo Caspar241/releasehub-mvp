@@ -1,10 +1,5 @@
-import StayTuned from '@/components/EmptyStates/StayTuned';
+import TasksPlaceholder from '@/components/dashboard/TasksPlaceholder';
 
 export default function PlaylistsPage() {
-  return (
-    <StayTuned
-      title="Playlist Outreach wird bald freigeschaltet"
-      subtitle="Stay tuned – das Playlist-Pitching-Tool kommt in Kürze."
-    />
-  );
+  return <TasksPlaceholder featureName="Playlist Outreach" />;
 }

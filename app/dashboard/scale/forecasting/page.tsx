@@ -1,10 +1,5 @@
-import StayTuned from '@/components/EmptyStates/StayTuned';
+import TasksPlaceholder from '@/components/dashboard/TasksPlaceholder';
 
 export default function ForecastingPage() {
-  return (
-    <StayTuned
-      title="Release Forecasting wird bald freigeschaltet"
-      subtitle="Stay tuned – die Performance-Vorhersage kommt in Kürze."
-    />
-  );
+  return <TasksPlaceholder featureName="Release Forecasting" />;
 }

@@ -1,10 +1,5 @@
-import StayTuned from '@/components/EmptyStates/StayTuned';
+import TasksPlaceholder from '@/components/dashboard/TasksPlaceholder';
 
 export default function PlanCalendarPage() {
-  return (
-    <StayTuned
-      title="Calendar wird bald freigeschaltet"
-      subtitle="Stay tuned – der Release-Kalender kommt in Kürze."
-    />
-  );
+  return <TasksPlaceholder featureName="Calendar" />;
 }
