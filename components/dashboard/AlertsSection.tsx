@@ -1,125 +1,168 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
+import { Task, TaskGroup } from '@/lib/types/dashboard';
+import TaskList from './TaskList';
 
-interface Alert {
-  id: string;
-  type: 'critical' | 'warning' | 'info' | 'task';
-  title: string;
-  description: string;
-  dueDate?: string;
-  ctaText?: string;
-  ctaHref?: string;
-  dismissible: boolean;
-  completed?: boolean;
-}
+/**
+ * AlertsSection Component
+ *
+ * Displays prioritized tasks grouped by release:
+ * - Uses TaskList component with grouping
+ * - Sortiert tasks by priority and due date
+ * - Shows completed tasks in collapsible section
+ * - Mock data until API is available
+ */
 
-// Mock data - später durch echte API-Daten ersetzen
-const initialAlerts: Alert[] = [
+// TODO: Replace with real API data
+const mockTaskGroups: TaskGroup[] = [
   {
-    id: '1',
-    type: 'critical',
-    title: 'Cover fehlt für Release "Midnight Dreams"',
-    description: 'Upload läuft in 3 Tagen ab',
-    dueDate: '3 days',
-    ctaText: 'Jetzt hochladen',
-    ctaHref: '/dashboard/upload',
-    dismissible: false,
-    completed: false,
+    releaseId: 'release-1',
+    releaseName: 'Midnight Dreams',
+    coverArt: 'https://images.unsplash.com/photo-1614680376593-902f74cf0d41?w=200&h=200&fit=crop',
+    progress: {
+      completed: 2,
+      total: 4,
+    },
+    tasks: [
+      {
+        id: 'task-1',
+        title: 'Cover Artwork hochladen',
+        description: 'Upload läuft in 3 Tagen ab',
+        priority: 'critical',
+        status: 'pending',
+        category: 'release',
+        dueDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), // 3 days from now
+        releaseId: 'release-1',
+        releaseName: 'Midnight Dreams',
+        createdAt: new Date(),
+      },
+      {
+        id: 'task-2',
+        title: 'Master-Datei Upload abschließen',
+        description: 'Release gefährdet – Upload bis morgen erforderlich',
+        priority: 'critical',
+        status: 'pending',
+        category: 'release',
+        dueDate: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000), // 1 day from now
+        releaseId: 'release-1',
+        releaseName: 'Midnight Dreams',
+        createdAt: new Date(),
+      },
+    ],
   },
   {
-    id: '2',
-    type: 'warning',
-    title: 'Master-Datei Upload ausstehend',
-    description: 'Release gefährdet – Upload bis morgen erforderlich',
-    dueDate: '1 day',
-    ctaText: 'Upload abschließen',
-    ctaHref: '/dashboard/upload',
-    dismissible: false,
-    completed: false,
+    releaseId: 'release-2',
+    releaseName: 'Summer Vibes',
+    coverArt: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=200&h=200&fit=crop',
+    progress: {
+      completed: 5,
+      total: 6,
+    },
+    tasks: [
+      {
+        id: 'task-3',
+        title: 'Pre-Save Kampagne finalisieren',
+        description: 'Kampagne geht heute um 12:00 Uhr live',
+        priority: 'high',
+        status: 'pending',
+        category: 'marketing',
+        dueDate: new Date(), // Today
+        releaseId: 'release-2',
+        releaseName: 'Summer Vibes',
+        createdAt: new Date(),
+      },
+    ],
   },
   {
-    id: '3',
-    type: 'info',
-    title: 'Pre-Save Kampagne startet heute',
-    description: '"Summer Vibes" Pre-Save geht um 12:00 Uhr live',
-    ctaText: 'Kampagne ansehen',
-    ctaHref: '/dashboard/scale/campaigns',
-    dismissible: true,
-    completed: false,
-  },
-  {
-    id: '4',
-    type: 'task',
-    title: 'Playlist Pitch vorbereiten',
-    description: 'Für "Ocean Waves" – Deadline in 5 Tagen',
-    dueDate: '5 days',
-    ctaText: 'Pitch erstellen',
-    ctaHref: '/dashboard/scale/playlists',
-    dismissible: true,
-    completed: false,
+    releaseId: 'release-3',
+    releaseName: 'Ocean Waves',
+    coverArt: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=200&h=200&fit=crop',
+    progress: {
+      completed: 3,
+      total: 7,
+    },
+    tasks: [
+      {
+        id: 'task-4',
+        title: 'Playlist Pitch vorbereiten',
+        description: 'Für Spotify Editorial Playlists',
+        priority: 'medium',
+        status: 'pending',
+        category: 'distribution',
+        dueDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000), // 5 days from now
+        releaseId: 'release-3',
+        releaseName: 'Ocean Waves',
+        createdAt: new Date(),
+      },
+    ],
   },
 ];
 
 export default function AlertsSection() {
-  const [alerts, setAlerts] = useState<Alert[]>(initialAlerts);
+  const [taskGroups, setTaskGroups] = useState<TaskGroup[]>(mockTaskGroups);
+  const [completedTasks, setCompletedTasks] = useState<Task[]>([]);
   const [isExpanded, setIsExpanded] = useState(true);
 
-  const dismissAlert = (id: string) => {
-    setAlerts(alerts.filter((alert) => alert.id !== id));
+  // Count total active tasks
+  const totalActiveTasks = taskGroups.reduce((sum, group) => sum + group.tasks.length, 0);
+
+  // Handle task completion
+  const handleTaskComplete = (taskId: string) => {
+    // Find and remove task from groups, add to completed
+    const updatedGroups = taskGroups.map((group) => ({
+      ...group,
+      tasks: group.tasks.filter((task) => {
+        if (task.id === taskId) {
+          // Add to completed
+          setCompletedTasks((prev) => [
+            ...prev,
+            { ...task, status: 'completed', completedAt: new Date() },
+          ]);
+          // Update progress
+          group.progress.completed += 1;
+          return false;
+        }
+        return true;
+      }),
+    }));
+
+    setTaskGroups(updatedGroups);
   };
 
-  const toggleTaskComplete = (id: string) => {
-    const alert = alerts.find(a => a.id === id);
-    if (!alert) return;
+  // Handle task snooze
+  const handleTaskSnooze = (taskId: string, hours: number) => {
+    const snoozeUntil = new Date(Date.now() + hours * 60 * 60 * 1000);
 
-    if (!alert.completed) {
-      // Mark as completed first for animation
-      setAlerts(
-        alerts.map((a) =>
-          a.id === id ? { ...a, completed: true } : a
-        )
-      );
+    const updatedGroups = taskGroups.map((group) => ({
+      ...group,
+      tasks: group.tasks.map((task) =>
+        task.id === taskId
+          ? { ...task, status: 'snoozed' as const, snoozedUntil: snoozeUntil }
+          : task
+      ),
+    }));
 
-      // Remove from list after animation
-      setTimeout(() => {
-        setAlerts(alerts.filter((a) => a.id !== id));
-      }, 300);
-    }
+    setTaskGroups(updatedGroups);
+
+    // TODO: In production, this would trigger an API call to update the task
+    console.log(`Task ${taskId} snoozed until ${snoozeUntil.toLocaleString()}`);
   };
 
-  const getAlertStyle = (type: Alert['type']) => {
-    const styles = {
-      critical: {
-        border: 'border-red-500/30',
-        bg: 'bg-red-500/5',
-        indicator: 'bg-red-500',
-        badge: 'bg-red-500 text-white',
-      },
-      warning: {
-        border: 'border-amber-500/30',
-        bg: 'bg-amber-500/5',
-        indicator: 'bg-amber-500',
-        badge: 'bg-amber-500 text-white',
-      },
-      info: {
-        border: 'border-accent/30',
-        bg: 'bg-accent/5',
-        indicator: 'bg-accent',
-        badge: 'bg-accent text-white',
-      },
-      task: {
-        border: 'border-border',
-        bg: 'bg-surface-overlay/20',
-        indicator: 'bg-surface-overlay',
-        badge: 'bg-surface-overlay text-text-primary',
-      },
-    };
-    return styles[type];
+  // Handle task dismiss
+  const handleTaskDismiss = (taskId: string) => {
+    const updatedGroups = taskGroups.map((group) => ({
+      ...group,
+      tasks: group.tasks.filter((task) => task.id !== taskId),
+    }));
+
+    setTaskGroups(updatedGroups);
+
+    // TODO: In production, this would trigger an API call to update the task
+    console.log(`Task ${taskId} dismissed`);
   };
 
-  if (alerts.length === 0) {
+  if (totalActiveTasks === 0 && completedTasks.length === 0) {
     return null;
   }
 
@@ -134,9 +177,11 @@ export default function AlertsSection() {
           <h3 className="text-sm font-semibold text-text-primary uppercase tracking-wide">
             Tasks
           </h3>
-          <span className="px-2 py-0.5 text-xs font-semibold rounded-full bg-accent/10 text-accent">
-            {alerts.length}
-          </span>
+          {totalActiveTasks > 0 && (
+            <span className="px-2 py-0.5 text-xs font-semibold rounded-full bg-accent/10 text-accent">
+              {totalActiveTasks}
+            </span>
+          )}
         </div>
         <svg
           className={`w-4 h-4 text-text-secondary transition-transform duration-200 ${
@@ -153,124 +198,17 @@ export default function AlertsSection() {
       {/* Collapsible Content */}
       <div
         className={`transition-all duration-200 ease-in-out ${
-          isExpanded ? 'max-h-[800px] opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
+          isExpanded ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
         }`}
       >
-        <div className="space-y-2 p-4 pt-0">
-          {alerts.map((alert) => {
-            const style = getAlertStyle(alert.type);
-            return (
-              <div
-                key={alert.id}
-                className={`border ${style.border} ${style.bg} rounded-lg p-3 ${
-                  alert.completed ? 'opacity-0 -translate-x-4' : 'opacity-100 translate-x-0'
-                } transition-all duration-300 ease-out hover:border-accent/20`}
-              >
-                <div className="flex items-start gap-3">
-                  {/* Checkbox for all tasks */}
-                  <button
-                    onClick={() => toggleTaskComplete(alert.id)}
-                    className={`flex-shrink-0 w-4 h-4 mt-0.5 rounded border-2 transition-all ${
-                      alert.completed
-                        ? 'bg-accent border-accent'
-                        : 'border-border hover:border-accent'
-                    }`}
-                  >
-                    {alert.completed && (
-                      <svg
-                        className="w-full h-full text-white"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={3}
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                    )}
-                  </button>
-                  {/* Color indicator bar */}
-                  <div
-                    className={`flex-shrink-0 w-1 h-full rounded-full ${style.indicator} mt-0.5`}
-                  />
-
-                  {/* Content */}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-start justify-between gap-3">
-                      <div className="flex-1">
-                        <h4
-                          className={`text-sm font-semibold text-text-primary ${
-                            alert.completed ? 'line-through' : ''
-                          }`}
-                        >
-                          {alert.title}
-                        </h4>
-                        <p className="text-xs text-text-secondary mt-0.5">
-                          {alert.description}
-                        </p>
-                      </div>
-
-                      {/* Due Date Badge */}
-                      {alert.dueDate && !alert.completed && (
-                        <span
-                          className={`flex-shrink-0 px-2 py-0.5 text-[10px] font-semibold rounded-full ${style.badge}`}
-                        >
-                          {alert.dueDate}
-                        </span>
-                      )}
-                    </div>
-
-                    {/* Action Buttons */}
-                    {!alert.completed && (
-                      <div className="flex items-center gap-2 mt-2">
-                        {alert.ctaText && alert.ctaHref && (
-                          <Link
-                            href={alert.ctaHref}
-                            className="px-3 py-1 text-xs font-medium rounded-md bg-accent/10 text-accent hover:bg-accent hover:text-white transition-all duration-150"
-                          >
-                            {alert.ctaText}
-                          </Link>
-                        )}
-                        {alert.dismissible && (
-                          <button
-                            onClick={() => dismissAlert(alert.id)}
-                            className="px-2 py-1 text-xs font-medium text-text-muted hover:text-text-primary transition-colors"
-                          >
-                            Ignorieren
-                          </button>
-                        )}
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Dismiss Button */}
-                  {alert.dismissible && (
-                    <button
-                      onClick={() => dismissAlert(alert.id)}
-                      className="flex-shrink-0 p-1 text-text-muted hover:text-text-primary hover:bg-surface-overlay rounded transition-all"
-                    >
-                      <svg
-                        className="w-3 h-3"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M6 18L18 6M6 6l12 12"
-                        />
-                      </svg>
-                    </button>
-                  )}
-                </div>
-              </div>
-            );
-          })}
+        <div className="p-4 pt-0">
+          <TaskList
+            taskGroups={taskGroups}
+            completedTasks={completedTasks}
+            onTaskComplete={handleTaskComplete}
+            onTaskSnooze={handleTaskSnooze}
+            onTaskDismiss={handleTaskDismiss}
+          />
         </div>
       </div>
     </div>
