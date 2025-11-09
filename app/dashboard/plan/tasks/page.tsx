@@ -1,5 +1,5 @@
-import ComingSoonPlaceholder from '@/components/dashboard/ComingSoonPlaceholder';
+import StayTuned from '@/components/EmptyStates/StayTuned';
 
 export default function PlanTasksPage() {
-  return <ComingSoonPlaceholder featureName="Tasks" />;
+  return <StayTuned />;
 }

@@ -5,10 +5,10 @@
   "scripts": {
     "dev": "next dev",
     "dev:clean": "bash scripts/dev-clean.sh",
-    "dev:safe": "killall -9 node 2>/dev/null || true && sleep 2 && rm -rf .next && npm run dev",
+    "dev:safe": "killall -9 node 2>/dev/null || true && sleep 1 && rm -rf .next node_modules/.cache && npm run build && npm run dev",
+    "dev:turbo": "next dev --turbo",
     "dev:build": "npm run build && npm run dev",
     "health": "bash scripts/health-check.sh",
-    "predev": "mkdir -p .next/server && test -f .next/server/middleware-manifest.json || echo '{\"sortedMiddleware\":[],\"middleware\":{},\"functions\":{},\"version\":2}' > .next/server/middleware-manifest.json",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -23,9 +23,9 @@
     "@supabase/supabase-js": "^2.46.1",
     "framer-motion": "^12.23.24",
     "micro": "^10.0.1",
-    "next": "^14.2.15",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "next": "14.2.15",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
     "stripe": "^17.3.1"
   },
   "devDependencies": {
