@@ -34,7 +34,6 @@ export default function KeyMetricsCustomPopover({ onClose, triggerRef }: KeyMetr
   const [error, setError] = useState<string | null>(null);
 
   const popoverRef = useRef<HTMLDivElement>(null);
-  const leaveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Initialize from current range
   useEffect(() => {
@@ -176,18 +175,6 @@ export default function KeyMetricsCustomPopover({ onClose, triggerRef }: KeyMetr
 
   const canApply = selectedRange?.from && selectedRange?.to && selectedRange.from <= selectedRange.to;
 
-  const handlePopoverMouseEnter = () => {
-    if (leaveTimeoutRef.current) {
-      clearTimeout(leaveTimeoutRef.current);
-    }
-  };
-
-  const handlePopoverMouseLeave = () => {
-    leaveTimeoutRef.current = setTimeout(() => {
-      onClose();
-    }, 200);
-  };
-
   return (
     <motion.div
       ref={popoverRef}
@@ -195,8 +182,6 @@ export default function KeyMetricsCustomPopover({ onClose, triggerRef }: KeyMetr
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: -10, scale: 0.98 }}
       transition={{ duration: 0.14, ease: [0.16, 1, 0.3, 1] }} // Apple easing curve
-      onMouseEnter={handlePopoverMouseEnter}
-      onMouseLeave={handlePopoverMouseLeave}
       className="absolute top-full right-0 mt-2 w-auto bg-[#0B0B0C]/85 backdrop-blur-md border border-[#1C1D20] rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,.45)] p-4 z-[9999]"
       style={{
         background: 'linear-gradient(135deg, rgba(11, 11, 12, 0.9) 0%, rgba(17, 18, 20, 0.85) 100%)',

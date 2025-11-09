@@ -12,7 +12,7 @@ import KeyMetricsCustomPopover from './KeyMetricsCustomPopover';
  * - Segmented buttons: 7 TAGE · 30 TAGE · 90 TAGE · CUSTOM
  * - Active state with inner glow and blue background
  * - Smooth transitions (150ms)
- * - Custom opens popover on click
+ * - Custom opens popover on hover
  * - Full keyboard support
  * - ARIA labels for accessibility
  */
@@ -21,6 +21,7 @@ export default function KeyMetricsControls() {
   const [showCustomPopover, setShowCustomPopover] = useState(false);
   const customButtonRef = useRef<HTMLButtonElement>(null);
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const presets: Array<{ value: '7d' | '30d' | '90d'; label: string }> = [
     { value: '7d', label: '7 TAGE' },
@@ -33,7 +34,8 @@ export default function KeyMetricsControls() {
     setShowCustomPopover(false);
   };
 
-  const handleCustomMouseEnter = () => {
+  // Unified hover handler for the whole container
+  const handleContainerMouseEnter = () => {
     if (hoverTimeoutRef.current) {
       clearTimeout(hoverTimeoutRef.current);
     }
@@ -42,11 +44,10 @@ export default function KeyMetricsControls() {
     }, 150);
   };
 
-  const handleCustomMouseLeave = () => {
+  const handleContainerMouseLeave = () => {
     if (hoverTimeoutRef.current) {
       clearTimeout(hoverTimeoutRef.current);
     }
-    // Give user time to move into popover
     hoverTimeoutRef.current = setTimeout(() => {
       setShowCustomPopover(false);
     }, 200);
@@ -101,61 +102,63 @@ export default function KeyMetricsControls() {
           );
         })}
 
-        {/* Custom Button */}
-        <button
-          ref={customButtonRef}
-          onMouseEnter={handleCustomMouseEnter}
-          onMouseLeave={handleCustomMouseLeave}
-          className={`
-            relative px-4 py-2 text-[11px] font-semibold tracking-wide rounded-lg
-            transition-all duration-150 ease-out
-            focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00A3FF] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0B0B0C]
-            ${
-              range.preset === 'custom'
-                ? 'bg-[#00A3FF] text-black shadow-[inset_0_0_0_1px_rgba(255,255,255,.08)]'
-                : 'text-gray-300 hover:text-gray-100 hover:bg-[#1a1a1c]'
-            }
-          `}
-          style={{
-            transform: 'translateZ(0)',
-          }}
-          aria-pressed={range.preset === 'custom'}
-          aria-haspopup="dialog"
-          aria-expanded={showCustomPopover}
-          aria-label="Benutzerdefinierter Zeitraum"
+        {/* Custom Button - Wrapped with container for hover */}
+        <div
+          ref={containerRef}
+          onMouseEnter={handleContainerMouseEnter}
+          onMouseLeave={handleContainerMouseLeave}
+          className="relative"
         >
-          {/* Active inner glow */}
-          {range.preset === 'custom' && (
-            <div
-              className="absolute inset-0 rounded-lg opacity-20 pointer-events-none"
-              style={{
-                background: 'radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.4), transparent 60%)',
-              }}
-              aria-hidden="true"
-            />
-          )}
-
-          {/* Label */}
-          <span className="relative z-10">
-            {range.preset === 'custom' && range.from && range.to
-              ? `${range.from.getDate()}.${range.from.getMonth() + 1}. – ${range.to.getDate()}.${range.to.getMonth() + 1}.`
-              : 'CUSTOM'}
-          </span>
-        </button>
-      </div>
-
-      {/* Custom Popover */}
-      <AnimatePresence>
-        {showCustomPopover && (
-          <KeyMetricsCustomPopover
-            onClose={() => {
-              setShowCustomPopover(false);
-              customButtonRef.current?.focus();
+          <button
+            ref={customButtonRef}
+            className={`
+              relative px-4 py-2 text-[11px] font-semibold tracking-wide rounded-lg
+              transition-all duration-150 ease-out
+              focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00A3FF] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0B0B0C]
+              ${
+                range.preset === 'custom'
+                  ? 'bg-[#00A3FF] text-black shadow-[inset_0_0_0_1px_rgba(255,255,255,.08)]'
+                  : 'text-gray-300 hover:text-gray-100 hover:bg-[#1a1a1c]'
+              }
+            `}
+            style={{
+              transform: 'translateZ(0)',
             }}
-            triggerRef={customButtonRef}
-          />
-        )}
-      </AnimatePresence>
+            aria-pressed={range.preset === 'custom'}
+            aria-haspopup="dialog"
+            aria-expanded={showCustomPopover}
+            aria-label="Benutzerdefinierter Zeitraum"
+          >
+            {/* Active inner glow */}
+            {range.preset === 'custom' && (
+              <div
+                className="absolute inset-0 rounded-lg opacity-20 pointer-events-none"
+                style={{
+                  background: 'radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.4), transparent 60%)',
+                }}
+                aria-hidden="true"
+              />
+            )}
+
+            {/* Label */}
+            <span className="relative z-10">
+              {range.preset === 'custom' && range.from && range.to
+                ? `${range.from.getDate()}.${range.from.getMonth() + 1}. – ${range.to.getDate()}.${range.to.getMonth() + 1}.`
+                : 'CUSTOM'}
+            </span>
+          </button>
+
+          {/* Custom Popover - Inside the hover container */}
+          <AnimatePresence>
+            {showCustomPopover && (
+              <KeyMetricsCustomPopover
+                onClose={() => setShowCustomPopover(false)}
+                triggerRef={customButtonRef}
+              />
+            )}
+          </AnimatePresence>
+        </div>
+      </div>
     </div>
   );
 }
