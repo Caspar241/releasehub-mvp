@@ -1,24 +1,25 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 
 // Mock data - später durch echte Daten aus einer API ersetzen
 const upcomingReleases = [
   {
     id: 1,
-    title: 'Summer Vibes',
-    artist: 'Your Name',
+    title: '4L',
+    artist: 'Mando47',
     releaseDate: '2025-11-15',
-    coverUrl: '/placeholder-cover.jpg',
+    coverUrl: '/cover-mando47.jpg',
     status: 'scheduled',
     platforms: ['Spotify', 'Apple Music', 'YouTube Music'],
   },
   {
     id: 2,
-    title: 'Midnight Dreams',
-    artist: 'Your Name',
+    title: 'Beachclub',
+    artist: 'Mando47',
     releaseDate: '2025-11-22',
-    coverUrl: '/placeholder-cover.jpg',
+    coverUrl: '/cover-mando47.jpg',
     status: 'processing',
     platforms: ['Spotify', 'Apple Music'],
   },
@@ -27,20 +28,20 @@ const upcomingReleases = [
 const recentReleases = [
   {
     id: 3,
-    title: 'Ocean Waves',
-    artist: 'Your Name',
+    title: 'More Money More Problems',
+    artist: 'Mando47',
     releaseDate: '2025-10-28',
-    coverUrl: '/placeholder-cover.jpg',
+    coverUrl: '/cover-mando47.jpg',
     status: 'live',
     streams: '45.2K',
     platforms: ['Spotify', 'Apple Music', 'YouTube Music', 'Amazon Music'],
   },
   {
     id: 4,
-    title: 'City Lights',
-    artist: 'Your Name',
+    title: 'Freak Like Me',
+    artist: 'Mando47',
     releaseDate: '2025-10-15',
-    coverUrl: '/placeholder-cover.jpg',
+    coverUrl: '/cover-mando47.jpg',
     status: 'live',
     streams: '128.5K',
     platforms: ['Spotify', 'Apple Music', 'YouTube Music'],
@@ -66,116 +67,169 @@ const getStatusBadge = (status: string) => {
 };
 
 export default function ReleaseOverview() {
-  return (
-    <div className="space-y-6">
-      {/* Upcoming Releases */}
-      <div className="glass-card p-8 rounded-2xl">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl md:text-3xl font-bold text-text-primary">Kommende Releases</h2>
-          <Link
-            href="/dashboard/upload"
-            className="btn-primary"
-          >
-            + Neuer Release
-          </Link>
-        </div>
+  const [upcomingExpanded, setUpcomingExpanded] = useState(true);
+  const [recentExpanded, setRecentExpanded] = useState(true);
 
-        {upcomingReleases.length > 0 ? (
-          <div className="space-y-4">
-            {upcomingReleases.map((release) => (
-              <div
-                key={release.id}
-                className="flex items-center gap-4 p-4 border border-border-light rounded-card hover:border-accent/20 hover:shadow-glow transition-all duration-200 cursor-pointer active:scale-[0.99]"
-                style={{ transform: 'translateZ(0)' }}
-              >
-                <div className="w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-card flex-shrink-0" />
-                <div className="flex-1 min-w-0">
-                  <h3 className="font-semibold text-text-primary truncate">{release.title}</h3>
-                  <p className="text-sm text-text-secondary">{release.artist}</p>
-                  <p className="text-sm text-text-secondary mt-1">
-                    Release: {new Date(release.releaseDate).toLocaleDateString('de-DE')}
-                  </p>
-                </div>
-                <div className="flex flex-col items-end gap-2">
-                  {getStatusBadge(release.status)}
-                  <div className="flex gap-1">
-                    {release.platforms.slice(0, 3).map((platform, idx) => (
-                      <div
-                        key={idx}
-                        className="w-6 h-6 bg-bg-secondary rounded-full flex items-center justify-center text-xs text-text-primary"
-                        title={platform}
-                      >
-                        {platform[0]}
+  return (
+    <div className="space-y-4">
+      {/* Upcoming Releases */}
+      <div className="glass-card rounded-xl overflow-hidden">
+        <button
+          onClick={() => setUpcomingExpanded(!upcomingExpanded)}
+          className="w-full px-4 py-3 flex items-center justify-between hover:bg-surface-overlay/20 transition-colors duration-150"
+        >
+          <h3 className="text-sm font-semibold text-text-primary uppercase tracking-wide">
+            Kommende Releases
+          </h3>
+          <svg
+            className={`w-4 h-4 text-text-secondary transition-transform duration-200 ${
+              upcomingExpanded ? 'rotate-180' : ''
+            }`}
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+
+        <div
+          className={`transition-all duration-200 ease-in-out ${
+            upcomingExpanded ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
+          }`}
+        >
+
+          <div className="p-4 pt-0">
+            {upcomingReleases.length > 0 ? (
+              <div className="space-y-2">
+                {upcomingReleases.map((release) => (
+                  <div
+                    key={release.id}
+                    className="flex items-center gap-3 p-3 border border-border rounded-lg hover:border-accent/30 transition-all duration-150 cursor-pointer"
+                  >
+                    <img
+                      src={release.coverUrl}
+                      alt={release.title}
+                      className="w-12 h-12 object-cover rounded-lg flex-shrink-0"
+                    />
+                    <div className="flex-1 min-w-0">
+                      <h4 className="text-sm font-semibold text-text-primary truncate">{release.title}</h4>
+                      <p className="text-xs text-text-secondary">{release.artist}</p>
+                      <p className="text-xs text-text-secondary mt-0.5">
+                        {new Date(release.releaseDate).toLocaleDateString('de-DE')}
+                      </p>
+                    </div>
+                    <div className="flex flex-col items-end gap-1.5">
+                      {getStatusBadge(release.status)}
+                      <div className="flex gap-1">
+                        {release.platforms.slice(0, 3).map((platform, idx) => (
+                          <div
+                            key={idx}
+                            className="w-5 h-5 bg-bg-secondary rounded-full flex items-center justify-center text-[10px] text-text-primary"
+                            title={platform}
+                          >
+                            {platform[0]}
+                          </div>
+                        ))}
                       </div>
-                    ))}
+                    </div>
                   </div>
-                </div>
+                ))}
               </div>
-            ))}
+            ) : (
+              <div className="text-center py-8 text-text-secondary">
+                <p className="text-sm">Keine kommenden Releases geplant.</p>
+                <Link href="/dashboard/upload" className="text-accent text-xs mt-2 inline-block hover:underline">
+                  Erstelle deinen ersten Release →
+                </Link>
+              </div>
+            )}
           </div>
-        ) : (
-          <div className="text-center py-12 text-text-secondary">
-            <p>Keine kommenden Releases geplant.</p>
-            <Link href="/dashboard/upload" className="link text-accent mt-2 inline-block">
-              Erstelle deinen ersten Release →
-            </Link>
-          </div>
-        )}
+        </div>
       </div>
 
       {/* Recent Releases */}
-      <div className="glass-card p-8 rounded-2xl">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl md:text-3xl font-bold text-text-primary">Aktuelle Releases</h2>
-          <Link
-            href="/dashboard/releases"
-            className="link text-accent text-sm font-medium hover:text-accent-hover transition-colors duration-150"
-          >
-            Alle anzeigen →
-          </Link>
-        </div>
+      <div className="glass-card rounded-xl overflow-hidden">
+        <button
+          onClick={() => setRecentExpanded(!recentExpanded)}
+          className="w-full px-4 py-3 flex items-center justify-between hover:bg-surface-overlay/20 transition-colors duration-150"
+        >
+          <h3 className="text-sm font-semibold text-text-primary uppercase tracking-wide">
+            Aktuelle Releases
+          </h3>
+          <div className="flex items-center gap-3">
+            <Link
+              href="/dashboard/releases"
+              className="text-accent text-xs font-medium hover:text-accent-hover transition-colors duration-150"
+              onClick={(e) => e.stopPropagation()}
+            >
+              Alle anzeigen →
+            </Link>
+            <svg
+              className={`w-4 h-4 text-text-secondary transition-transform duration-200 ${
+                recentExpanded ? 'rotate-180' : ''
+              }`}
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
+        </button>
 
-        {recentReleases.length > 0 ? (
-          <div className="space-y-4">
-            {recentReleases.map((release) => (
-              <div
-                key={release.id}
-                className="flex items-center gap-4 p-4 border border-border-light rounded-card hover:border-accent/20 hover:shadow-glow transition-all duration-200 cursor-pointer active:scale-[0.99]"
-                style={{ transform: 'translateZ(0)' }}
-              >
-                <div className="w-16 h-16 bg-gradient-to-br from-accent to-primary rounded-card flex-shrink-0" />
-                <div className="flex-1 min-w-0">
-                  <h3 className="font-semibold text-text-primary truncate">{release.title}</h3>
-                  <p className="text-sm text-text-secondary">{release.artist}</p>
-                  <p className="text-sm text-text-secondary mt-1">
-                    Veröffentlicht: {new Date(release.releaseDate).toLocaleDateString('de-DE')}
-                  </p>
-                </div>
-                <div className="flex flex-col items-end gap-2">
-                  <div className="text-right">
-                    <p className="text-sm font-semibold text-text-primary">{release.streams}</p>
-                    <p className="text-xs text-text-secondary">Streams</p>
-                  </div>
-                  <div className="flex gap-1">
-                    {release.platforms.slice(0, 4).map((platform, idx) => (
-                      <div
-                        key={idx}
-                        className="w-6 h-6 bg-bg-secondary rounded-full flex items-center justify-center text-xs text-text-primary"
-                        title={platform}
-                      >
-                        {platform[0]}
+        <div
+          className={`transition-all duration-200 ease-in-out ${
+            recentExpanded ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
+          }`}
+        >
+          <div className="p-4 pt-0">
+            {recentReleases.length > 0 ? (
+              <div className="space-y-2">
+                {recentReleases.map((release) => (
+                  <div
+                    key={release.id}
+                    className="flex items-center gap-3 p-3 border border-border rounded-lg hover:border-accent/30 transition-all duration-150 cursor-pointer"
+                  >
+                    <img
+                      src={release.coverUrl}
+                      alt={release.title}
+                      className="w-12 h-12 object-cover rounded-lg flex-shrink-0"
+                    />
+                    <div className="flex-1 min-w-0">
+                      <h4 className="text-sm font-semibold text-text-primary truncate">{release.title}</h4>
+                      <p className="text-xs text-text-secondary">{release.artist}</p>
+                      <p className="text-xs text-text-secondary mt-0.5">
+                        {new Date(release.releaseDate).toLocaleDateString('de-DE')}
+                      </p>
+                    </div>
+                    <div className="flex flex-col items-end gap-1.5">
+                      <div className="text-right">
+                        <p className="text-xs font-semibold text-text-primary">{release.streams}</p>
+                        <p className="text-[10px] text-text-secondary">Streams</p>
                       </div>
-                    ))}
+                      <div className="flex gap-1">
+                        {release.platforms.slice(0, 4).map((platform, idx) => (
+                          <div
+                            key={idx}
+                            className="w-5 h-5 bg-bg-secondary rounded-full flex items-center justify-center text-[10px] text-text-primary"
+                            title={platform}
+                          >
+                            {platform[0]}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
                   </div>
-                </div>
+                ))}
               </div>
-            ))}
+            ) : (
+              <div className="text-center py-8 text-text-secondary">
+                <p className="text-sm">Noch keine Releases veröffentlicht.</p>
+              </div>
+            )}
           </div>
-        ) : (
-          <div className="text-center py-12 text-text-secondary">
-            <p>Noch keine Releases veröffentlicht.</p>
-          </div>
-        )}
+        </div>
       </div>
     </div>
   );

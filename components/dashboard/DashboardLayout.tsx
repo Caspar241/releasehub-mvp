@@ -7,6 +7,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import { navigationSections } from '@/config/dashboard-navigation';
 import CommandPalette from './CommandPalette';
+import FloatingActionButton from './FloatingActionButton';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -374,6 +375,9 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         isOpen={commandPaletteOpen}
         onClose={() => setCommandPaletteOpen(false)}
       />
+
+      {/* Floating Action Button */}
+      <FloatingActionButton />
     </div>
     </ProtectedRoute>
   );
