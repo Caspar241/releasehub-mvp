@@ -1,5 +1,5 @@
-import StayTuned from '@/components/EmptyStates/StayTuned';
+import TasksPlaceholder from '@/components/dashboard/TasksPlaceholder';
 
 export default function PlanTasksPage() {
-  return <StayTuned />;
+  return <TasksPlaceholder />;
 }
