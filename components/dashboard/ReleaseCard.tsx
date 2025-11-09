@@ -73,7 +73,14 @@ export default function ReleaseCard({ release, showHealthScore = false, showStre
     <div className="group relative flex items-center gap-3 p-3 border border-border rounded-lg hover:border-accent/30 transition-all duration-150 cursor-pointer">
       {/* Health Score Bar (Top Border) */}
       {showHealthScore && healthScore && (
-        <div className="absolute top-0 left-0 right-0 h-0.5 bg-surface-overlay rounded-t-lg overflow-hidden">
+        <div
+          className="absolute top-0 left-0 right-0 h-0.5 bg-surface-overlay rounded-t-lg overflow-hidden"
+          role="progressbar"
+          aria-label="Release Health Score"
+          aria-valuenow={healthScore.score}
+          aria-valuemin={0}
+          aria-valuemax={100}
+        >
           <div
             className="h-full transition-all duration-300"
             style={{
@@ -139,8 +146,9 @@ export default function ReleaseCard({ release, showHealthScore = false, showStre
                 backgroundColor: `${healthColor}15`,
                 color: healthColor,
               }}
+              aria-label={`Health Score: ${healthScore.score}%`}
             >
-              <span>{healthScore.score}</span>
+              <span>{healthScore.score}%</span>
               <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path
                   strokeLinecap="round"

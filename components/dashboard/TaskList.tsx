@@ -99,8 +99,20 @@ export default function TaskList({
 
               {/* Progress + Chevron */}
               <div className="flex items-center gap-3">
+                {/* Progress Percentage */}
+                <span className="text-xs font-semibold text-text-muted min-w-[2.5rem] text-right">
+                  {progressPercent}%
+                </span>
+
                 {/* Mini Progress Bar */}
-                <div className="w-20 h-1.5 bg-surface-overlay rounded-full overflow-hidden">
+                <div
+                  className="w-20 h-1.5 bg-surface-overlay rounded-full overflow-hidden"
+                  role="progressbar"
+                  aria-label="Task Fortschritt"
+                  aria-valuenow={progressPercent}
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                >
                   <div
                     className="h-full bg-accent transition-all duration-300"
                     style={{ width: `${progressPercent}%` }}
