@@ -1,21 +1,27 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { DayPicker, DateRange } from 'react-day-picker';
+import { de } from 'date-fns/locale';
+import 'react-day-picker/dist/style.css';
 import { useDateRange } from '@/contexts/DateRangeContext';
 import { DateRangePreset, getPresetLabel, formatRange, validateDateRange, formatDateForInput, parseDateFromInput } from '@/lib/date';
 
 /**
- * DateRangeBar Component
+ * DateRangeBar Component - Modern, futuristic design
  *
  * Preset pills: 7 TAGE | 30 TAGE | 90 TAGE | CUSTOM
- * Custom opens popup with two date pickers (Von/Bis)
- * Keyboard accessible, validates from <= to
+ * Custom opens glassmorphic popup with:
+ * - react-day-picker calendar
+ * - Quick select buttons
+ * - Date range preview
+ * - Smooth animations with Framer Motion
  */
 export default function DateRangeBar() {
   const { dateRange, setPreset, setCustomRange } = useDateRange();
   const [showCustomPopup, setShowCustomPopup] = useState(false);
-  const [fromDate, setFromDate] = useState<string>('');
-  const [toDate, setToDate] = useState<string>('');
+  const [selectedRange, setSelectedRange] = useState<DateRange | undefined>(undefined);
   const [error, setError] = useState<string | null>(null);
 
   const popupRef = useRef<HTMLDivElement>(null);
@@ -23,11 +29,14 @@ export default function DateRangeBar() {
 
   const presets: DateRangePreset[] = ['7d', '30d', '90d'];
 
-  // Initialize custom dates when popup opens
+  // Initialize selected range when popup opens
   useEffect(() => {
-    if (showCustomPopup && dateRange.preset === 'custom') {
-      setFromDate(formatDateForInput(dateRange.from));
-      setToDate(formatDateForInput(dateRange.to));
+    if (showCustomPopup) {
+      setSelectedRange({
+        from: dateRange.from,
+        to: dateRange.to,
+      });
+      setError(null);
     }
   }, [showCustomPopup, dateRange]);
 
@@ -80,30 +89,33 @@ export default function DateRangeBar() {
   // Handle custom button click
   const handleCustomClick = () => {
     setShowCustomPopup(!showCustomPopup);
-    if (!showCustomPopup) {
-      // Initialize with current range
-      setFromDate(formatDateForInput(dateRange.from));
-      setToDate(formatDateForInput(dateRange.to));
-      setError(null);
-    }
+  };
+
+  // Handle quick select
+  const handleQuickSelect = (days: number) => {
+    const to = new Date();
+    const from = new Date();
+    from.setDate(from.getDate() - days);
+    setSelectedRange({ from, to });
+    setError(null);
   };
 
   // Handle apply custom range
   const handleApplyCustom = () => {
-    const from = parseDateFromInput(fromDate);
-    const to = parseDateFromInput(toDate);
+    if (!selectedRange?.from || !selectedRange?.to) {
+      setError('Bitte beide Daten auswählen');
+      return;
+    }
 
-    const validationError = validateDateRange(from, to);
+    const validationError = validateDateRange(selectedRange.from, selectedRange.to);
     if (validationError) {
       setError(validationError);
       return;
     }
 
-    if (from && to) {
-      setCustomRange(from, to);
-      setShowCustomPopup(false);
-      setError(null);
-    }
+    setCustomRange(selectedRange.from, selectedRange.to);
+    setShowCustomPopup(false);
+    setError(null);
   };
 
   // Get display text for custom button
@@ -111,8 +123,14 @@ export default function DateRangeBar() {
     ? formatRange(dateRange.from, dateRange.to)
     : 'CUSTOM';
 
+  // Format preview text
+  const getPreviewText = () => {
+    if (!selectedRange?.from || !selectedRange?.to) return null;
+    return formatRange(selectedRange.from, selectedRange.to);
+  };
+
   return (
-    <div className="relative flex items-center gap-1 bg-surface-elevated/60 backdrop-blur-sm rounded-lg p-1 border border-border">
+    <div className="relative flex items-center gap-1 bg-[#0B0B0C]/60 backdrop-blur-sm rounded-lg p-1 border border-[#1F1F1F]">
       {/* Preset Pills */}
       {presets.map((preset) => {
         const isActive = dateRange.preset === preset;
@@ -124,11 +142,11 @@ export default function DateRangeBar() {
             className={`
               relative px-3 py-1.5 text-xs font-semibold rounded-md
               transition-all duration-200
-              focus:outline-none focus:ring-2 focus:ring-accent/50
+              focus:outline-none focus:ring-2 focus:ring-[#00A3FF]/50
               ${
                 isActive
-                  ? 'text-text-inverse bg-accent shadow-sm'
-                  : 'text-text-secondary hover:text-text-primary hover:bg-surface-overlay/50'
+                  ? 'text-black bg-[#00A3FF] shadow-lg shadow-[#00A3FF]/20'
+                  : 'text-[#6B6C70] hover:text-[#EAEAEA] hover:bg-[#111214]'
               }
             `}
             style={{ transform: 'translateZ(0)' }}
@@ -137,9 +155,9 @@ export default function DateRangeBar() {
             {/* Active indicator glow */}
             {isActive && (
               <div
-                className="absolute inset-0 rounded-md opacity-20 blur-sm pointer-events-none"
+                className="absolute inset-0 rounded-md opacity-30 blur-md pointer-events-none"
                 style={{
-                  background: 'radial-gradient(circle, rgba(79, 209, 255, 0.4) 0%, transparent 70%)',
+                  background: 'radial-gradient(circle, rgba(0, 163, 255, 0.6) 0%, transparent 70%)',
                 }}
                 aria-hidden="true"
               />
@@ -160,11 +178,11 @@ export default function DateRangeBar() {
         className={`
           relative px-3 py-1.5 text-xs font-semibold rounded-md
           transition-all duration-200
-          focus:outline-none focus:ring-2 focus:ring-accent/50
+          focus:outline-none focus:ring-2 focus:ring-[#00A3FF]/50
           ${
             dateRange.preset === 'custom'
-              ? 'text-text-inverse bg-accent shadow-sm'
-              : 'text-text-secondary hover:text-text-primary hover:bg-surface-overlay/50'
+              ? 'text-black bg-[#00A3FF] shadow-lg shadow-[#00A3FF]/20'
+              : 'text-[#6B6C70] hover:text-[#EAEAEA] hover:bg-[#111214]'
           }
         `}
         style={{ transform: 'translateZ(0)' }}
@@ -175,9 +193,9 @@ export default function DateRangeBar() {
         {/* Active indicator glow */}
         {dateRange.preset === 'custom' && (
           <div
-            className="absolute inset-0 rounded-md opacity-20 blur-sm pointer-events-none"
+            className="absolute inset-0 rounded-md opacity-30 blur-md pointer-events-none"
             style={{
-              background: 'radial-gradient(circle, rgba(79, 209, 255, 0.4) 0%, transparent 70%)',
+              background: 'radial-gradient(circle, rgba(0, 163, 255, 0.6) 0%, transparent 70%)',
             }}
             aria-hidden="true"
           />
@@ -190,87 +208,105 @@ export default function DateRangeBar() {
       </button>
 
       {/* Custom Date Popup */}
-      {showCustomPopup && (
-        <div
-          ref={popupRef}
-          role="dialog"
-          aria-label="Benutzerdefinierten Zeitraum wählen"
-          className="absolute top-full right-0 mt-2 w-80 glass-card rounded-lg p-4 shadow-e3 z-[60]"
-        >
-          <h3 className="text-sm font-semibold text-text-primary mb-3">
-            Benutzerdefinierten Zeitraum wählen
-          </h3>
+      <AnimatePresence>
+        {showCustomPopup && (
+          <motion.div
+            ref={popupRef}
+            initial={{ opacity: 0, y: -10, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -10, scale: 0.95 }}
+            transition={{ duration: 0.15, ease: 'easeOut' }}
+            role="dialog"
+            aria-label="Benutzerdefinierten Zeitraum wählen"
+            className="absolute top-full right-0 mt-2 w-auto glass-card rounded-2xl p-5 shadow-lg z-[60] border border-[#232427]"
+            style={{
+              background: 'linear-gradient(135deg, #0B0B0C/95 0%, #111214/95 100%)',
+              backdropFilter: 'blur(20px)',
+            }}
+          >
+            {/* Header */}
+            <h3 className="text-sm text-[#6B6C70] mb-4 font-medium">
+              Benutzerdefinierten Zeitraum wählen
+            </h3>
 
-          <div className="space-y-3">
-            {/* From Date */}
-            <div>
-              <label htmlFor="from-date" className="block text-xs font-medium text-text-secondary mb-1">
-                Von
-              </label>
-              <input
-                id="from-date"
-                type="date"
-                value={fromDate}
-                onChange={(e) => {
-                  setFromDate(e.target.value);
-                  setError(null);
+            {/* Quick Select Buttons */}
+            <div className="flex gap-2 mb-4">
+              {[
+                { label: 'Letzte 7 Tage', days: 7 },
+                { label: 'Letzte 30 Tage', days: 30 },
+                { label: 'Letzte 90 Tage', days: 90 },
+              ].map(({ label, days }) => (
+                <button
+                  key={days}
+                  onClick={() => handleQuickSelect(days)}
+                  className="px-3 py-1.5 text-xs font-medium rounded-md bg-[#111214] border border-[#232427] text-[#6B6C70] hover:text-[#EAEAEA] hover:border-[#00A3FF]/30 transition-all duration-200"
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+
+            {/* Calendar */}
+            <div className="custom-day-picker mb-4">
+              <DayPicker
+                mode="range"
+                selected={selectedRange}
+                onSelect={setSelectedRange}
+                locale={de}
+                disabled={{ after: new Date() }}
+                modifiersClassNames={{
+                  selected: 'rdp-selected',
+                  today: 'rdp-today',
                 }}
-                className="w-full px-3 py-2 bg-surface-overlay border border-border rounded-md text-sm text-text-primary focus:outline-none focus:ring-2 focus:ring-accent/50"
-                aria-required="true"
-                aria-invalid={!!error}
               />
             </div>
 
-            {/* To Date */}
-            <div>
-              <label htmlFor="to-date" className="block text-xs font-medium text-text-secondary mb-1">
-                Bis
-              </label>
-              <input
-                id="to-date"
-                type="date"
-                value={toDate}
-                onChange={(e) => {
-                  setToDate(e.target.value);
-                  setError(null);
-                }}
-                className="w-full px-3 py-2 bg-surface-overlay border border-border rounded-md text-sm text-text-primary focus:outline-none focus:ring-2 focus:ring-accent/50"
-                aria-required="true"
-                aria-invalid={!!error}
-              />
-            </div>
-
-            {/* Error Message */}
-            {error && (
-              <div
-                role="alert"
-                className="text-xs text-red-500 bg-red-500/10 border border-red-500/30 rounded px-2 py-1.5"
-              >
-                {error}
+            {/* Preview */}
+            {getPreviewText() && (
+              <div className="mb-4 px-3 py-2 rounded-lg bg-[#111214] border border-[#232427]">
+                <p className="text-xs text-[#6B6C70]">Ausgewählter Zeitraum:</p>
+                <p className="text-sm text-[#EAEAEA] font-medium mt-0.5">
+                  {getPreviewText()}
+                </p>
               </div>
             )}
 
+            {/* Error Message */}
+            <AnimatePresence>
+              {error && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  role="alert"
+                  className="text-xs text-red-400 bg-red-500/10 border border-red-500/30 rounded-lg px-3 py-2 mb-4"
+                >
+                  {error}
+                </motion.div>
+              )}
+            </AnimatePresence>
+
             {/* Actions */}
-            <div className="flex items-center gap-2 pt-2">
-              <button
-                onClick={handleApplyCustom}
-                className="flex-1 px-3 py-2 bg-accent text-white text-sm font-medium rounded-md hover:bg-accent-hover transition-colors focus:outline-none focus:ring-2 focus:ring-accent/50"
-              >
-                Anwenden
-              </button>
+            <div className="flex items-center justify-end gap-3">
               <button
                 onClick={() => {
                   setShowCustomPopup(false);
                   customButtonRef.current?.focus();
                 }}
-                className="px-3 py-2 bg-surface-overlay text-text-secondary text-sm font-medium rounded-md hover:bg-surface-overlay/80 transition-colors focus:outline-none focus:ring-2 focus:ring-accent/50"
+                className="px-4 py-2 text-sm font-medium text-[#6B6C70] hover:text-[#EAEAEA] transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#00A3FF]/50 rounded-md"
               >
                 Abbrechen
               </button>
+              <button
+                onClick={handleApplyCustom}
+                className="px-4 py-2 bg-[#00A3FF] hover:bg-[#0BB2FF] text-black text-sm font-medium rounded-md transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#00A3FF]/50 shadow-lg shadow-[#00A3FF]/20"
+              >
+                Anwenden
+              </button>
             </div>
-          </div>
-        </div>
-      )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
