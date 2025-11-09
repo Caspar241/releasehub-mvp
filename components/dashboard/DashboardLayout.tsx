@@ -118,8 +118,8 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                   {/* Section Header - SMALL CAPS Overline */}
                   <button
                     onClick={() => section.collapsible && toggleSection(section.id)}
-                    className="w-full flex items-center justify-between mb-4 text-[10px] font-semibold uppercase tracking-[0.15em] text-text-muted/70 hover:text-accent transition-colors"
-                    style={{ letterSpacing: '0.15em' }}
+                    className="w-full flex items-center justify-between mb-4 text-[10px] font-semibold uppercase tracking-[0.15em] text-text-muted/70 hover:text-accent transition-all duration-200 hover:translate-x-0.5"
+                    style={{ letterSpacing: '0.15em', transform: 'translateZ(0)' }}
                   >
                     <span>{section.label}</span>
                     {section.collapsible && (
@@ -151,8 +151,9 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                             className={`group relative flex items-center gap-3 py-3 px-4 text-[15px] font-medium rounded-xl transition-all duration-200 ${
                               isActive
                                 ? 'text-accent bg-accent/8'
-                                : 'text-text-primary/90 hover:bg-surface-overlay/60 hover:text-text-primary'
+                                : 'text-text-primary/90 hover:bg-surface-overlay/60 hover:text-text-primary hover:translate-x-1 hover:shadow-sm active:scale-[0.98]'
                             }`}
+                            style={{ transform: 'translateZ(0)' }}
                           >
                             {/* Active Indicator */}
                             {isActive && (
