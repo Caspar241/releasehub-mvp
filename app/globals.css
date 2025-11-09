@@ -801,4 +801,10 @@
     font-size: 0.75rem;
     color: #6B6C70;
   }
+
+  /* ===== APPLE-LIKE HAPTIC FEEDBACK ===== */
+  .active\:scale-98:active {
+    transform: scale(0.98);
+    transition: transform 80ms ease-out;
+  }
 }
