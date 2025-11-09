@@ -39,7 +39,7 @@ export const navigationSections: NavSection[] = [
   {
     id: 'dashboard',
     label: 'Dashboard',
-    collapsible: false,
+    collapsible: true,
     defaultExpanded: true,
     items: [
       {
@@ -53,7 +53,7 @@ export const navigationSections: NavSection[] = [
   {
     id: 'plan',
     label: 'Plan',
-    collapsible: false,
+    collapsible: true,
     defaultExpanded: true,
     items: [
       {
@@ -79,7 +79,7 @@ export const navigationSections: NavSection[] = [
   {
     id: 'release',
     label: 'Release',
-    collapsible: false,
+    collapsible: true,
     defaultExpanded: true,
     items: [
       {
@@ -105,7 +105,7 @@ export const navigationSections: NavSection[] = [
   {
     id: 'scale',
     label: 'Scale',
-    collapsible: false,
+    collapsible: true,
     defaultExpanded: true,
     items: [
       {
@@ -137,7 +137,7 @@ export const navigationSections: NavSection[] = [
   {
     id: 'analyze',
     label: 'Analyze',
-    collapsible: false,
+    collapsible: true,
     defaultExpanded: true,
     items: [
       {
