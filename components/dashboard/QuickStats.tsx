@@ -1,54 +1,106 @@
 'use client';
 
-import { useState } from 'react';
-import Link from 'next/link';
+import { useState, useMemo } from 'react';
+import { useDateRange } from '@/contexts/DateRangeContext';
+import { KpiMetric, SparklineDataPoint } from '@/lib/types/dashboard';
+import KpiCard from './KpiCard';
 
-interface Stat {
-  label: string;
-  value: string;
-  change: string;
-  changeType: 'positive' | 'negative' | 'neutral';
-  href: string;
-  subvalue?: string;
+/**
+ * QuickStats Component
+ *
+ * Displays key metrics in collapsible card grid:
+ * - Streams, Earnings, Release Status, Open Tasks
+ * - Each metric uses KpiCard with sparklines and deltas
+ * - Responds to global date range selection
+ * - Mock data until API is available
+ */
+
+// Helper: Generate mock sparkline data
+function generateMockSparkline(days: number, trend: 'up' | 'down' | 'flat'): SparklineDataPoint[] {
+  const data: SparklineDataPoint[] = [];
+  const baseValue = 100;
+
+  for (let i = 0; i < days; i++) {
+    const date = new Date();
+    date.setDate(date.getDate() - (days - i - 1));
+
+    let value = baseValue;
+    if (trend === 'up') {
+      value = baseValue + (i * 5) + Math.random() * 10;
+    } else if (trend === 'down') {
+      value = baseValue - (i * 3) + Math.random() * 10;
+    } else {
+      value = baseValue + Math.random() * 20 - 10;
+    }
+
+    data.push({
+      date: date.toISOString().split('T')[0],
+      value: Math.round(value),
+    });
+  }
+
+  return data;
 }
-
-const stats: Stat[] = [
-  {
-    label: 'Streams (last 30 days)',
-    value: '847.2K',
-    change: '+18.4%',
-    changeType: 'positive',
-    href: '/dashboard/analytics',
-    subvalue: 'vs. Vormonat',
-  },
-  {
-    label: 'Earnings (month-to-date)',
-    value: '€3,127',
-    change: '+12.1%',
-    changeType: 'positive',
-    href: '/dashboard/earnings',
-    subvalue: 'geschätzt',
-  },
-  {
-    label: 'Release Status',
-    value: '8',
-    change: '3 / 2 / 3',
-    changeType: 'neutral',
-    href: '/dashboard/releases',
-    subvalue: 'LIVE / UPCOMING / DRAFT',
-  },
-  {
-    label: 'Open Tasks',
-    value: '4',
-    change: '2 kritisch',
-    changeType: 'negative',
-    href: '#alerts',
-    subvalue: 'erfordern Aktion',
-  },
-];
 
 export default function QuickStats() {
   const [isExpanded, setIsExpanded] = useState(true);
+  const { activeDateRange, dateRange } = useDateRange();
+
+  // Generate metrics based on active date range
+  // TODO: Replace with real API calls when available
+  const metrics: KpiMetric[] = useMemo(() => {
+    const dataPoints = activeDateRange === '7d' ? 7 : activeDateRange === '90d' ? 30 : 14;
+
+    return [
+      {
+        id: 'streams',
+        title: `Streams (${dateRange.label})`,
+        value: '847.2K',
+        delta: {
+          value: 18.4,
+          trend: 'positive',
+        },
+        sparklineData: generateMockSparkline(dataPoints, 'up'),
+        href: '/dashboard/analytics',
+        infoTooltip: 'Gesamtanzahl der Streams über alle Plattformen',
+      },
+      {
+        id: 'earnings',
+        title: 'Earnings (MTD)',
+        value: '€3,127',
+        delta: {
+          value: 12.1,
+          trend: 'positive',
+        },
+        sparklineData: generateMockSparkline(dataPoints, 'up'),
+        href: '/dashboard/earnings',
+        infoTooltip: 'Geschätzte Einnahmen für den aktuellen Monat',
+      },
+      {
+        id: 'release-status',
+        title: 'Release Status',
+        value: '8',
+        delta: {
+          value: 0,
+          trend: 'neutral',
+        },
+        href: '/dashboard/releases',
+        infoTooltip: '3 Live / 2 Geplant / 3 Entwürfe',
+      },
+      {
+        id: 'open-tasks',
+        title: 'Open Tasks',
+        value: '4',
+        delta: {
+          value: -15.2,
+          trend: 'negative',
+        },
+        sparklineData: generateMockSparkline(dataPoints, 'down'),
+        href: '#alerts',
+        infoTooltip: '2 kritische Tasks erfordern sofortige Aktion',
+      },
+    ];
+  }, [activeDateRange, dateRange.label]);
 
   return (
     <div className="glass-card rounded-xl overflow-hidden">
@@ -78,72 +130,10 @@ export default function QuickStats() {
           isExpanded ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
         }`}
       >
-        <div className="grid grid-cols-1 gap-3 p-4 pt-0 sm:grid-cols-2 lg:grid-cols-4">
-          {stats.map((stat) => {
-            const changeColorClass =
-              stat.changeType === 'positive'
-                ? 'text-green-500'
-                : stat.changeType === 'negative'
-                ? 'text-red-500'
-                : 'text-text-secondary';
-
-            return (
-              <Link
-                key={stat.label}
-                href={stat.href}
-                className="border border-border rounded-lg p-3 transition-all duration-150 hover:border-accent/40 hover:bg-surface-overlay/10 cursor-pointer group"
-              >
-                <div className="flex items-start justify-between mb-2">
-                  <p className="text-[9px] font-bold uppercase tracking-wider text-text-muted">
-                    {stat.label}
-                  </p>
-                  {stat.changeType === 'positive' && (
-                    <svg
-                      className="w-3 h-3 text-green-500"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={3}
-                        d="M5 10l7-7m0 0l7 7m-7-7v18"
-                      />
-                    </svg>
-                  )}
-                  {stat.changeType === 'negative' && (
-                    <svg
-                      className="w-3 h-3 text-red-500"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={3}
-                        d="M19 14l-7 7m0 0l-7-7m7 7V3"
-                      />
-                    </svg>
-                  )}
-                </div>
-                <div>
-                  <p className="text-2xl font-bold text-text-primary mb-1 leading-none">
-                    {stat.value}
-                  </p>
-                  <div className="flex items-baseline gap-2">
-                    <span className={`text-xs font-semibold ${changeColorClass}`}>
-                      {stat.change}
-                    </span>
-                  </div>
-                  {stat.subvalue && (
-                    <p className="text-[10px] text-text-muted mt-1">{stat.subvalue}</p>
-                  )}
-                </div>
-              </Link>
-            );
-          })}
+        <div className="grid grid-cols-1 gap-3 p-4 pt-0 sm:grid-cols-2 xl:grid-cols-4">
+          {metrics.map((metric) => (
+            <KpiCard key={metric.id} metric={metric} />
+          ))}
         </div>
       </div>
     </div>
