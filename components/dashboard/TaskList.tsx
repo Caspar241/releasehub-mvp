@@ -106,7 +106,7 @@ export default function TaskList({
 
                 {/* Mini Progress Bar */}
                 <div
-                  className="w-20 h-1.5 bg-surface-overlay rounded-full overflow-hidden"
+                  className="relative w-20 h-2 bg-[#0E1013] border border-[#1A1D21] rounded-full overflow-hidden shadow-[inset_0_1px_0_rgba(255,255,255,.06)]"
                   role="progressbar"
                   aria-label="Task Fortschritt"
                   aria-valuenow={progressPercent}
@@ -114,7 +114,7 @@ export default function TaskList({
                   aria-valuemax={100}
                 >
                   <div
-                    className="h-full bg-accent transition-all duration-300"
+                    className="absolute inset-y-0 left-0 rounded-full bg-[#00A3FF] transition-all duration-300"
                     style={{ width: `${progressPercent}%` }}
                   />
                 </div>

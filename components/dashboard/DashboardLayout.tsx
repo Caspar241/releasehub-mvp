@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
@@ -29,13 +30,16 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
   const [notificationMenuOpen, setNotificationMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
   const { user, signOut } = useAuth();
 
+  const userMenuRef = useRef<HTMLDivElement>(null);
+  const userButtonRef = useRef<HTMLDivElement>(null);
+
   // Hover intent delays
   let notificationHoverTimeout: NodeJS.Timeout;
-  let userHoverTimeout: NodeJS.Timeout;
 
   const handleSignOut = async () => {
     await signOut();
@@ -56,13 +60,14 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     return collapsedSections.has(sectionId);
   };
 
-  // Keyboard shortcuts (⌘K for command palette, ESC to close dropdowns)
+  // Client-side mounting
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Keyboard shortcuts (ESC to close dropdowns)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-        e.preventDefault();
-        setCommandPaletteOpen((prev) => !prev);
-      }
       if (e.key === 'Escape') {
         setNotificationMenuOpen(false);
         setUserMenuOpen(false);
@@ -72,6 +77,25 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
+
+  // Click outside handler for user menu
+  useEffect(() => {
+    if (!userMenuOpen) return;
+
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        userMenuRef.current &&
+        !userMenuRef.current.contains(e.target as Node) &&
+        userButtonRef.current &&
+        !userButtonRef.current.contains(e.target as Node)
+      ) {
+        setUserMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [userMenuOpen]);
 
   return (
     <ProtectedRoute>
@@ -206,13 +230,13 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               {/* Command Palette Button */}
               <button
                 onClick={() => setCommandPaletteOpen(true)}
-                className="hidden lg:flex items-center gap-2 px-3 py-2 text-sm text-text-secondary hover:text-accent bg-surface-overlay rounded-lg transition-all hover:shadow-sm"
-                title="Open command palette"
+                className="hidden lg:flex items-center gap-2 px-3 py-1.5 text-sm text-gray-300 hover:text-gray-100 bg-[#111214]/80 border border-[#1F1F1F] rounded-xl transition-all hover:border-[#2A2A2A] focus-within:border-[#2A2A2A]"
+                title="Search"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
-                <span className="text-xs font-mono">⌘K</span>
+                <span className="text-sm">Search</span>
               </button>
 
               {/* Notifications */}
@@ -273,65 +297,19 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                 </svg>
               </Link>
 
-              {/* User Profile Dropdown */}
+              {/* User Profile Button */}
               <div
-                className="relative"
-                onMouseEnter={() => {
-                  userHoverTimeout = setTimeout(() => setUserMenuOpen(true), 150);
-                }}
-                onMouseLeave={() => {
-                  clearTimeout(userHoverTimeout);
-                  setUserMenuOpen(false);
-                }}
+                ref={userButtonRef}
+                onClick={() => setUserMenuOpen(!userMenuOpen)}
+                className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-surface-overlay transition-all cursor-pointer group"
               >
-                <div className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-surface-overlay transition-all cursor-pointer group">
-                  <div className="hidden md:block text-right">
-                    <p className="text-sm font-medium text-text-primary">{user?.name || 'Artist'}</p>
-                    <p className="text-xs text-text-muted">{user?.email}</p>
-                  </div>
-                  <div className="w-9 h-9 bg-accent rounded-full flex items-center justify-center text-white font-semibold text-sm">
-                    {user?.name?.charAt(0).toUpperCase() || user?.email?.charAt(0).toUpperCase() || 'A'}
-                  </div>
+                <div className="hidden md:block text-right">
+                  <p className="text-sm font-medium text-text-primary">{user?.name || 'Artist'}</p>
+                  <p className="text-xs text-text-muted">{user?.email}</p>
                 </div>
-
-                {/* User Menu Dropdown */}
-                {userMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-56 glass-card rounded-2xl p-2 shadow-e3 z-[60]">
-                    <div className="px-3 py-2 border-b border-border mb-2">
-                      <p className="text-sm font-semibold text-text-primary">{user?.name || 'Artist'}</p>
-                      <p className="text-xs text-text-muted">{user?.email}</p>
-                    </div>
-                    <Link
-                      href="/dashboard/settings"
-                      className="flex items-center gap-3 px-3 py-2 text-sm text-text-primary hover:bg-surface-overlay rounded-lg transition-all"
-                    >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                      </svg>
-                      Profil
-                    </Link>
-                    <Link
-                      href="/dashboard/settings"
-                      className="flex items-center gap-3 px-3 py-2 text-sm text-text-primary hover:bg-surface-overlay rounded-lg transition-all"
-                    >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                      </svg>
-                      Einstellungen
-                    </Link>
-                    <div className="border-t border-border my-2"></div>
-                    <button
-                      onClick={handleSignOut}
-                      className="flex items-center gap-3 w-full px-3 py-2 text-sm text-text-secondary hover:text-accent hover:bg-surface-overlay rounded-lg transition-all"
-                    >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                      </svg>
-                      Abmelden
-                    </button>
-                  </div>
-                )}
+                <div className="w-9 h-9 bg-accent rounded-full flex items-center justify-center text-white font-semibold text-sm">
+                  {user?.name?.charAt(0).toUpperCase() || user?.email?.charAt(0).toUpperCase() || 'A'}
+                </div>
               </div>
             </div>
           </div>
@@ -381,6 +359,71 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
       {/* Floating Action Button */}
       <FloatingActionButton />
+
+      {/* User Menu Portal */}
+      {mounted && userMenuOpen && userButtonRef.current && createPortal(
+        <div
+          ref={userMenuRef}
+          className="fixed w-64 rounded-2xl bg-[#0B0B0C]/90 backdrop-blur-md border border-[#1C1D20] shadow-[0_10px_40px_rgba(0,0,0,.45)] z-50 animate-in fade-in slide-in-from-top-1 duration-150"
+          style={{
+            top: `${userButtonRef.current.getBoundingClientRect().bottom + 8}px`,
+            right: `${window.innerWidth - userButtonRef.current.getBoundingClientRect().right}px`,
+          }}
+          role="menu"
+          aria-label="User menu"
+        >
+          <div className="p-2">
+            {/* User Info Header */}
+            <div className="px-3 py-2 border-b border-[#1C1D20] mb-2">
+              <p className="text-sm font-semibold text-gray-200">{user?.name || 'Artist'}</p>
+              <p className="text-xs text-gray-400">{user?.email}</p>
+            </div>
+
+            {/* Menu Items */}
+            <Link
+              href="/dashboard/settings"
+              className="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-200 hover:bg-[#111318] transition-all duration-150 hover:translate-x-[1px]"
+              role="menuitem"
+              onClick={() => setUserMenuOpen(false)}
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+              <span>Profil</span>
+            </Link>
+
+            <Link
+              href="/dashboard/settings"
+              className="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-200 hover:bg-[#111318] transition-all duration-150 hover:translate-x-[1px]"
+              role="menuitem"
+              onClick={() => setUserMenuOpen(false)}
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              <span>Einstellungen</span>
+            </Link>
+
+            <div className="border-t border-[#1C1D20] my-2"></div>
+
+            <button
+              onClick={() => {
+                handleSignOut();
+                setUserMenuOpen(false);
+              }}
+              className="flex items-center gap-2 w-full px-3 py-2 rounded-lg text-gray-400 hover:text-accent hover:bg-[#111318] transition-all duration-150 hover:translate-x-[1px]"
+              role="menuitem"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              </svg>
+              <span>Abmelden</span>
+            </button>
+          </div>
+        </div>,
+        document.body
+      )}
     </div>
     </DateRangeProvider>
     </ProtectedRoute>

@@ -74,7 +74,7 @@ export default function ReleaseCard({ release, showHealthScore = false, showStre
       {/* Health Score Bar (Top Border) */}
       {showHealthScore && healthScore && (
         <div
-          className="absolute top-0 left-0 right-0 h-0.5 bg-surface-overlay rounded-t-lg overflow-hidden"
+          className="absolute top-0 left-0 right-0 h-[6px] bg-[#0E1013] border-b border-[#1A1D21] rounded-t-lg overflow-hidden shadow-[inset_0_1px_0_rgba(255,255,255,.06)]"
           role="progressbar"
           aria-label="Release Health Score"
           aria-valuenow={healthScore.score}
