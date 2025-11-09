@@ -277,17 +277,65 @@ export const commandPaletteActions: CommandAction[] = [
     action: '/dashboard/settings',
   },
 
-  // Quick Actions
+  // Quick Actions - Releases & Tasks
   {
     id: 'action-new-release',
-    label: 'Upload New Release',
-    description: 'Start distributing new music',
+    label: 'New Release',
+    description: 'Upload and distribute new music',
     icon: '',
-    section: 'Quick Actions',
+    section: 'Releases & Tasks',
     keywords: ['upload', 'new', 'release', 'distribute', 'create'],
     action: '/dashboard/upload',
     shortcut: '⌘N',
   },
+  {
+    id: 'action-upload-master',
+    label: 'Upload Master',
+    description: 'Upload your master audio file',
+    icon: '',
+    section: 'Releases & Tasks',
+    keywords: ['upload', 'master', 'audio', 'file', 'wav', 'flac'],
+    action: '/dashboard/upload', // TODO: Direct link to master upload when available
+  },
+  {
+    id: 'action-create-presave',
+    label: 'Create Pre-Save',
+    description: 'Set up pre-save campaign',
+    icon: '',
+    section: 'Releases & Tasks',
+    keywords: ['presave', 'pre-save', 'campaign', 'marketing', 'launch'],
+    action: '/dashboard/scale/campaigns', // TODO: Direct link to pre-save creation when available
+  },
+  {
+    id: 'action-campaign-builder',
+    label: 'Open Campaign Builder',
+    description: 'Create marketing campaigns',
+    icon: '',
+    section: 'Releases & Tasks',
+    keywords: ['campaign', 'marketing', 'builder', 'promotion'],
+    action: '/dashboard/scale/campaigns',
+  },
+  {
+    id: 'action-go-tasks',
+    label: 'Go to Tasks',
+    description: 'View your task list',
+    icon: '',
+    section: 'Releases & Tasks',
+    keywords: ['tasks', 'todo', 'checklist', 'alerts'],
+    action: '/dashboard/plan/tasks',
+  },
+  {
+    id: 'action-go-analytics',
+    label: 'Go to Analytics',
+    description: 'View streaming performance',
+    icon: '',
+    section: 'Releases & Tasks',
+    keywords: ['analytics', 'stats', 'streams', 'data'],
+    action: '/dashboard/analytics',
+    shortcut: '⌘A',
+  },
+
+  // Other Quick Actions
   {
     id: 'action-export-data',
     label: 'Export Analytics Data',
