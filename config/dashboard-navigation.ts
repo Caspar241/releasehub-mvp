@@ -33,7 +33,7 @@ export interface QuickAction {
 
 /**
  * Main Navigation Sections
- * FLAT STRUCTURE - All items always visible, no collapsing sections
+ * Organized into 4 main workflow sections: PLAN, RELEASE, SCALE, ANALYZE
  */
 export const navigationSections: NavSection[] = [
   {
@@ -51,8 +51,34 @@ export const navigationSections: NavSection[] = [
     ],
   },
   {
-    id: 'releases',
-    label: 'Releases',
+    id: 'plan',
+    label: 'Plan',
+    collapsible: false,
+    defaultExpanded: true,
+    items: [
+      {
+        name: 'Tasks',
+        href: '/dashboard/plan/tasks',
+        icon: '',
+        description: 'Manage your tasks',
+      },
+      {
+        name: 'Calendar',
+        href: '/dashboard/plan/calendar',
+        icon: '',
+        description: 'Schedule releases',
+      },
+      {
+        name: 'Roadmap',
+        href: '/dashboard/roadmap',
+        icon: '',
+        description: 'Product roadmap',
+      },
+    ],
+  },
+  {
+    id: 'release',
+    label: 'Release',
     collapsible: false,
     defaultExpanded: true,
     items: [
@@ -73,52 +99,6 @@ export const navigationSections: NavSection[] = [
         href: '/dashboard/distribution',
         icon: '',
         description: 'Streaming platforms',
-      },
-    ],
-  },
-  {
-    id: 'analytics',
-    label: 'Analytics',
-    collapsible: false,
-    defaultExpanded: true,
-    items: [
-      {
-        name: 'Streams',
-        href: '/dashboard/analytics',
-        icon: '',
-        description: 'Streaming performance',
-      },
-      {
-        name: 'Audience',
-        href: '/dashboard/analytics/audience',
-        icon: '',
-        description: 'Listener demographics',
-      },
-      {
-        name: 'Revenue',
-        href: '/dashboard/analytics/revenue',
-        icon: '',
-        description: 'Revenue analytics',
-      },
-    ],
-  },
-  {
-    id: 'earnings',
-    label: 'Earnings',
-    collapsible: false,
-    defaultExpanded: true,
-    items: [
-      {
-        name: 'Payouts',
-        href: '/dashboard/earnings',
-        icon: '',
-        description: 'Your payouts',
-      },
-      {
-        name: 'Splits',
-        href: '/dashboard/earnings/splits',
-        icon: '',
-        description: 'Revenue splits',
       },
     ],
   },
@@ -155,16 +135,40 @@ export const navigationSections: NavSection[] = [
     ],
   },
   {
-    id: 'settings',
-    label: 'Settings',
+    id: 'analyze',
+    label: 'Analyze',
     collapsible: false,
     defaultExpanded: true,
     items: [
       {
-        name: 'Settings',
-        href: '/dashboard/settings',
+        name: 'Streams',
+        href: '/dashboard/analytics',
         icon: '',
-        description: 'Account & preferences',
+        description: 'Streaming performance',
+      },
+      {
+        name: 'Audience',
+        href: '/dashboard/analytics/audience',
+        icon: '',
+        description: 'Listener demographics',
+      },
+      {
+        name: 'Revenue',
+        href: '/dashboard/analytics/revenue',
+        icon: '',
+        description: 'Revenue analytics',
+      },
+      {
+        name: 'Payouts',
+        href: '/dashboard/earnings',
+        icon: '',
+        description: 'Your payouts',
+      },
+      {
+        name: 'Splits',
+        href: '/dashboard/earnings/splits',
+        icon: '',
+        description: 'Revenue splits',
       },
     ],
   },

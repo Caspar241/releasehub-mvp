@@ -7,36 +7,44 @@ import Link from 'next/link';
 const allReleases = [
   {
     id: 1,
-    title: 'Summer Vibes',
+    title: '4L',
+    artist: 'Mando47',
     type: 'Single',
     releaseDate: '2025-11-15',
+    coverUrl: '/cover-mando47.jpg',
     status: 'scheduled',
     streams: 0,
     platforms: ['Spotify', 'Apple Music', 'YouTube Music'],
   },
   {
     id: 2,
-    title: 'Midnight Dreams',
+    title: 'Beachclub',
+    artist: 'Mando47',
     type: 'Single',
     releaseDate: '2025-11-22',
+    coverUrl: '/cover-mando47.jpg',
     status: 'processing',
     streams: 0,
     platforms: ['Spotify', 'Apple Music'],
   },
   {
     id: 3,
-    title: 'Ocean Waves',
+    title: 'More Money More Problems',
+    artist: 'Mando47',
     type: 'Single',
     releaseDate: '2025-10-28',
+    coverUrl: '/cover-mando47.jpg',
     status: 'live',
     streams: 45200,
     platforms: ['Spotify', 'Apple Music', 'YouTube Music', 'Amazon Music'],
   },
   {
     id: 4,
-    title: 'City Lights',
+    title: 'Freak Like Me',
+    artist: 'Mando47',
     type: 'Single',
     releaseDate: '2025-10-15',
+    coverUrl: '/cover-mando47.jpg',
     status: 'live',
     streams: 128500,
     platforms: ['Spotify', 'Apple Music', 'YouTube Music'],
@@ -44,8 +52,10 @@ const allReleases = [
   {
     id: 5,
     title: 'Neon Nights',
+    artist: 'Mando47',
     type: 'Single',
     releaseDate: '2025-09-20',
+    coverUrl: '/cover-mando47.jpg',
     status: 'live',
     streams: 19800,
     platforms: ['Spotify', 'Apple Music'],
@@ -53,8 +63,10 @@ const allReleases = [
   {
     id: 6,
     title: 'Desert Dreams EP',
+    artist: 'Mando47',
     type: 'EP',
     releaseDate: '2025-08-10',
+    coverUrl: '/cover-mando47.jpg',
     status: 'live',
     streams: 87300,
     platforms: ['Spotify', 'Apple Music', 'YouTube Music', 'Deezer'],
@@ -133,65 +145,57 @@ export default function AllReleasesList() {
       </div>
 
       {/* Releases Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
         {sortedReleases.map((release) => (
           <div
             key={release.id}
-            className="glass-card p-6 rounded-2xl transition-all duration-200 hover:border-accent/20 hover:shadow-glow hover:-translate-y-1 cursor-pointer active:scale-[0.99]"
+            className="glass-card p-3 rounded-xl transition-all duration-200 hover:border-accent/20 hover:shadow-glow hover:-translate-y-1 cursor-pointer active:scale-[0.99]"
             style={{ transform: 'translateZ(0)' }}
           >
-            {/* Cover */}
-            <div className="h-48 bg-gradient-to-br from-primary to-accent rounded-card flex items-center justify-center mb-4">
-              <span className="text-6xl">🎵</span>
+            {/* Cover - Quadratisch und größer */}
+            <div className="aspect-square rounded-lg overflow-hidden mb-3">
+              <img
+                src={release.coverUrl}
+                alt={release.title}
+                className="w-full h-full object-cover"
+              />
             </div>
 
-            {/* Content */}
-            <div className="space-y-3">
+            {/* Content - Kompakt */}
+            <div className="space-y-2">
               <div>
-                <div className="flex items-start justify-between gap-2 mb-1">
-                  <h3 className="font-semibold text-text-primary text-lg">{release.title}</h3>
+                <div className="flex items-start justify-between gap-1 mb-0.5">
+                  <h3 className="font-semibold text-text-primary text-sm truncate">{release.title}</h3>
                   {getStatusBadge(release.status)}
                 </div>
-                <p className="text-sm text-text-secondary">{release.type}</p>
+                <p className="text-xs text-text-secondary truncate">{release.artist}</p>
               </div>
 
-              <div className="space-y-2 text-sm">
+              <div className="space-y-1 text-xs">
                 <div className="flex items-center justify-between">
                   <span className="text-text-secondary">Release:</span>
-                  <span className="font-medium text-text-primary">
+                  <span className="font-medium text-text-primary text-[10px]">
                     {new Date(release.releaseDate).toLocaleDateString('de-DE')}
                   </span>
                 </div>
                 {release.status === 'live' && (
                   <div className="flex items-center justify-between">
                     <span className="text-text-secondary">Streams:</span>
-                    <span className="font-medium text-text-primary">
+                    <span className="font-medium text-text-primary text-[10px]">
                       {release.streams.toLocaleString()}
                     </span>
                   </div>
                 )}
               </div>
 
-              {/* Platforms */}
-              <div className="flex flex-wrap gap-1 pt-2 border-t border-border-light">
-                {release.platforms.map((platform, idx) => (
-                  <span
-                    key={idx}
-                    className="px-2 py-1 bg-bg-secondary text-text-primary rounded text-xs"
-                  >
-                    {platform}
-                  </span>
-                ))}
-              </div>
-
               {/* Actions */}
-              <div className="flex gap-2 pt-2">
-                <button className="flex-1 btn-primary text-sm">
+              <div className="flex gap-1 pt-1">
+                <button className="flex-1 btn-primary text-xs py-1.5">
                   Details
                 </button>
-                <button className="px-3 py-2 border border-border-light text-text-primary rounded-button hover:bg-bg-secondary transition-all duration-150 text-sm active:scale-95"
+                <button className="px-2 py-1.5 border border-border-light text-text-primary rounded-button hover:bg-bg-secondary transition-all duration-150 text-xs active:scale-95"
                   style={{ transform: 'translateZ(0)' }}>
-                  ⚙️
+                  •••
                 </button>
               </div>
             </div>
@@ -201,7 +205,6 @@ export default function AllReleasesList() {
 
       {sortedReleases.length === 0 && (
         <div className="feature-card p-12 text-center">
-          <div className="text-6xl mb-4">🎵</div>
           <p className="text-text-secondary mb-4">Keine Releases gefunden.</p>
           <Link
             href="/dashboard/upload"

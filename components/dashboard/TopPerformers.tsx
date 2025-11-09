@@ -1,11 +1,11 @@
 'use client';
 
 const topSongs = [
-  { rank: 1, title: 'City Lights', streams: 128500, growth: '+15%', trend: 'up' },
-  { rank: 2, title: 'Ocean Waves', streams: 45200, growth: '+8%', trend: 'up' },
-  { rank: 3, title: 'Midnight Dreams', streams: 32100, growth: '-3%', trend: 'down' },
-  { rank: 4, title: 'Summer Vibes', streams: 28400, growth: '+22%', trend: 'up' },
-  { rank: 5, title: 'Neon Nights', streams: 19800, growth: '+5%', trend: 'up' },
+  { rank: 1, title: 'Freak Like Me', artist: 'Mando47', coverUrl: '/cover-mando47.jpg', streams: 128500, growth: '+15%', trend: 'up' },
+  { rank: 2, title: 'More Money More Problems', artist: 'Mando47', coverUrl: '/cover-mando47.jpg', streams: 45200, growth: '+8%', trend: 'up' },
+  { rank: 3, title: '4L', artist: 'Mando47', coverUrl: '/cover-mando47.jpg', streams: 32100, growth: '-3%', trend: 'down' },
+  { rank: 4, title: 'Beachclub', artist: 'Mando47', coverUrl: '/cover-mando47.jpg', streams: 28400, growth: '+22%', trend: 'up' },
+  { rank: 5, title: 'Neon Nights', artist: 'Mando47', coverUrl: '/cover-mando47.jpg', streams: 19800, growth: '+5%', trend: 'up' },
 ];
 
 const topCountries = [
@@ -32,19 +32,26 @@ export default function TopPerformers() {
               <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-primary to-accent rounded-button flex items-center justify-center text-white font-bold text-sm">
                 {song.rank}
               </div>
+              <div className="flex-shrink-0 w-12 h-12 rounded overflow-hidden">
+                <img
+                  src={song.coverUrl}
+                  alt={song.title}
+                  className="w-full h-full object-cover"
+                />
+              </div>
               <div className="flex-1 min-w-0">
                 <h3 className="font-medium text-text-primary truncate">{song.title}</h3>
+                <p className="text-xs text-text-secondary">{song.artist}</p>
                 <p className="text-sm text-text-secondary">{song.streams.toLocaleString()} Streams</p>
               </div>
               <div className="flex items-center gap-2">
                 <span
                   className={`text-sm font-medium ${
-                    song.trend === 'up' ? 'text-accent' : 'text-text-secondary'
+                    song.trend === 'up' ? 'text-green-500' : 'text-red-500'
                   }`}
                 >
                   {song.growth}
                 </span>
-                <span className="text-lg">{song.trend === 'up' ? '📈' : '📉'}</span>
               </div>
             </div>
           ))}
