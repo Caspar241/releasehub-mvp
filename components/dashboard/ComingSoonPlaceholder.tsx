@@ -20,7 +20,7 @@ export default function ComingSoonPlaceholder({
   return (
     <div className="relative min-h-screen p-6 lg:p-10">
       <div className="max-w-3xl mx-auto">
-        <div className="relative glass-card rounded-2xl p-8 md:p-12 shadow-e2 animate-cardIn">
+        <div className="relative glass-card rounded-2xl p-8 md:p-12 shadow-e2">
           {/* Status Badge */}
           <div className="absolute top-4 right-4">
             <span className="inline-block px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-accent bg-accent/10 border border-accent/20 rounded-full">
