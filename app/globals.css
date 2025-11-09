@@ -465,4 +465,62 @@
   .safe-bottom {
     padding-bottom: env(safe-area-inset-bottom);
   }
+
+  /* ===== COMING SOON ANIMATIONS ===== */
+
+  /* Vertical Float Animation - Dormant but alive feeling */
+  @keyframes floatY {
+    0%, 100% {
+      transform: translateY(-3px);
+    }
+    50% {
+      transform: translateY(3px);
+    }
+  }
+
+  /* Soft Opacity Pulse - Synchronized with float */
+  @keyframes softPulse {
+    0%, 100% {
+      opacity: 0.8;
+    }
+    50% {
+      opacity: 1.0;
+    }
+  }
+
+  /* Card Entrance - One-time fade in */
+  @keyframes cardIn {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-floatY {
+    animation: floatY 6s ease-in-out infinite;
+  }
+
+  .animate-softPulse {
+    animation: softPulse 6s ease-in-out infinite;
+  }
+
+  .animate-cardIn {
+    animation: cardIn 250ms ease-out;
+  }
+
+  /* Reduced Motion Override - Respect accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-floatY,
+    .animate-softPulse,
+    .animate-cardIn {
+      animation: none !important;
+      transition: none !important;
+      opacity: 1 !important;
+      transform: translateY(0) !important;
+    }
+  }
 }

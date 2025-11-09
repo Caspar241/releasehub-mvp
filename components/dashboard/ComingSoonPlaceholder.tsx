@@ -20,7 +20,7 @@ export default function ComingSoonPlaceholder({
   return (
     <div className="relative min-h-screen p-6 lg:p-10">
       <div className="max-w-3xl mx-auto">
-        <div className="relative glass-card rounded-2xl p-8 md:p-12 shadow-e2">
+        <div className="relative glass-card rounded-2xl p-8 md:p-12 shadow-e2 animate-cardIn">
           {/* Status Badge */}
           <div className="absolute top-4 right-4">
             <span className="inline-block px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-accent bg-accent/10 border border-accent/20 rounded-full">
@@ -32,7 +32,12 @@ export default function ComingSoonPlaceholder({
           <div className="text-center space-y-8">
             {/* Visual Element - Blurred Preview Box */}
             <div className="flex justify-center">
-              <div className="w-20 h-20 md:w-28 md:h-28 bg-surface-overlay/40 backdrop-blur-md border border-accent/15 rounded-xl shadow-glow flex items-center justify-center">
+              <div
+                className="w-20 h-20 md:w-28 md:h-28 bg-surface-overlay/40 backdrop-blur-md border border-accent/15 rounded-xl flex items-center justify-center animate-floatY animate-softPulse"
+                style={{
+                  boxShadow: '0 0 24px rgba(79, 209, 255, 0.12), inset 0 0 20px rgba(79, 209, 255, 0.08)',
+                }}
+              >
                 {/* Lock Icon */}
                 <svg
                   className="w-6 h-6 md:w-8 md:h-8 text-text-muted/50"
