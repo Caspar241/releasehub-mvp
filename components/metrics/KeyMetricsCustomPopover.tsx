@@ -200,37 +200,36 @@ export default function KeyMetricsCustomPopover({ onClose, triggerRef }: KeyMetr
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: -10, scale: 0.98 }}
       transition={{ duration: 0.14, ease: [0.16, 1, 0.3, 1] }} // Apple easing curve
-      className="fixed w-auto bg-[#0B0B0C]/98 backdrop-blur-xl border border-[#1C1D20] rounded-xl shadow-[0_20px_60px_rgba(0,0,0,.65)] p-3"
+      className="fixed w-[320px] bg-[#0B0B0C]/90 backdrop-blur-md border border-[#1C1D20] rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.4)] p-3 text-[12px] leading-[1.3]"
       style={{
         top: position.top,
         right: position.right,
         zIndex: 9999,
-        background: 'linear-gradient(135deg, rgba(11, 11, 12, 0.98) 0%, rgba(17, 18, 20, 0.96) 100%)',
+        background: 'linear-gradient(135deg, rgba(11, 11, 12, 0.92) 0%, rgba(17, 18, 20, 0.88) 100%)',
       }}
       role="dialog"
       aria-label="Benutzerdefinierten Zeitraum wählen"
     >
       {/* Quick Shortcuts - Compact */}
-      <div className="mb-2.5">
-        <h3 className="text-[9px] font-semibold text-gray-400 uppercase tracking-wide mb-1.5">Schnellwahl</h3>
+      <div className="mb-2">
         <div className="flex gap-1.5">
           <button
             onClick={() => handleShortcut(0)}
-            className="px-2 py-1 text-[10px] font-medium rounded-md bg-[#111214] border border-[#232427] text-gray-300 hover:text-gray-100 hover:border-[#00A3FF]/30 transition-all duration-150 focus:outline-none focus-visible:ring-1 focus-visible:ring-[#00A3FF] active:scale-98"
+            className="flex-1 px-2 py-1 text-[11px] font-medium rounded-lg bg-transparent border border-[#1F1F1F] text-gray-300 hover:text-gray-100 hover:border-[#2A2A2A] transition-all duration-150 focus:outline-none focus-visible:ring-1 focus-visible:ring-[#00A3FF] active:scale-98"
             style={{ transform: 'translateZ(0)' }}
           >
             Heute
           </button>
           <button
             onClick={() => handleShortcut(6)}
-            className="px-2 py-1 text-[10px] font-medium rounded-md bg-[#111214] border border-[#232427] text-gray-300 hover:text-gray-100 hover:border-[#00A3FF]/30 transition-all duration-150 focus:outline-none focus-visible:ring-1 focus-visible:ring-[#00A3FF] active:scale-98"
+            className="flex-1 px-2 py-1 text-[11px] font-medium rounded-lg bg-transparent border border-[#1F1F1F] text-gray-300 hover:text-gray-100 hover:border-[#2A2A2A] transition-all duration-150 focus:outline-none focus-visible:ring-1 focus-visible:ring-[#00A3FF] active:scale-98"
             style={{ transform: 'translateZ(0)' }}
           >
             Letzte 7 Tage
           </button>
           <button
             onClick={() => handleShortcut(29)}
-            className="px-2 py-1 text-[10px] font-medium rounded-md bg-[#111214] border border-[#232427] text-gray-300 hover:text-gray-100 hover:border-[#00A3FF]/30 transition-all duration-150 focus:outline-none focus-visible:ring-1 focus-visible:ring-[#00A3FF] active:scale-98"
+            className="flex-1 px-2 py-1 text-[11px] font-medium rounded-lg bg-transparent border border-[#1F1F1F] text-gray-300 hover:text-gray-100 hover:border-[#2A2A2A] transition-all duration-150 focus:outline-none focus-visible:ring-1 focus-visible:ring-[#00A3FF] active:scale-98"
             style={{ transform: 'translateZ(0)' }}
           >
             Letzte 30 Tage
@@ -239,14 +238,17 @@ export default function KeyMetricsCustomPopover({ onClose, triggerRef }: KeyMetr
       </div>
 
       {/* Calendar (1 month - compact) */}
-      <div className="custom-day-picker custom-day-picker-compact mb-2.5">
+      <div className="mb-2">
         <DayPicker
           mode="range"
           selected={selectedRange}
           onSelect={handleCalendarSelect}
           locale={de}
           numberOfMonths={1}
+          weekStartsOn={1}
+          showOutsideDays={false}
           disabled={{ after: new Date() }}
+          className="rdp-compact"
           modifiersClassNames={{
             selected: 'rdp-selected',
             today: 'rdp-today',
@@ -255,9 +257,9 @@ export default function KeyMetricsCustomPopover({ onClose, triggerRef }: KeyMetr
       </div>
 
       {/* Von/Bis Inputs - Compact */}
-      <div className="grid grid-cols-2 gap-2 mb-2.5">
+      <div className="grid grid-cols-2 gap-2 mb-2">
         <div>
-          <label htmlFor="from-date" className="block text-[9px] font-semibold text-gray-400 uppercase tracking-wide mb-1">
+          <label htmlFor="from-date" className="block text-[10px] font-medium text-gray-400 mb-1">
             Von
           </label>
           <input
@@ -265,13 +267,13 @@ export default function KeyMetricsCustomPopover({ onClose, triggerRef }: KeyMetr
             type="date"
             value={fromInput}
             onChange={(e) => handleFromChange(e.target.value)}
-            className="w-full bg-[#111214] border border-[#232427] rounded-md px-2 py-1 text-[11px] text-gray-200 focus:outline-none focus:ring-1 focus:ring-[#00A3FF] transition-all duration-150"
+            className="w-full bg-transparent border border-[#1F1F1F] rounded-lg px-2 py-1 text-[11px] text-gray-200 focus:outline-none focus:ring-1 focus:ring-[#00A3FF] transition-all duration-150"
             aria-label="Von Datum"
             max={format(new Date(), 'yyyy-MM-dd')}
           />
         </div>
         <div>
-          <label htmlFor="to-date" className="block text-[9px] font-semibold text-gray-400 uppercase tracking-wide mb-1">
+          <label htmlFor="to-date" className="block text-[10px] font-medium text-gray-400 mb-1">
             Bis
           </label>
           <input
@@ -279,7 +281,7 @@ export default function KeyMetricsCustomPopover({ onClose, triggerRef }: KeyMetr
             type="date"
             value={toInput}
             onChange={(e) => handleToChange(e.target.value)}
-            className="w-full bg-[#111214] border border-[#232427] rounded-md px-2 py-1 text-[11px] text-gray-200 focus:outline-none focus:ring-1 focus:ring-[#00A3FF] transition-all duration-150"
+            className="w-full bg-transparent border border-[#1F1F1F] rounded-lg px-2 py-1 text-[11px] text-gray-200 focus:outline-none focus:ring-1 focus:ring-[#00A3FF] transition-all duration-150"
             aria-label="Bis Datum"
             max={format(new Date(), 'yyyy-MM-dd')}
           />
@@ -288,9 +290,9 @@ export default function KeyMetricsCustomPopover({ onClose, triggerRef }: KeyMetr
 
       {/* Preview - Compact */}
       {getPreview() && (
-        <div className="mb-2.5 px-2 py-1.5 rounded-md bg-[#111214] border border-[#232427]">
-          <p className="text-[9px] text-gray-400 mb-0.5">Ausgewählter Zeitraum</p>
-          <p className="text-[11px] text-gray-200 font-medium">{getPreview()}</p>
+        <div className="mb-2 px-2 py-1.5 rounded-lg bg-transparent border border-[#1F1F1F]">
+          <p className="text-[10px] text-gray-400 mb-0.5">Ausgewählter Zeitraum</p>
+          <p className="text-[12px] text-gray-200 font-medium">{getPreview()}</p>
         </div>
       )}
 
@@ -301,7 +303,7 @@ export default function KeyMetricsCustomPopover({ onClose, triggerRef }: KeyMetr
           animate={{ opacity: 1, height: 'auto' }}
           exit={{ opacity: 0, height: 0 }}
           role="alert"
-          className="mb-2.5 px-2 py-1.5 text-[10px] text-red-400 bg-red-500/10 border border-red-500/30 rounded-md"
+          className="mb-2 px-2 py-1.5 text-[11px] text-red-400 bg-red-500/10 border border-red-500/30 rounded-lg"
         >
           {error}
         </motion.div>
@@ -311,7 +313,7 @@ export default function KeyMetricsCustomPopover({ onClose, triggerRef }: KeyMetr
       <div className="flex items-center justify-end gap-2">
         <button
           onClick={onClose}
-          className="px-2.5 py-1 text-[10px] font-medium text-gray-400 hover:text-gray-200 transition-colors duration-150 focus:outline-none focus-visible:ring-1 focus-visible:ring-[#00A3FF] rounded-md active:scale-98"
+          className="px-3 py-1.5 text-[12px] font-medium text-gray-400 hover:text-gray-200 transition-colors duration-150 focus:outline-none focus-visible:ring-1 focus-visible:ring-[#00A3FF] rounded-lg active:scale-98"
           style={{ transform: 'translateZ(0)' }}
         >
           Abbrechen
@@ -320,13 +322,13 @@ export default function KeyMetricsCustomPopover({ onClose, triggerRef }: KeyMetr
           onClick={handleApply}
           disabled={!canApply}
           className={`
-            px-2.5 py-1 text-[10px] font-semibold rounded-md transition-all duration-150
+            px-3 py-1.5 text-[12px] font-semibold rounded-lg transition-all duration-150
             focus:outline-none focus-visible:ring-1 focus-visible:ring-[#00A3FF]
             active:scale-98
             ${
               canApply
                 ? 'bg-[#00A3FF] text-black hover:bg-[#0BB2FF] shadow-[0_2px_8px_rgba(0,163,255,0.25)]'
-                : 'bg-[#1a1a1c] text-gray-500 cursor-not-allowed'
+                : 'bg-transparent text-gray-500 cursor-not-allowed border border-[#1F1F1F]'
             }
           `}
           style={{ transform: 'translateZ(0)' }}

@@ -802,44 +802,152 @@
     color: #6B6C70;
   }
 
-  /* ===== COMPACT DAY PICKER VARIANT ===== */
-  .custom-day-picker-compact .rdp {
-    --rdp-cell-size: 28px;
+  /* ===== COMPACT DAY PICKER VARIANT (.rdp-compact) ===== */
+  .rdp.rdp-compact {
+    --rdp-cell-size: 32px;
+    --rdp-caption-font-size: 12px;
+    --rdp-accent-color: #00A3FF;
+    font-size: 12px;
+    margin: 0;
   }
 
-  .custom-day-picker-compact .rdp-caption {
+  .rdp.rdp-compact .rdp-months {
+    justify-content: center;
+  }
+
+  .rdp.rdp-compact .rdp-month {
+    background: transparent;
+    color: #EAEAEA;
+  }
+
+  .rdp.rdp-compact .rdp-caption {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     padding: 0 0 0.5rem 0;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid #1F1F1F;
   }
 
-  .custom-day-picker-compact .rdp-caption_label {
-    font-size: 0.75rem;
+  .rdp.rdp-compact .rdp-caption_label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #EAEAEA;
+    text-transform: capitalize;
   }
 
-  .custom-day-picker-compact .rdp-nav_button {
+  .rdp.rdp-compact .rdp-nav {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .rdp.rdp-compact .rdp-nav_button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     width: 24px;
     height: 24px;
+    background: transparent;
+    border: 1px solid #1F1F1F;
+    border-radius: 6px;
+    color: #6B6C70;
+    transition: all 0.2s ease;
   }
 
-  .custom-day-picker-compact .rdp-nav_button svg {
+  .rdp.rdp-compact .rdp-nav_button:hover {
+    background: rgba(255, 255, 255, 0.02);
+    color: #EAEAEA;
+    border-color: #2A2A2A;
+  }
+
+  .rdp.rdp-compact .rdp-nav_button svg {
     width: 12px;
     height: 12px;
   }
 
-  .custom-day-picker-compact .rdp-head_cell {
-    font-size: 0.625rem;
+  .rdp.rdp-compact .rdp-head {
+    font-weight: 500;
+    color: #6B6C70;
+  }
+
+  .rdp.rdp-compact .rdp-head_cell {
+    font-size: 10px;
+    font-weight: 500;
+    color: #6B6C70;
+    text-transform: uppercase;
     padding: 0.25rem 0;
   }
 
-  .custom-day-picker-compact .rdp-cell {
+  .rdp.rdp-compact .rdp-tbody {
+    border: none;
+  }
+
+  .rdp.rdp-compact .rdp-cell {
     padding: 1px;
   }
 
-  .custom-day-picker-compact .rdp-day {
-    width: 28px;
-    height: 28px;
-    border-radius: 6px;
-    font-size: 0.75rem;
+  .rdp.rdp-compact .rdp-day {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #EAEAEA;
+    background: transparent;
+    border: 1px solid transparent;
+    transition: all 0.15s ease;
+  }
+
+  .rdp.rdp-compact .rdp-day:hover:not(.rdp-day_disabled):not(.rdp-day_selected) {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: #2A2A2A;
+  }
+
+  .rdp.rdp-compact .rdp-day_today {
+    background: rgba(107, 108, 112, 0.1);
+    border-color: #3a3a3c;
+    font-weight: 600;
+  }
+
+  .rdp.rdp-compact .rdp-day_selected,
+  .rdp.rdp-compact .rdp-day_range_start,
+  .rdp.rdp-compact .rdp-day_range_end {
+    background: #00A3FF !important;
+    color: #000 !important;
+    font-weight: 600;
+    border-color: transparent !important;
+    box-shadow: 0 0 0 3px rgba(0, 163, 255, 0.15);
+  }
+
+  .rdp.rdp-compact .rdp-day_range_middle {
+    background: rgba(0, 163, 255, 0.12) !important;
+    color: #EAEAEA !important;
+    border-color: transparent !important;
+  }
+
+  .rdp.rdp-compact .rdp-day_range_middle:hover {
+    background: rgba(0, 163, 255, 0.2) !important;
+  }
+
+  .rdp.rdp-compact .rdp-day_disabled {
+    color: #3a3a3c;
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  .rdp.rdp-compact .rdp-day_disabled:hover {
+    background: transparent;
+    border-color: transparent;
+  }
+
+  .rdp.rdp-compact .rdp-day:focus-visible {
+    outline: 2px solid #00A3FF;
+    outline-offset: 2px;
   }
 
   /* ===== APPLE-LIKE HAPTIC FEEDBACK ===== */
