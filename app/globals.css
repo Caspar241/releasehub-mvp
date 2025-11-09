@@ -508,6 +508,13 @@
     animation: softPulse 6s ease-in-out infinite;
   }
 
+  /* Combined animation - both float and pulse */
+  .animate-float-pulse {
+    animation:
+      floatY 6s ease-in-out infinite,
+      softPulse 6s ease-in-out infinite;
+  }
+
   .animate-cardIn {
     animation: cardIn 250ms ease-out;
   }
@@ -516,6 +523,7 @@
   @media (prefers-reduced-motion: reduce) {
     .animate-floatY,
     .animate-softPulse,
+    .animate-float-pulse,
     .animate-cardIn {
       animation: none !important;
       transition: none !important;

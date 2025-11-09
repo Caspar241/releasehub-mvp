@@ -33,7 +33,7 @@ export default function ComingSoonPlaceholder({
             {/* Visual Element - Blurred Preview Box */}
             <div className="flex justify-center">
               <div
-                className="w-20 h-20 md:w-28 md:h-28 bg-surface-overlay/40 backdrop-blur-md border border-accent/15 rounded-xl flex items-center justify-center animate-floatY animate-softPulse"
+                className="w-20 h-20 md:w-28 md:h-28 bg-surface-overlay/40 backdrop-blur-md border border-accent/15 rounded-xl flex items-center justify-center animate-float-pulse"
                 style={{
                   boxShadow: '0 0 24px rgba(79, 209, 255, 0.12), inset 0 0 20px rgba(79, 209, 255, 0.08)',
                 }}
