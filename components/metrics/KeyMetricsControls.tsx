@@ -20,6 +20,7 @@ export default function KeyMetricsControls() {
   const { range, setPreset } = useKeyMetrics();
   const [showCustomPopover, setShowCustomPopover] = useState(false);
   const customButtonRef = useRef<HTMLButtonElement>(null);
+  const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const presets: Array<{ value: '7d' | '30d' | '90d'; label: string }> = [
     { value: '7d', label: '7 TAGE' },
@@ -32,8 +33,23 @@ export default function KeyMetricsControls() {
     setShowCustomPopover(false);
   };
 
-  const handleCustomClick = () => {
-    setShowCustomPopover(!showCustomPopover);
+  const handleCustomMouseEnter = () => {
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+    }
+    hoverTimeoutRef.current = setTimeout(() => {
+      setShowCustomPopover(true);
+    }, 150);
+  };
+
+  const handleCustomMouseLeave = () => {
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+    }
+    // Give user time to move into popover
+    hoverTimeoutRef.current = setTimeout(() => {
+      setShowCustomPopover(false);
+    }, 200);
   };
 
   return (
@@ -88,7 +104,8 @@ export default function KeyMetricsControls() {
         {/* Custom Button */}
         <button
           ref={customButtonRef}
-          onClick={handleCustomClick}
+          onMouseEnter={handleCustomMouseEnter}
+          onMouseLeave={handleCustomMouseLeave}
           className={`
             relative px-4 py-2 text-[11px] font-semibold tracking-wide rounded-lg
             transition-all duration-150 ease-out

@@ -9,7 +9,6 @@ import ProtectedRoute from '@/components/ProtectedRoute';
 import { navigationSections } from '@/config/dashboard-navigation';
 import CommandPalette from './CommandPalette';
 import FloatingActionButton from './FloatingActionButton';
-import DateRangeBar from './DateRangeBar';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -215,11 +214,6 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                 </svg>
                 <span className="text-xs font-mono">⌘K</span>
               </button>
-
-              {/* Date Range Bar */}
-              <div className="hidden lg:block">
-                <DateRangeBar />
-              </div>
 
               {/* Notifications */}
               <div

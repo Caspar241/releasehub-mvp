@@ -104,7 +104,7 @@ function QuickStatsContent() {
   }, [range.preset, formatDisplay]);
 
   return (
-    <div className="glass-card rounded-xl overflow-hidden">
+    <div className="glass-card rounded-xl overflow-visible">
       {/* Header with Controls */}
       <div className="px-4 py-3 flex items-center justify-between border-b border-border">
         <h3 className="text-sm font-semibold text-text-primary uppercase tracking-wide">
