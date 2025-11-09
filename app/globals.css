@@ -236,6 +236,19 @@
     @apply px-4 py-2 text-sm;
   }
 
+  /* Micro-lift hover effect for premium buttons */
+  .btn-micro-lift {
+    transition: transform 140ms ease-out, box-shadow 140ms ease-out;
+  }
+
+  .btn-micro-lift:hover {
+    transform: scale(1.02) translateY(-1px);
+  }
+
+  .btn-micro-lift:active {
+    transform: scale(0.98) translateY(0);
+  }
+
   /* ===== BADGES ===== */
   .badge {
     @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium tracking-wide uppercase;
@@ -524,11 +537,95 @@
     .animate-floatY,
     .animate-softPulse,
     .animate-float-pulse,
-    .animate-cardIn {
+    .animate-cardIn,
+    .animate-sheen,
+    .animate-badge-in,
+    .animate-grid-pulse {
       animation: none !important;
       transition: none !important;
       opacity: 1 !important;
       transform: translateY(0) !important;
     }
+  }
+
+  /* ===== PREMIUM PLACEHOLDER ANIMATIONS ===== */
+
+  /* Grid breathing animation - very subtle brightness shift */
+  @keyframes gridPulse {
+    0%, 100% {
+      opacity: 0.015;
+    }
+    50% {
+      opacity: 0.025;
+    }
+  }
+
+  /* Sheen effect - one-time sweep across surface */
+  @keyframes sheen {
+    0% {
+      transform: translateX(-100%) skewX(-15deg);
+      opacity: 0;
+    }
+    30% {
+      opacity: 0.6;
+    }
+    100% {
+      transform: translateX(200%) skewX(-15deg);
+      opacity: 0;
+    }
+  }
+
+  /* Badge fade in */
+  @keyframes badgeFadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .animate-grid-pulse {
+    animation: gridPulse 16s ease-in-out infinite;
+  }
+
+  .animate-sheen {
+    animation: sheen 0.8s ease-out 0.2s;
+  }
+
+  .animate-badge-in {
+    animation: badgeFadeIn 350ms ease-out 150ms backwards;
+  }
+
+  /* Premium glass edge lighting */
+  .glass-card-premium {
+    background: linear-gradient(
+      135deg,
+      rgba(20, 24, 33, 0.95) 0%,
+      rgba(15, 17, 21, 0.9) 100%
+    );
+    @apply backdrop-blur-glass-lg border border-border shadow-e3;
+    box-shadow:
+      /* Top edge light */
+      inset 0 1px 1px rgba(79, 209, 255, 0.08),
+      inset 0 2px 0 rgba(255, 255, 255, 0.05),
+      /* Bottom edge light */
+      inset 0 -1px 0 rgba(79, 209, 255, 0.04),
+      /* Main depth */
+      0 20px 50px rgba(0, 0, 0, 0.7),
+      0 8px 16px rgba(0, 0, 0, 0.5);
+    /* GPU acceleration */
+    transform: translate3d(0, 0, 0);
+    -webkit-transform: translate3d(0, 0, 0);
+  }
+
+  /* Noise texture overlay for depth */
+  .noise-overlay {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+    background-size: 200px 200px;
+    background-repeat: repeat;
+    opacity: 0.03;
   }
 }
