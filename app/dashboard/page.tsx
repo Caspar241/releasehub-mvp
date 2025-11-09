@@ -13,18 +13,18 @@ export default function DashboardPage() {
           <h1 className="text-3xl md:text-4xl font-bold text-text-primary">Dashboard</h1>
         </div>
 
-        {/* Alerts & Tasks Section - HIGHEST PRIORITY */}
-        <Suspense fallback={<div className="glass-card p-6 rounded-2xl animate-pulse h-40" />}>
-          <AlertsSection />
-        </Suspense>
-
-        {/* Quick Stats KPIs */}
+        {/* Quick Stats KPIs - KEY METRICS AT TOP */}
         <Suspense fallback={<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {[...Array(4)].map((_, i) => (
             <div key={i} className="glass-card p-5 rounded-xl animate-pulse h-32" />
           ))}
         </div>}>
           <QuickStats />
+        </Suspense>
+
+        {/* Alerts & Tasks Section */}
+        <Suspense fallback={<div className="glass-card p-6 rounded-2xl animate-pulse h-40" />}>
+          <AlertsSection />
         </Suspense>
 
         {/* Release Overview */}
