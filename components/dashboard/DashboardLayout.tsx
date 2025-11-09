@@ -4,10 +4,12 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
+import { DateRangeProvider } from '@/contexts/DateRangeContext';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import { navigationSections } from '@/config/dashboard-navigation';
 import CommandPalette from './CommandPalette';
 import FloatingActionButton from './FloatingActionButton';
+import DateRangeSwitcher from './DateRangeSwitcher';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -74,6 +76,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
   return (
     <ProtectedRoute>
+    <DateRangeProvider>
     <div className="min-h-screen bg-bg-secondary">
       {/* Mobile sidebar backdrop */}
       {sidebarOpen && (
@@ -184,7 +187,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       {/* Main content */}
       <div className="lg:pl-72">
         {/* Top bar */}
-        <div className="sticky top-0 z-10 bg-surface-primary/95 backdrop-blur-glass-lg border-b border-border shadow-e1">
+        <div className="sticky top-0 z-50 bg-surface-primary/95 backdrop-blur-glass-lg border-b border-border shadow-e1">
           <div className="flex items-center justify-between h-20 px-6 lg:px-8">
             {/* Mobile menu button */}
             <button
@@ -213,6 +216,11 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                 <span className="text-xs font-mono">⌘K</span>
               </button>
 
+              {/* Date Range Switcher */}
+              <div className="hidden lg:block">
+                <DateRangeSwitcher />
+              </div>
+
               {/* Notifications */}
               <div
                 className="relative"
@@ -233,7 +241,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
                 {/* Notification Dropdown */}
                 {notificationMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-80 glass-card rounded-2xl p-4 shadow-e3 z-50">
+                  <div className="absolute right-0 mt-2 w-80 glass-card rounded-2xl p-4 shadow-e3 z-[60]">
                     <div className="flex items-center justify-between mb-4">
                       <h3 className="text-sm font-semibold text-text-primary">Benachrichtigungen</h3>
                       <button className="text-xs text-accent hover:text-accent-hover">Alle als gelesen markieren</button>
@@ -294,7 +302,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
                 {/* User Menu Dropdown */}
                 {userMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-56 glass-card rounded-2xl p-2 shadow-e3 z-50">
+                  <div className="absolute right-0 mt-2 w-56 glass-card rounded-2xl p-2 shadow-e3 z-[60]">
                     <div className="px-3 py-2 border-b border-border mb-2">
                       <p className="text-sm font-semibold text-text-primary">{user?.name || 'Artist'}</p>
                       <p className="text-xs text-text-muted">{user?.email}</p>
@@ -380,6 +388,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       {/* Floating Action Button */}
       <FloatingActionButton />
     </div>
+    </DateRangeProvider>
     </ProtectedRoute>
   );
 }
