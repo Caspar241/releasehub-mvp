@@ -802,6 +802,46 @@
     color: #6B6C70;
   }
 
+  /* ===== COMPACT DAY PICKER VARIANT ===== */
+  .custom-day-picker-compact .rdp {
+    --rdp-cell-size: 28px;
+  }
+
+  .custom-day-picker-compact .rdp-caption {
+    padding: 0 0 0.5rem 0;
+    margin-bottom: 0.25rem;
+  }
+
+  .custom-day-picker-compact .rdp-caption_label {
+    font-size: 0.75rem;
+  }
+
+  .custom-day-picker-compact .rdp-nav_button {
+    width: 24px;
+    height: 24px;
+  }
+
+  .custom-day-picker-compact .rdp-nav_button svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  .custom-day-picker-compact .rdp-head_cell {
+    font-size: 0.625rem;
+    padding: 0.25rem 0;
+  }
+
+  .custom-day-picker-compact .rdp-cell {
+    padding: 1px;
+  }
+
+  .custom-day-picker-compact .rdp-day {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+  }
+
   /* ===== APPLE-LIKE HAPTIC FEEDBACK ===== */
   .active\:scale-98:active {
     transform: scale(0.98);

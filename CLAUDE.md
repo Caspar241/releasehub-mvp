@@ -1,0 +1,1 @@
+- Okay so wie das menü von der zeitraum auswahl ist ist an sicg fut ber bitte mache das deutlich kompakte rund viel kleiner, du kannst asl schnell asuwahl nur Heute, letze 7 tage, letze 30 tage machen das reicht und dann ienfcah alels viel kleiner
