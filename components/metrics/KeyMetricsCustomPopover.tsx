@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef, RefObject } from 'react';
+import { createPortal } from 'react-dom';
 import { motion } from 'framer-motion';
 import { DayPicker, DateRange } from 'react-day-picker';
 import { de } from 'date-fns/locale';
@@ -32,8 +33,22 @@ export default function KeyMetricsCustomPopover({ onClose, triggerRef }: KeyMetr
   const [fromInput, setFromInput] = useState('');
   const [toInput, setToInput] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [position, setPosition] = useState({ top: 0, right: 0 });
+  const [mounted, setMounted] = useState(false);
 
   const popoverRef = useRef<HTMLDivElement>(null);
+
+  // Calculate position based on trigger button
+  useEffect(() => {
+    setMounted(true);
+    if (triggerRef.current) {
+      const rect = triggerRef.current.getBoundingClientRect();
+      setPosition({
+        top: rect.bottom + 8, // 8px gap below button
+        right: window.innerWidth - rect.right, // Align to right edge of button
+      });
+    }
+  }, [triggerRef]);
 
   // Initialize from current range
   useEffect(() => {
@@ -175,16 +190,22 @@ export default function KeyMetricsCustomPopover({ onClose, triggerRef }: KeyMetr
 
   const canApply = selectedRange?.from && selectedRange?.to && selectedRange.from <= selectedRange.to;
 
-  return (
+  // Don't render until mounted (client-side only for portal)
+  if (!mounted) return null;
+
+  const popoverContent = (
     <motion.div
       ref={popoverRef}
       initial={{ opacity: 0, y: -10, scale: 0.98 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: -10, scale: 0.98 }}
       transition={{ duration: 0.14, ease: [0.16, 1, 0.3, 1] }} // Apple easing curve
-      className="absolute top-full right-0 mt-2 w-auto bg-[#0B0B0C]/85 backdrop-blur-md border border-[#1C1D20] rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,.45)] p-4 z-[9999]"
+      className="fixed w-auto bg-[#0B0B0C]/98 backdrop-blur-xl border border-[#1C1D20] rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,.65)] p-4"
       style={{
-        background: 'linear-gradient(135deg, rgba(11, 11, 12, 0.9) 0%, rgba(17, 18, 20, 0.85) 100%)',
+        top: position.top,
+        right: position.right,
+        zIndex: 9999,
+        background: 'linear-gradient(135deg, rgba(11, 11, 12, 0.98) 0%, rgba(17, 18, 20, 0.96) 100%)',
       }}
       role="dialog"
       aria-label="Benutzerdefinierten Zeitraum wählen"
@@ -318,4 +339,7 @@ export default function KeyMetricsCustomPopover({ onClose, triggerRef }: KeyMetr
       </div>
     </motion.div>
   );
+
+  // Render popover at document body level using Portal
+  return createPortal(popoverContent, document.body);
 }
