@@ -44,17 +44,17 @@ function generateMockSparkline(days: number, trend: 'up' | 'down' | 'flat'): Spa
 
 export default function QuickStats() {
   const [isExpanded, setIsExpanded] = useState(true);
-  const { activeDateRange, dateRange } = useDateRange();
+  const { dateRange, formatRangeDisplay } = useDateRange();
 
   // Generate metrics based on active date range
   // TODO: Replace with real API calls when available
   const metrics: KpiMetric[] = useMemo(() => {
-    const dataPoints = activeDateRange === '7d' ? 7 : activeDateRange === '90d' ? 30 : 14;
+    const dataPoints = dateRange.preset === '7d' ? 7 : dateRange.preset === '90d' ? 30 : 14;
 
     return [
       {
         id: 'streams',
-        title: `Streams (${dateRange.label})`,
+        title: `Streams (${formatRangeDisplay()})`,
         value: '847.2K',
         delta: {
           value: 18.4,
@@ -100,7 +100,7 @@ export default function QuickStats() {
         infoTooltip: '2 kritische Tasks erfordern sofortige Aktion',
       },
     ];
-  }, [activeDateRange, dateRange.label]);
+  }, [dateRange.preset, formatRangeDisplay]);
 
   return (
     <div className="glass-card rounded-xl overflow-hidden">

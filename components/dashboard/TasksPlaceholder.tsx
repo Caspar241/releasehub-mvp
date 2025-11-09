@@ -8,6 +8,9 @@ interface TasksPlaceholderProps {
 }
 
 export default function TasksPlaceholder({ featureName = 'Tasks' }: TasksPlaceholderProps) {
+  // Determine if feature name is plural for correct grammar
+  const isPlural = featureName === 'Tasks' || featureName === 'Smart Links';
+  const verb = isPlural ? 'werden' : 'wird';
   return (
     <motion.div
       className="relative min-h-[calc(100vh-80px)] flex items-center justify-center p-6"
@@ -120,10 +123,10 @@ export default function TasksPlaceholder({ featureName = 'Tasks' }: TasksPlaceho
               transition={{ delay: 0.3, duration: 0.6 }}
             >
               <h1 className="text-3xl md:text-4xl font-bold text-text-primary leading-tight tracking-tight">
-                {featureName} wird bald freigeschaltet
+                {featureName} {verb} bald freigeschaltet
               </h1>
               <p className="text-base md:text-lg text-text-secondary leading-relaxed max-w-lg mx-auto">
-                Dieses Feature befindet sich in Entwicklung und wird automatisch für alle Nutzer freigeschaltet, sobald es live geht.
+                Dieses Feature befindet sich in Entwicklung und wird automatisch für dich freigeschaltet, sobald es live geht.
               </p>
             </motion.div>
 

@@ -47,7 +47,21 @@
       "Bash(else echo \"❌ Port $PORT: NOT RESPONDING\")",
       "Bash(ping:*)",
       "Bash(BashOutput 1c6047)",
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "Bash(echo:*)",
+      "Bash(npm run dev:clean:*)",
+      "Bash(.nvmrc)",
+      "Bash(brew install:*)",
+      "Bash(export NVM_DIR=\"$HOME/.nvm\")",
+      "Bash([ -s \"/opt/homebrew/opt/nvm/nvm.sh\" ])",
+      "Bash(. \"/opt/homebrew/opt/nvm/nvm.sh\")",
+      "Bash(nvm install:*)",
+      "Bash(nvm use:*)",
+      "Bash(find:*)",
+      "Bash(git reset:*)",
+      "Bash(npm run dev:safe:*)",
+      "Bash(git log:*)",
+      "Bash(git config:*)"
     ],
     "deny": [],
     "ask": []

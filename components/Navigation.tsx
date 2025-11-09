@@ -49,7 +49,7 @@ export default function Navigation({ onLoginClick, onSignupClick }: NavigationPr
       ],
     },
     {
-      label: 'Für wen?',
+      label: 'Für wen',
       dropdown: [
         { label: 'Für Independent Artists', href: '/artists', description: '0% Rechte, volle Kontrolle' },
         { label: 'Für Labels & Distributoren', href: '/labels', description: 'Multi-Artist Management' },

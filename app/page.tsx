@@ -89,9 +89,7 @@ export default function Home() {
                   variants={fadeInUp}
                   className="text-lead text-text-secondary mb-10 max-w-xl lg:mx-0 mx-auto text-balance"
                 >
-                  The first release management system built for independent artists.
-                  Structure without gatekeepers. Transparency without revenue cuts.
-                  European. Fair. Made for real work.
+                  Wir ersetzen das klassische Label-Modell durch Software: eine Plattform, auf der Artists ihren gesamten Workflow steuern – Plan · Release · Scale · Analyze – mit klaren Prozessen, echten Daten und voller Kontrolle über Rechte, Einnahmen und Wachstum.
                 </motion.p>
 
                 {/* CTAs */}
