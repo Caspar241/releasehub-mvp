@@ -63,7 +63,8 @@
       "Bash(git log:*)",
       "Bash(git config:*)",
       "Bash(git restore:*)",
-      "Bash(npx prettier:*)"
+      "Bash(npx prettier:*)",
+      "Bash(xargs:*)"
     ],
     "deny": [],
     "ask": []
