@@ -25,7 +25,7 @@ const getIcon = (iconName: string) => {
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [openSections, setOpenSections] = useState<string[]>([]); // Array for multiple open sections
+  const [activeMain, setActiveMain] = useState<string | null>(null); // Only one main open at a time (accordion)
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
   const [notificationMenuOpen, setNotificationMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
@@ -66,24 +66,18 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     router.push("/");
   };
 
-  // Toggle section - allows multiple sections to be open
+  // Toggle section - classic accordion behavior (only one open at a time)
   const toggleSection = (sectionId: string) => {
-    // Find if this section contains the active item
-    const section = navigationSections.find((s) => s.id === sectionId);
-    const isActiveSectionToggle = section && isSectionActive(section);
-
-    setOpenSections((prev) => {
-      if (prev.includes(sectionId)) {
-        // Don't allow closing the active section (with current active item)
-        if (isActiveSectionToggle) {
-          return prev; // Keep it open
-        }
-        // Close this section
-        return prev.filter((id) => id !== sectionId);
-      } else {
-        // Open this section (keep others open)
-        return [...prev, sectionId];
+    setActiveMain((prev) => {
+      // If clicking the currently open main, close it (unless it contains active item)
+      if (prev === sectionId) {
+        const section = navigationSections.find((s) => s.id === sectionId);
+        const hasActiveItem = section && isSectionActive(section);
+        // Don't allow closing if it contains the active item
+        return hasActiveItem ? prev : null;
       }
+      // Otherwise, open the clicked main (closes any other)
+      return sectionId;
     });
   };
 
@@ -96,20 +90,19 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     });
   };
 
-  // Check if section is currently open (user toggled it)
+  // Check if section is currently open (accordion behavior)
   const isSectionOpen = (sectionId: string) => {
-    return openSections.includes(sectionId);
+    return activeMain === sectionId;
   };
 
-  // Auto-open section when navigating to an item in it
-  // Close all other sections (only one open at a time)
+  // Auto-open the main containing the active item on route change
   useEffect(() => {
     // Find which section contains the active item
     const activeSection = navigationSections.find((section) => isSectionActive(section));
 
     if (activeSection) {
-      // Set only the active section as open (closes all others)
-      setOpenSections([activeSection.id]);
+      // Set only this main as open (accordion - closes all others)
+      setActiveMain(activeSection.id);
     }
   }, [pathname, searchParams]); // Run when route changes
 
