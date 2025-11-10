@@ -25,7 +25,7 @@ const getIcon = (iconName: string) => {
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [openSection, setOpenSection] = useState<string | null>(null);
+  const [openSections, setOpenSections] = useState<string[]>([]); // Array for multiple open sections
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
   const [notificationMenuOpen, setNotificationMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
@@ -66,27 +66,31 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     router.push("/");
   };
 
-  // Toggle section with accordion behavior (only one open at a time)
+  // Toggle section - allows multiple sections to be open
   const toggleSection = (sectionId: string) => {
-    if (openSection === sectionId) {
-      setOpenSection(null); // Close if already open
-    } else {
-      setOpenSection(sectionId); // Open and close others
-    }
+    setOpenSections((prev) => {
+      if (prev.includes(sectionId)) {
+        // Close this section
+        return prev.filter((id) => id !== sectionId);
+      } else {
+        // Open this section (keep others open)
+        return [...prev, sectionId];
+      }
+    });
   };
 
-  // Check if a section contains the active page
+  // Check if a section contains the active page or active panel
   const isSectionActive = (section: any) => {
-    return section.items.some((item: any) => pathname === item.href);
+    return section.items.some((item: any) => {
+      const panelName = panelNavigationMap[item.href];
+      const isPanelActive = panelName && searchParams?.get('panel') === panelName;
+      return pathname === item.href || isPanelActive;
+    });
   };
 
-  // Check if section should be open (accordion logic + active state)
+  // Check if section is currently open (user toggled it)
   const isSectionOpen = (sectionId: string) => {
-    const section = navigationSections.find((s) => s.id === sectionId);
-    // Keep section open if it contains active page
-    if (section && isSectionActive(section)) return true;
-    // Otherwise check accordion state
-    return openSection === sectionId;
+    return openSections.includes(sectionId);
   };
 
   // Client-side mounting
