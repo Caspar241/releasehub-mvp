@@ -25,7 +25,7 @@ const getIcon = (iconName: string) => {
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [activeMain, setActiveMain] = useState<string | null>(null); // Only one main open at a time (accordion)
+  const [openSections, setOpenSections] = useState<string[]>([]); // Multiple sections can be open
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
   const [notificationMenuOpen, setNotificationMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
@@ -66,18 +66,16 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     router.push("/");
   };
 
-  // Toggle section - classic accordion behavior (only one open at a time)
+  // Toggle section - manual control, no automatic closing
   const toggleSection = (sectionId: string) => {
-    setActiveMain((prev) => {
-      // If clicking the currently open main, close it (unless it contains active item)
-      if (prev === sectionId) {
-        const section = navigationSections.find((s) => s.id === sectionId);
-        const hasActiveItem = section && isSectionActive(section);
-        // Don't allow closing if it contains the active item
-        return hasActiveItem ? prev : null;
+    setOpenSections((prev) => {
+      if (prev.includes(sectionId)) {
+        // Remove from open sections
+        return prev.filter(id => id !== sectionId);
+      } else {
+        // Add to open sections
+        return [...prev, sectionId];
       }
-      // Otherwise, open the clicked main (closes any other)
-      return sectionId;
     });
   };
 
@@ -90,21 +88,22 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     });
   };
 
-  // Check if section is currently open (accordion behavior)
+  // Check if section is currently open
   const isSectionOpen = (sectionId: string) => {
-    return activeMain === sectionId;
+    return openSections.includes(sectionId);
   };
 
-  // Auto-open the main containing the active item on route change
+  // Auto-open the section containing the active item on initial load only
   useEffect(() => {
-    // Find which section contains the active item
-    const activeSection = navigationSections.find((section) => isSectionActive(section));
-
-    if (activeSection) {
-      // Set only this main as open (accordion - closes all others)
-      setActiveMain(activeSection.id);
+    // Only auto-open if no sections are open yet (initial load)
+    if (openSections.length === 0 && navigationSections) {
+      const activeSection = navigationSections.find((section) => isSectionActive(section));
+      if (activeSection && !openSections.includes(activeSection.id)) {
+        setOpenSections([activeSection.id]);
+      }
     }
-  }, [pathname, searchParams]); // Run when route changes
+    // After initial load, do nothing (manual control only)
+  }, [pathname, searchParams]); // Run when route changes, but only opens on first load
 
   // Client-side mounting
   useEffect(() => {
@@ -248,7 +247,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                             animate={{ rotate: isOpen ? 90 : 0 }}
                             transition={{
                               duration: 0.2,
-                              ease: [0.22, 1, 0.36, 1],
+                              ease: "easeInOut"
                             }}
                             className="relative z-10 flex-shrink-0"
                           >
@@ -310,29 +309,16 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                               height: "auto",
                               opacity: 1,
                               transition: {
-                                height: {
-                                  duration: 0.3,
-                                  ease: [0.22, 1, 0.36, 1],
-                                },
-                                opacity: {
-                                  duration: 0.25,
-                                  ease: "easeOut",
-                                  delay: 0.05,
-                                }
+                                duration: 0.2,
+                                ease: "easeInOut"
                               }
                             }}
                             exit={{
                               height: 0,
                               opacity: 0,
                               transition: {
-                                height: {
-                                  duration: 0.25,
-                                  ease: [0.22, 1, 0.36, 1],
-                                },
-                                opacity: {
-                                  duration: 0.15,
-                                  ease: "easeIn",
-                                }
+                                duration: 0.2,
+                                ease: "easeInOut"
                               }
                             }}
                             className="overflow-hidden"

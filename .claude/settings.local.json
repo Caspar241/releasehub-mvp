@@ -62,7 +62,8 @@
       "Bash(npm run dev:safe:*)",
       "Bash(git log:*)",
       "Bash(git config:*)",
-      "Bash(git restore:*)"
+      "Bash(git restore:*)",
+      "Bash(npx prettier:*)"
     ],
     "deny": [],
     "ask": []
