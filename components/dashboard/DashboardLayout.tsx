@@ -10,23 +10,33 @@ import ProtectedRoute from '@/components/ProtectedRoute';
 import { navigationSections } from '@/config/dashboard-navigation';
 import CommandPalette from './CommandPalette';
 import FloatingActionButton from './FloatingActionButton';
+import { motion, AnimatePresence } from 'framer-motion';
+import * as LucideIcons from 'lucide-react';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
 }
 
+// Icon renderer helper
+const getIcon = (iconName: string) => {
+  const Icon = (LucideIcons as any)[iconName];
+  return Icon ? <Icon size={18} strokeWidth={2} /> : null;
+};
+
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  // Initialize collapsed sections based on defaultExpanded property
+  // All sections start collapsed for hover-based expansion
   const [collapsedSections, setCollapsedSections] = useState<Set<string>>(() => {
     const initial = new Set<string>();
     navigationSections.forEach(section => {
-      if (!section.defaultExpanded) {
+      // Collapse sections with multiple items
+      if (section.items.length > 1) {
         initial.add(section.id);
       }
     });
     return initial;
   });
+  const [hoveredSection, setHoveredSection] = useState<string | null>(null);
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
   const [notificationMenuOpen, setNotificationMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
@@ -37,6 +47,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
   const userMenuRef = useRef<HTMLDivElement>(null);
   const userButtonRef = useRef<HTMLDivElement>(null);
+  const sectionHoverTimeouts = useRef<{ [key: string]: NodeJS.Timeout }>({});
 
   // Hover intent delays
   let notificationHoverTimeout: NodeJS.Timeout;
@@ -58,7 +69,29 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   };
 
   const isSectionCollapsed = (sectionId: string) => {
+    // If hovered, always show as expanded
+    if (hoveredSection === sectionId) return false;
     return collapsedSections.has(sectionId);
+  };
+
+  const handleSectionHoverEnter = (sectionId: string) => {
+    // Clear any existing timeout for this section
+    if (sectionHoverTimeouts.current[sectionId]) {
+      clearTimeout(sectionHoverTimeouts.current[sectionId]);
+    }
+    // Set hover after 150ms delay
+    sectionHoverTimeouts.current[sectionId] = setTimeout(() => {
+      setHoveredSection(sectionId);
+    }, 150);
+  };
+
+  const handleSectionHoverLeave = (sectionId: string) => {
+    // Clear timeout
+    if (sectionHoverTimeouts.current[sectionId]) {
+      clearTimeout(sectionHoverTimeouts.current[sectionId]);
+    }
+    // Clear hover immediately
+    setHoveredSection(null);
   };
 
   // Client-side mounting
@@ -112,7 +145,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
       {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 z-50 w-72 bg-surface-primary/98 backdrop-blur-glass-lg border-r border-border shadow-e2 transform transition-transform duration-300 ease-in-out lg:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-50 w-60 bg-surface-primary/95 backdrop-blur-[24px] border-r border-border/50 shadow-[0_8px_32px_rgba(0,0,0,0.4)] transform transition-transform duration-300 ease-apple lg:translate-x-0 ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
         style={{
@@ -121,9 +154,12 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         }}
       >
         <div className="flex flex-col h-full">
-          {/* Logo */}
-          <div className="flex items-center justify-between h-20 px-8 border-b border-border">
-            <Link href="/dashboard" className="text-2xl font-bold text-text-primary hover:text-accent transition-colors">
+          {/* Logo - More spacious */}
+          <div className="flex items-center justify-between h-24 px-6 border-b border-border/30">
+            <Link
+              href="/dashboard"
+              className="text-xl font-bold text-text-primary hover:text-accent transition-colors duration-200 tracking-tight"
+            >
               ReleaseHub
             </Link>
             <button
@@ -137,68 +173,96 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           </div>
 
           {/* Navigation */}
-          <nav className="flex-1 px-8 py-8 overflow-y-auto">
-            {navigationSections.map((section) => {
+          <nav className="flex-1 px-4 py-6 overflow-y-auto">
+            {navigationSections.map((section, sectionIndex) => {
               const collapsed = isSectionCollapsed(section.id);
+              const hasMultipleItems = section.items.length > 1;
+
               return (
-                <div key={section.id} className="mb-10">
-                  {/* Section Header - SMALL CAPS Overline */}
-                  <button
-                    onClick={() => section.collapsible && toggleSection(section.id)}
-                    className="w-full flex items-center justify-between mb-4 px-2 py-2 -mx-2 rounded-lg text-[10px] font-semibold uppercase tracking-[0.15em] text-text-muted/70 hover:text-accent hover:bg-accent/5 transition-all duration-150 hover:translate-x-2 active:scale-[0.98]"
-                    style={{ letterSpacing: '0.15em', transform: 'translateZ(0)' }}
-                  >
-                    <span>{section.label}</span>
-                    {section.collapsible && (
-                      <svg
-                        className={`w-3.5 h-3.5 transition-transform duration-200 ${
-                          collapsed ? '' : 'rotate-180'
-                        }`}
-                        fill="none"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path d="M19 9l-7 7-7-7" />
-                      </svg>
-                    )}
-                  </button>
+                <div
+                  key={section.id}
+                  className="mb-6"
+                  onMouseEnter={() => hasMultipleItems && handleSectionHoverEnter(section.id)}
+                  onMouseLeave={() => hasMultipleItems && handleSectionHoverLeave(section.id)}
+                >
+                  {/* Section Header - Compact */}
+                  <div className="mb-3">
+                    <h3 className="px-3 text-[9px] font-bold uppercase tracking-[0.12em] text-text-muted/60">
+                      {section.label}
+                    </h3>
+                  </div>
 
                   {/* Section Items */}
-                  {!collapsed && (
-                    <div className="space-y-0.5 pl-3">
-                      {section.items.map((item) => {
-                        const isActive = pathname === item.href;
-                        return (
+                  <div className="space-y-0.5">
+                    {section.items.map((item, itemIndex) => {
+                      const isActive = pathname === item.href;
+                      const showItem = !hasMultipleItems || itemIndex === 0 || !collapsed;
+
+                      if (!showItem) return null;
+
+                      return (
+                        <motion.div
+                          key={item.href}
+                          initial={false}
+                          animate={{
+                            opacity: showItem ? 1 : 0,
+                            height: showItem ? 'auto' : 0,
+                          }}
+                          transition={{
+                            duration: 0.2,
+                            ease: [0.22, 1, 0.36, 1]
+                          }}
+                        >
                           <Link
-                            key={item.href}
                             href={item.href}
-                            className={`group relative flex items-center gap-3 py-3 px-4 text-[15px] font-medium rounded-xl transition-all duration-150 ${
+                            className={`group relative flex items-center gap-3 py-2.5 px-3 text-sm font-medium rounded-xl transition-all duration-200 ease-apple ${
                               isActive
-                                ? 'text-accent bg-accent/8'
-                                : 'text-text-primary/90 hover:bg-accent/5 hover:text-accent hover:translate-x-2 hover:shadow-sm active:scale-[0.98]'
+                                ? 'text-accent bg-gradient-to-r from-accent/12 to-accent/5 shadow-[0_0_16px_rgba(79,209,255,0.15)]'
+                                : 'text-text-secondary hover:bg-accent/5 hover:text-accent hover:translate-x-1 hover:shadow-[0_0_12px_rgba(79,209,255,0.08)]'
                             }`}
-                            style={{ transform: 'translateZ(0)' }}
                           >
-                            {/* Active Indicator */}
+                            {/* Blue Glow on Hover/Active */}
                             {isActive && (
-                              <div className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-8 bg-accent rounded-r-full" />
+                              <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-accent/20 via-accent/10 to-transparent opacity-40 blur-sm" />
                             )}
 
-                            <span className="text-[22px] flex-shrink-0 leading-none">{item.icon}</span>
-                            <div className="flex-1 min-w-0">
-                              <div className={isActive ? 'font-semibold' : 'font-medium'}>{item.name}</div>
+                            {/* Active Indicator Bar */}
+                            {isActive && (
+                              <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-7 bg-gradient-to-b from-accent via-accent to-accent/50 rounded-r-full shadow-[0_0_8px_rgba(79,209,255,0.6)]" />
+                            )}
+
+                            {/* Icon */}
+                            <span className={`relative z-10 flex-shrink-0 transition-colors duration-200 ${
+                              isActive ? 'text-accent' : 'text-text-muted group-hover:text-accent'
+                            }`}>
+                              {getIcon(item.icon)}
+                            </span>
+
+                            {/* Label */}
+                            <div className="relative z-10 flex-1 min-w-0">
+                              <div className={`truncate ${isActive ? 'font-semibold' : 'font-medium'}`}>
+                                {item.name}
+                              </div>
                             </div>
+
+                            {/* Badge */}
                             {item.badge && (
-                              <span className="ml-auto px-2 py-0.5 text-xs font-semibold rounded-full bg-accent/20 text-accent flex-shrink-0">
+                              <span className="relative z-10 ml-auto px-2 py-0.5 text-[10px] font-bold rounded-full bg-accent/20 text-accent flex-shrink-0 border border-accent/30">
                                 {item.badge}
                               </span>
                             )}
                           </Link>
-                        );
-                      })}
+                        </motion.div>
+                      );
+                    })}
+                  </div>
+
+                  {/* Section Divider with Blue Glow */}
+                  {sectionIndex < navigationSections.length - 1 && (
+                    <div className="mt-6 px-3">
+                      <div className="h-px bg-gradient-to-r from-transparent via-border/40 to-transparent relative">
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-accent/20 to-transparent blur-sm" />
+                      </div>
                     </div>
                   )}
                 </div>
@@ -209,7 +273,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       </div>
 
       {/* Main content */}
-      <div className="lg:pl-72">
+      <div className="lg:pl-60">
         {/* Top bar */}
         <div className="sticky top-0 z-50 bg-surface-primary/95 backdrop-blur-glass-lg border-b border-border shadow-e1">
           <div className="flex items-center justify-between h-20 px-6 lg:px-8">
