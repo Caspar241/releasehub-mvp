@@ -68,8 +68,16 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
   // Toggle section - allows multiple sections to be open
   const toggleSection = (sectionId: string) => {
+    // Find if this section contains the active item
+    const section = navigationSections.find((s) => s.id === sectionId);
+    const isActiveSectionToggle = section && isSectionActive(section);
+
     setOpenSections((prev) => {
       if (prev.includes(sectionId)) {
+        // Don't allow closing the active section (with current active item)
+        if (isActiveSectionToggle) {
+          return prev; // Keep it open
+        }
         // Close this section
         return prev.filter((id) => id !== sectionId);
       } else {
