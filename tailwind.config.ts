@@ -9,44 +9,47 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Background
+        // Background - Premium gradients
         bg: {
-          primary: '#000000',
-          secondary: '#0A0A0A',
-          elevated: '#0F1115',
+          primary: '#0f1013', // Dark gradient start
+          secondary: '#141519', // Dark gradient end
+          elevated: '#101114', // Card gradient end
         },
         // Surfaces
         surface: {
-          primary: '#0F1115',
-          secondary: '#111317',
-          raised: '#141821',
-          elevated: '#1A1E28',
+          primary: '#141519', // Card gradient start
+          secondary: '#101114',
+          raised: '#1A1D22', // Slightly elevated
+          elevated: '#1E2228', // More elevated
         },
-        // Text
+        // Text - Slate palette for premium feel
         text: {
-          primary: '#FFFFFF',
-          secondary: '#B5BDC9',
-          muted: '#7A8594',
+          primary: '#F1F5F9', // Slate-50
+          secondary: '#CBD5E1', // Slate-300
+          muted: '#94A3B8', // Slate-400
+          tertiary: '#64748B', // Slate-500
           inverse: '#000000',
-          graphite: '#E6E8EB', // Premium muted white (Apple-style)
+          graphite: '#E6E8EB', // Premium muted white
         },
-        // Gradient colors for text highlights
+        // Gradient colors for text highlights (updated)
         gradient: {
-          cyan: '#37C8ED',
-          blue: '#4FD1FF',
-          'blue-deep': '#1290FF',
+          cyan: '#2EB6E8', // Softer cyan
+          blue: '#3CC9F0', // Lighter cyan
+          'blue-deep': '#2A9FBD', // Muted cyan
         },
-        // Accent
+        // Accent - Soft cyan (no glow needed)
         accent: {
-          DEFAULT: '#4FD1FF',
-          hover: '#7CD4FF',
-          muted: '#37C8ED',
+          DEFAULT: '#2EB6E8', // Main soft cyan
+          hover: '#3CC9F0', // Lighter on hover
+          muted: '#2A9FBD', // Darker/muted
+          soft: 'rgba(46, 182, 232, 0.1)', // For backgrounds
+          subtle: 'rgba(46, 182, 232, 0.05)', // Very subtle
         },
-        // Border
+        // Border - More subtle
         border: {
-          DEFAULT: 'rgba(255, 255, 255, 0.08)',
-          strong: 'rgba(255, 255, 255, 0.14)',
-          muted: 'rgba(255, 255, 255, 0.04)',
+          DEFAULT: 'rgba(255, 255, 255, 0.05)',
+          strong: 'rgba(255, 255, 255, 0.1)',
+          muted: 'rgba(255, 255, 255, 0.03)',
         },
       },
       fontFamily: {
@@ -78,13 +81,20 @@ const config: Config = {
         'glass-lg': '10px',   // Optimized for Safari (was 16px)
       },
       boxShadow: {
-        'e1': '0 2px 8px rgba(0, 0, 0, 0.45)',
-        'e2': '0 4px 16px rgba(0, 0, 0, 0.55)',
-        'e3': '0 10px 30px rgba(0, 0, 0, 0.65)',
-        'e4': '0 20px 50px rgba(0, 0, 0, 0.75)',
-        'glow': '0 0 20px rgba(79, 209, 255, 0.15)',
-        'glow-strong': '0 0 40px rgba(79, 209, 255, 0.3)',
-        'inner-highlight': 'inset 0 1px 0 rgba(255, 255, 255, 0.08)',
+        // Subtle shadows for premium look (no glow)
+        'soft': '0 2px 12px rgba(0, 0, 0, 0.15)',
+        'card': '0 4px 20px rgba(0, 0, 0, 0.25)',
+        'elevated': '0 8px 32px rgba(0, 0, 0, 0.35)',
+        'lifted': '0 12px 40px rgba(0, 0, 0, 0.45)',
+        // Subtle accent shadow for interactive elements
+        'accent-soft': '0 2px 8px rgba(46, 182, 232, 0.15)',
+        // Inner highlight for depth
+        'inner-highlight': 'inset 0 1px 0 rgba(255, 255, 255, 0.05)',
+        // Keep old names for backwards compatibility but with new values
+        'e1': '0 2px 12px rgba(0, 0, 0, 0.15)',
+        'e2': '0 4px 20px rgba(0, 0, 0, 0.25)',
+        'e3': '0 8px 32px rgba(0, 0, 0, 0.35)',
+        'e4': '0 12px 40px rgba(0, 0, 0, 0.45)',
       },
       animation: {
         'fadeInUp': 'fadeInUp 0.6s ease-out',

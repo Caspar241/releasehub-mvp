@@ -120,7 +120,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
       {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 z-50 w-60 bg-surface-primary/95 backdrop-blur-[24px] border-r border-border/50 shadow-[0_8px_32px_rgba(0,0,0,0.4)] transform transition-transform duration-300 ease-apple lg:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-50 w-60 bg-bg-primary border-r border-border shadow-card transform transition-transform duration-300 ease-apple lg:translate-x-0 ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
         style={{
@@ -162,13 +162,26 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                       onClick={() => toggleSection(section.id)}
                       className={`relative group w-full flex items-center gap-3 py-3 px-3 text-sm font-semibold rounded-xl transition-all duration-200 ease-apple cursor-pointer ${
                         isActive
-                          ? 'text-accent bg-gradient-to-r from-accent/12 to-accent/5 shadow-[0_0_16px_rgba(79,209,255,0.15)]'
-                          : 'text-text-primary hover:bg-accent/5 hover:text-accent hover:shadow-[0_0_12px_rgba(79,209,255,0.08)]'
+                          ? 'text-accent'
+                          : 'text-text-primary hover:text-accent'
                       }`}
+                      style={isActive ? {
+                        background: 'linear-gradient(90deg, rgba(46, 182, 232, 0.1), rgba(46, 182, 232, 0.05))'
+                      } : undefined}
+                      onMouseEnter={(e) => {
+                        if (!isActive) {
+                          e.currentTarget.style.background = 'rgba(46, 182, 232, 0.05)';
+                        }
+                      }}
+                      onMouseLeave={(e) => {
+                        if (!isActive) {
+                          e.currentTarget.style.background = '';
+                        }
+                      }}
                     >
-                      {/* Blue Glow for Active Parent */}
+                      {/* Soft Cyan Indicator Bar for Active Parent */}
                       {isActive && (
-                        <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-accent/20 via-accent/10 to-transparent opacity-40 blur-sm pointer-events-none" />
+                        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-8 bg-accent rounded-r-full pointer-events-none" />
                       )}
 
                       {/* Category Label */}
@@ -180,7 +193,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                         transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
                         className="relative z-10 flex-shrink-0"
                       >
-                        <LucideIcons.ChevronRight size={16} strokeWidth={2.5} className={isActive || isOpen ? 'text-accent' : 'text-text-muted group-hover:text-accent'} />
+                        <LucideIcons.ChevronRight size={16} strokeWidth={2.5} className={isActive || isOpen ? 'text-accent' : 'text-text-tertiary group-hover:text-accent'} />
                       </motion.div>
                     </button>
                   ) : (
@@ -189,17 +202,26 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                       href={section.items[0].href}
                       className={`relative group block w-full py-3 px-3 text-sm font-semibold rounded-xl transition-all duration-200 ease-apple cursor-pointer ${
                         pathname === section.items[0].href
-                          ? 'text-accent bg-gradient-to-r from-accent/12 to-accent/5 shadow-[0_0_16px_rgba(79,209,255,0.15)]'
-                          : 'text-text-primary hover:bg-accent/5 hover:text-accent hover:shadow-[0_0_12px_rgba(79,209,255,0.08)]'
+                          ? 'text-accent'
+                          : 'text-text-primary hover:text-accent'
                       }`}
+                      style={pathname === section.items[0].href ? {
+                        background: 'linear-gradient(90deg, rgba(46, 182, 232, 0.1), rgba(46, 182, 232, 0.05))'
+                      } : undefined}
+                      onMouseEnter={(e) => {
+                        if (pathname !== section.items[0].href) {
+                          e.currentTarget.style.background = 'rgba(46, 182, 232, 0.05)';
+                        }
+                      }}
+                      onMouseLeave={(e) => {
+                        if (pathname !== section.items[0].href) {
+                          e.currentTarget.style.background = '';
+                        }
+                      }}
                     >
-                      {pathname === section.items[0].href && (
-                        <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-accent/20 via-accent/10 to-transparent opacity-40 blur-sm pointer-events-none" />
-                      )}
-
                       {/* Active Indicator Bar */}
                       {pathname === section.items[0].href && (
-                        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-gradient-to-b from-accent via-accent to-accent/50 rounded-r-full shadow-[0_0_8px_rgba(79,209,255,0.6)]" />
+                        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-8 bg-accent rounded-r-full" />
                       )}
 
                       <span className="relative z-10">{section.label}</span>
@@ -219,7 +241,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                         }}
                         className="overflow-hidden"
                       >
-                        <div className="mt-1 ml-3 pl-3 border-l border-border/30 space-y-0.5">
+                        <div className="mt-1 ml-3 pl-3 border-l border-border space-y-0.5">
                           {section.items.map((item) => {
                             const isItemActive = pathname === item.href;
                             return (
@@ -228,15 +250,23 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                                 href={item.href}
                                 className={`relative group block w-full py-2.5 px-3 text-sm font-medium rounded-lg transition-all duration-200 ease-apple cursor-pointer ${
                                   isItemActive
-                                    ? 'text-accent bg-gradient-to-r from-accent/10 to-accent/5 shadow-[0_0_12px_rgba(79,209,255,0.1)]'
-                                    : 'text-text-secondary hover:bg-accent/8 hover:text-accent hover:translate-x-1 hover:shadow-[0_0_8px_rgba(79,209,255,0.06)]'
+                                    ? 'text-accent'
+                                    : 'text-text-secondary hover:text-accent hover:translate-x-1'
                                 }`}
+                                style={isItemActive ? {
+                                  background: 'rgba(46, 182, 232, 0.05)'
+                                } : undefined}
+                                onMouseEnter={(e) => {
+                                  if (!isItemActive) {
+                                    e.currentTarget.style.background = 'rgba(46, 182, 232, 0.05)';
+                                  }
+                                }}
+                                onMouseLeave={(e) => {
+                                  if (!isItemActive) {
+                                    e.currentTarget.style.background = '';
+                                  }
+                                }}
                               >
-                                {/* Glow effect on active */}
-                                {isItemActive && (
-                                  <div className="absolute inset-0 rounded-lg bg-accent/5 blur-sm pointer-events-none" />
-                                )}
-
                                 <div className="relative z-10 flex items-center gap-3">
                                   {/* Icon */}
                                   <span className={`flex-shrink-0 transition-colors duration-200 ${

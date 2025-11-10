@@ -13,15 +13,18 @@
   }
 
   body {
-    @apply bg-bg-primary text-text-primary font-sans relative overflow-x-hidden;
-    /* Grid background pattern */
+    @apply text-text-primary font-sans relative overflow-x-hidden;
+    /* Premium gradient background */
+    background: linear-gradient(180deg, #0f1013 0%, #141519 100%);
+    /* Subtle grid background pattern */
     background-image:
-      linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
-    background-size: 60px 60px;
-    background-position: center center;
-    /* Vignette effect */
-    box-shadow: inset 0 0 300px rgba(0, 0, 0, 0.8);
+      linear-gradient(180deg, #0f1013 0%, #141519 100%),
+      linear-gradient(rgba(255, 255, 255, 0.01) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.01) 1px, transparent 1px);
+    background-size: 100% 100%, 60px 60px, 60px 60px;
+    background-position: center center, center center, center center;
+    /* Subtle vignette effect */
+    box-shadow: inset 0 0 400px rgba(0, 0, 0, 0.6);
   }
 
   /* Smooth scrolling with offset for fixed nav */
@@ -104,16 +107,16 @@
   }
 
   .glass-card {
+    /* Premium gradient (surface-primary → bg-elevated) */
     background: linear-gradient(
-      135deg,
-      rgba(20, 24, 33, 0.95) 0%,
-      rgba(15, 17, 21, 0.9) 100%
+      180deg,
+      #141519 0%,
+      #101114 100%
     );
-    @apply backdrop-blur-glass-lg border border-border shadow-e3;
+    @apply backdrop-blur-glass border border-border;
     box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.08),
-      0 10px 30px rgba(0, 0, 0, 0.65),
-      0 4px 8px rgba(0, 0, 0, 0.45);
+      inset 0 1px 0 rgba(255, 255, 255, 0.03),
+      0 4px 20px rgba(0, 0, 0, 0.25);
     /* Safari GPU acceleration for backdrop-filter */
     transform: translate3d(0, 0, 0);
     -webkit-transform: translate3d(0, 0, 0);
@@ -131,34 +134,26 @@
     -webkit-transform: translate3d(0, 0, 0);
   }
 
-  /* ===== GLOW EFFECTS ===== */
-  .glow {
-    @apply shadow-glow;
+  /* ===== SOFT HIGHLIGHTS (No Glow) ===== */
+  .soft-highlight {
+    @apply shadow-soft;
   }
 
-  .glow-strong {
-    @apply shadow-glow-strong;
-  }
-
-  .glow-hover {
+  .soft-highlight-hover {
     @apply transition-shadow duration-200;
     transform: translateZ(0);
   }
 
-  .glow-hover:hover {
-    @apply shadow-glow;
+  .soft-highlight-hover:hover {
+    @apply shadow-card;
   }
 
-  .glow-hover-strong:hover {
-    @apply shadow-glow-strong;
-  }
-
-  /* ===== GRADIENT ORBS (Background Accents) ===== */
+  /* ===== GRADIENT ORBS (Subtle Background Accents) ===== */
   .gradient-orb-cyan {
     background: radial-gradient(
       circle at center,
-      rgba(79, 209, 255, 0.15) 0%,
-      rgba(79, 209, 255, 0.05) 40%,
+      rgba(46, 182, 232, 0.08) 0%,
+      rgba(46, 182, 232, 0.03) 40%,
       transparent 70%
     );
     filter: blur(60px);
@@ -168,8 +163,8 @@
   .gradient-orb-accent {
     background: radial-gradient(
       circle at center,
-      rgba(124, 212, 255, 0.12) 0%,
-      rgba(79, 209, 255, 0.04) 50%,
+      rgba(60, 201, 240, 0.06) 0%,
+      rgba(46, 182, 232, 0.02) 50%,
       transparent 75%
     );
     filter: blur(80px);
@@ -217,15 +212,31 @@
   }
 
   .btn-primary {
-    @apply btn bg-accent text-text-inverse hover:bg-accent-hover hover:shadow-glow active:scale-95;
+    @apply btn bg-accent text-text-inverse hover:bg-accent-hover active:scale-95;
+    box-shadow: 0 2px 8px rgba(46, 182, 232, 0.2);
+    transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .btn-primary:hover {
+    box-shadow: 0 4px 12px rgba(46, 182, 232, 0.25);
+    transform: translateY(-1px);
   }
 
   .btn-secondary {
-    @apply btn glass-card text-text-primary hover:border-border-strong hover:shadow-e3 active:scale-95;
+    @apply btn border border-border text-text-primary hover:border-accent/30 active:scale-95;
+    background: transparent;
+  }
+
+  .btn-secondary:hover {
+    background: rgba(46, 182, 232, 0.05);
   }
 
   .btn-ghost {
-    @apply btn border border-border text-text-primary hover:border-border-strong hover:bg-surface-raised active:scale-95;
+    @apply btn border-0 text-text-muted hover:text-accent active:scale-95;
+  }
+
+  .btn-ghost:hover {
+    background: rgba(46, 182, 232, 0.05);
   }
 
   .btn-lg {
@@ -278,20 +289,27 @@
   }
 
   .card-interactive {
-    @apply card transition-all duration-200 hover:border-accent/30 hover:shadow-glow cursor-pointer;
+    @apply card transition-all duration-200 hover:border-accent/20 cursor-pointer;
     transform: translateZ(0);
     /* will-change removed - GPU acceleration via translateZ is sufficient */
   }
 
-  /* ===== BORDER GLOW (Animated) ===== */
-  .border-glow {
-    @apply relative;
+  .card-interactive:hover {
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.05),
+      0 6px 24px rgba(0, 0, 0, 0.3);
+    transform: translateY(-1px);
   }
 
-  .border-glow::before {
+  /* ===== BORDER ACCENT (Subtle, No Glow) ===== */
+  .border-accent-hover {
+    @apply relative transition-all duration-200;
+  }
+
+  .border-accent-hover::before {
     content: '';
     @apply absolute inset-0 rounded-[inherit] p-[1px];
-    background: linear-gradient(135deg, rgba(79, 209, 255, 0.5), rgba(79, 209, 255, 0.1));
+    background: linear-gradient(135deg, rgba(46, 182, 232, 0.3), rgba(46, 182, 232, 0.1));
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
@@ -300,7 +318,7 @@
     pointer-events: none;
   }
 
-  .border-glow:hover::before {
+  .border-accent-hover:hover::before {
     opacity: 1;
   }
 
@@ -390,9 +408,9 @@
   .text-gradient-blue {
     background: linear-gradient(
       90deg,
-      #37C8ED 0%,
-      #4FD1FF 50%,
-      #1290FF 100%
+      #2EB6E8 0%,
+      #3CC9F0 50%,
+      #2A9FBD 100%
     );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -402,8 +420,8 @@
   .text-gradient-cyan {
     background: linear-gradient(
       90deg,
-      #37C8ED 0%,
-      #4FD1FF 100%
+      #2EB6E8 0%,
+      #3CC9F0 100%
     );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -599,23 +617,19 @@
     animation: badgeFadeIn 350ms ease-out 150ms backwards;
   }
 
-  /* Premium glass edge lighting */
+  /* Premium glass card with subtle edge lighting */
   .glass-card-premium {
     background: linear-gradient(
-      135deg,
-      rgba(20, 24, 33, 0.95) 0%,
-      rgba(15, 17, 21, 0.9) 100%
+      180deg,
+      #141519 0%,
+      #101114 100%
     );
-    @apply backdrop-blur-glass-lg border border-border shadow-e3;
+    @apply backdrop-blur-glass border border-border;
     box-shadow:
-      /* Top edge light */
-      inset 0 1px 1px rgba(79, 209, 255, 0.08),
-      inset 0 2px 0 rgba(255, 255, 255, 0.05),
-      /* Bottom edge light */
-      inset 0 -1px 0 rgba(79, 209, 255, 0.04),
+      /* Subtle top highlight */
+      inset 0 1px 0 rgba(255, 255, 255, 0.03),
       /* Main depth */
-      0 20px 50px rgba(0, 0, 0, 0.7),
-      0 8px 16px rgba(0, 0, 0, 0.5);
+      0 8px 32px rgba(0, 0, 0, 0.35);
     /* GPU acceleration */
     transform: translate3d(0, 0, 0);
     -webkit-transform: translate3d(0, 0, 0);
