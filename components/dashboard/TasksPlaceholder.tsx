@@ -5,19 +5,26 @@ import { motion } from 'framer-motion';
 
 interface TasksPlaceholderProps {
   featureName?: string;
+  onClose?: () => void;
+  isPanel?: boolean;
 }
 
-export default function TasksPlaceholder({ featureName = 'Tasks' }: TasksPlaceholderProps) {
+export default function TasksPlaceholder({
+  featureName = 'Tasks',
+  onClose,
+  isPanel = false
+}: TasksPlaceholderProps) {
   // Determine if feature name is plural for correct grammar
   const isPlural = featureName === 'Tasks' || featureName === 'Smart Links';
   const verb = isPlural ? 'werden' : 'wird';
+
   return (
     <motion.div
       className="relative min-h-[calc(100vh-80px)] flex items-center justify-center p-6"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.4, ease: 'easeOut' }}
+      initial={{ opacity: 0, y: -6 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -6 }}
+      transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
     >
       {/* Subtle gradient background */}
       <div
@@ -137,12 +144,21 @@ export default function TasksPlaceholder({ featureName = 'Tasks' }: TasksPlaceho
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5, duration: 0.6 }}
             >
-              <Link
-                href="/dashboard"
-                className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full font-medium bg-accent text-text-inverse hover:bg-accent-hover transition-all duration-200 shadow-sm hover:shadow-glow btn-micro-lift"
-              >
-                Zurück zum Dashboard
-              </Link>
+              {isPanel && onClose ? (
+                <button
+                  onClick={onClose}
+                  className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full font-medium bg-accent text-text-inverse hover:bg-accent-hover transition-all duration-200 shadow-sm hover:shadow-accent-soft btn-micro-lift"
+                >
+                  Zurück zum Dashboard
+                </button>
+              ) : (
+                <Link
+                  href="/dashboard"
+                  className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full font-medium bg-accent text-text-inverse hover:bg-accent-hover transition-all duration-200 shadow-sm hover:shadow-accent-soft btn-micro-lift"
+                >
+                  Zurück zum Dashboard
+                </Link>
+              )}
             </motion.div>
           </div>
         </motion.div>

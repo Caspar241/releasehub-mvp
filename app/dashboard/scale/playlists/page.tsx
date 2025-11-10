@@ -1,5 +1,14 @@
-import TasksPlaceholder from '@/components/dashboard/TasksPlaceholder';
+'use client';
+
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function PlaylistsPage() {
-  return <TasksPlaceholder featureName="Playlist Outreach" />;
+  const router = useRouter();
+
+  useEffect(() => {
+    router.replace('/dashboard?panel=playlists');
+  }, [router]);
+
+  return null;
 }
