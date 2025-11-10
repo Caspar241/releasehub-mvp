@@ -94,13 +94,14 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   };
 
   // Auto-open section when navigating to an item in it
+  // Close all other sections (only one open at a time)
   useEffect(() => {
     // Find which section contains the active item
     const activeSection = navigationSections.find((section) => isSectionActive(section));
 
-    if (activeSection && !openSections.includes(activeSection.id)) {
-      // Open the section containing the active item
-      setOpenSections((prev) => [...prev, activeSection.id]);
+    if (activeSection) {
+      // Set only the active section as open (closes all others)
+      setOpenSections([activeSection.id]);
     }
   }, [pathname, searchParams]); // Run when route changes
 
