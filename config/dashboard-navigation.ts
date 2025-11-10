@@ -33,14 +33,14 @@ export interface QuickAction {
 
 /**
  * Main Navigation Sections
- * Organized into 4 main workflow sections: PLAN, RELEASE, SCALE, ANALYZE
+ * Organized into 5 main categories with accordion-style submenus
  */
 export const navigationSections: NavSection[] = [
   {
     id: 'dashboard',
     label: 'Dashboard',
-    collapsible: true,
-    defaultExpanded: true,
+    collapsible: false,
+    defaultExpanded: false,
     items: [
       {
         name: 'Dashboard',
@@ -54,7 +54,7 @@ export const navigationSections: NavSection[] = [
     id: 'plan',
     label: 'Plan',
     collapsible: true,
-    defaultExpanded: true,
+    defaultExpanded: false,
     items: [
       {
         name: 'Tasks',
@@ -80,7 +80,7 @@ export const navigationSections: NavSection[] = [
     id: 'release',
     label: 'Release',
     collapsible: true,
-    defaultExpanded: true,
+    defaultExpanded: false,
     items: [
       {
         name: 'All Releases',
@@ -89,7 +89,7 @@ export const navigationSections: NavSection[] = [
         description: 'Manage your releases',
       },
       {
-        name: 'New Release',
+        name: 'Schedule',
         href: '/dashboard/upload',
         icon: 'Upload',
         description: 'Upload new music',
@@ -106,7 +106,7 @@ export const navigationSections: NavSection[] = [
     id: 'scale',
     label: 'Scale',
     collapsible: true,
-    defaultExpanded: true,
+    defaultExpanded: false,
     items: [
       {
         name: 'Smart Links',
@@ -115,19 +115,19 @@ export const navigationSections: NavSection[] = [
         description: 'Link management',
       },
       {
-        name: 'Campaign Builder',
+        name: 'Campaigns',
         href: '/dashboard/scale/campaigns',
         icon: 'Megaphone',
         description: 'Marketing campaigns',
       },
       {
-        name: 'Playlist Outreach',
+        name: 'Playlists',
         href: '/dashboard/scale/playlists',
         icon: 'ListMusic',
         description: 'Playlist pitching',
       },
       {
-        name: 'Release Forecasting',
+        name: 'Forecasting',
         href: '/dashboard/scale/forecasting',
         icon: 'TrendingUp',
         description: 'Predict performance',
@@ -138,7 +138,7 @@ export const navigationSections: NavSection[] = [
     id: 'analyze',
     label: 'Analyze',
     collapsible: true,
-    defaultExpanded: true,
+    defaultExpanded: false,
     items: [
       {
         name: 'Streams',
@@ -147,7 +147,7 @@ export const navigationSections: NavSection[] = [
         description: 'Streaming performance',
       },
       {
-        name: 'Audience',
+        name: 'Insights',
         href: '/dashboard/analytics/audience',
         icon: 'Users',
         description: 'Listener demographics',
@@ -163,12 +163,6 @@ export const navigationSections: NavSection[] = [
         href: '/dashboard/earnings',
         icon: 'Wallet',
         description: 'Your payouts',
-      },
-      {
-        name: 'Splits',
-        href: '/dashboard/earnings/splits',
-        icon: 'PieChart',
-        description: 'Revenue splits',
       },
     ],
   },

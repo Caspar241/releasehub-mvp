@@ -25,18 +25,7 @@ const getIcon = (iconName: string) => {
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  // All sections start collapsed for hover-based expansion
-  const [collapsedSections, setCollapsedSections] = useState<Set<string>>(() => {
-    const initial = new Set<string>();
-    navigationSections.forEach(section => {
-      // Collapse sections with multiple items
-      if (section.items.length > 1) {
-        initial.add(section.id);
-      }
-    });
-    return initial;
-  });
-  const [hoveredSection, setHoveredSection] = useState<string | null>(null);
+  const [openSection, setOpenSection] = useState<string | null>(null);
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
   const [notificationMenuOpen, setNotificationMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
@@ -47,7 +36,6 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
   const userMenuRef = useRef<HTMLDivElement>(null);
   const userButtonRef = useRef<HTMLDivElement>(null);
-  const sectionHoverTimeouts = useRef<{ [key: string]: NodeJS.Timeout }>({});
 
   // Hover intent delays
   let notificationHoverTimeout: NodeJS.Timeout;
@@ -58,40 +46,27 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     router.push('/');
   };
 
+  // Toggle section with accordion behavior (only one open at a time)
   const toggleSection = (sectionId: string) => {
-    const newCollapsed = new Set(collapsedSections);
-    if (newCollapsed.has(sectionId)) {
-      newCollapsed.delete(sectionId);
+    if (openSection === sectionId) {
+      setOpenSection(null); // Close if already open
     } else {
-      newCollapsed.add(sectionId);
+      setOpenSection(sectionId); // Open and close others
     }
-    setCollapsedSections(newCollapsed);
   };
 
-  const isSectionCollapsed = (sectionId: string) => {
-    // If hovered, always show as expanded
-    if (hoveredSection === sectionId) return false;
-    return collapsedSections.has(sectionId);
+  // Check if a section contains the active page
+  const isSectionActive = (section: any) => {
+    return section.items.some((item: any) => pathname === item.href);
   };
 
-  const handleSectionHoverEnter = (sectionId: string) => {
-    // Clear any existing timeout for this section
-    if (sectionHoverTimeouts.current[sectionId]) {
-      clearTimeout(sectionHoverTimeouts.current[sectionId]);
-    }
-    // Set hover after 150ms delay
-    sectionHoverTimeouts.current[sectionId] = setTimeout(() => {
-      setHoveredSection(sectionId);
-    }, 150);
-  };
-
-  const handleSectionHoverLeave = (sectionId: string) => {
-    // Clear timeout
-    if (sectionHoverTimeouts.current[sectionId]) {
-      clearTimeout(sectionHoverTimeouts.current[sectionId]);
-    }
-    // Clear hover immediately
-    setHoveredSection(null);
+  // Check if section should be open (accordion logic + active state)
+  const isSectionOpen = (sectionId: string) => {
+    const section = navigationSections.find(s => s.id === sectionId);
+    // Keep section open if it contains active page
+    if (section && isSectionActive(section)) return true;
+    // Otherwise check accordion state
+    return openSection === sectionId;
   };
 
   // Client-side mounting
@@ -174,97 +149,123 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
           {/* Navigation */}
           <nav className="flex-1 px-4 py-6 overflow-y-auto">
-            {navigationSections.map((section, sectionIndex) => {
-              const collapsed = isSectionCollapsed(section.id);
-              const hasMultipleItems = section.items.length > 1;
+            {navigationSections.map((section) => {
+              const isOpen = isSectionOpen(section.id);
+              const isActive = isSectionActive(section);
+              const hasSubmenu = section.collapsible && section.items.length > 1;
 
               return (
-                <div
-                  key={section.id}
-                  className="mb-6"
-                  onMouseEnter={() => hasMultipleItems && handleSectionHoverEnter(section.id)}
-                  onMouseLeave={() => hasMultipleItems && handleSectionHoverLeave(section.id)}
-                >
-                  {/* Section Header - Compact */}
-                  <div className="mb-3">
-                    <h3 className="px-3 text-[9px] font-bold uppercase tracking-[0.12em] text-text-muted/60">
-                      {section.label}
-                    </h3>
-                  </div>
+                <div key={section.id} className="mb-2">
+                  {/* Main Category Button */}
+                  {hasSubmenu ? (
+                    <button
+                      onClick={() => toggleSection(section.id)}
+                      className={`relative group w-full flex items-center gap-3 py-3 px-3 text-sm font-semibold rounded-xl transition-all duration-200 ease-apple cursor-pointer ${
+                        isActive
+                          ? 'text-accent bg-gradient-to-r from-accent/12 to-accent/5 shadow-[0_0_16px_rgba(79,209,255,0.15)]'
+                          : 'text-text-primary hover:bg-accent/5 hover:text-accent hover:shadow-[0_0_12px_rgba(79,209,255,0.08)]'
+                      }`}
+                    >
+                      {/* Blue Glow for Active Parent */}
+                      {isActive && (
+                        <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-accent/20 via-accent/10 to-transparent opacity-40 blur-sm pointer-events-none" />
+                      )}
 
-                  {/* Section Items */}
-                  <div className="space-y-0.5">
-                    {section.items.map((item, itemIndex) => {
-                      const isActive = pathname === item.href;
-                      const showItem = !hasMultipleItems || itemIndex === 0 || !collapsed;
+                      {/* Category Label */}
+                      <span className="relative z-10 flex-1 text-left">{section.label}</span>
 
-                      if (!showItem) return null;
+                      {/* Chevron Icon */}
+                      <motion.div
+                        animate={{ rotate: isOpen ? 90 : 0 }}
+                        transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                        className="relative z-10 flex-shrink-0"
+                      >
+                        <LucideIcons.ChevronRight size={16} strokeWidth={2.5} className={isActive || isOpen ? 'text-accent' : 'text-text-muted group-hover:text-accent'} />
+                      </motion.div>
+                    </button>
+                  ) : (
+                    // Dashboard (no submenu)
+                    <Link
+                      href={section.items[0].href}
+                      className={`relative group block w-full py-3 px-3 text-sm font-semibold rounded-xl transition-all duration-200 ease-apple cursor-pointer ${
+                        pathname === section.items[0].href
+                          ? 'text-accent bg-gradient-to-r from-accent/12 to-accent/5 shadow-[0_0_16px_rgba(79,209,255,0.15)]'
+                          : 'text-text-primary hover:bg-accent/5 hover:text-accent hover:shadow-[0_0_12px_rgba(79,209,255,0.08)]'
+                      }`}
+                    >
+                      {pathname === section.items[0].href && (
+                        <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-accent/20 via-accent/10 to-transparent opacity-40 blur-sm pointer-events-none" />
+                      )}
 
-                      return (
-                        <motion.div
-                          key={item.href}
-                          initial={false}
-                          animate={{
-                            opacity: showItem ? 1 : 0,
-                            height: showItem ? 'auto' : 0,
-                          }}
-                          transition={{
-                            duration: 0.2,
-                            ease: [0.22, 1, 0.36, 1]
-                          }}
-                        >
-                          <Link
-                            href={item.href}
-                            className={`group relative flex items-center gap-3 py-2.5 px-3 text-sm font-medium rounded-xl transition-all duration-200 ease-apple ${
-                              isActive
-                                ? 'text-accent bg-gradient-to-r from-accent/12 to-accent/5 shadow-[0_0_16px_rgba(79,209,255,0.15)]'
-                                : 'text-text-secondary hover:bg-accent/5 hover:text-accent hover:translate-x-1 hover:shadow-[0_0_12px_rgba(79,209,255,0.08)]'
-                            }`}
-                          >
-                            {/* Blue Glow on Hover/Active */}
-                            {isActive && (
-                              <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-accent/20 via-accent/10 to-transparent opacity-40 blur-sm" />
-                            )}
+                      {/* Active Indicator Bar */}
+                      {pathname === section.items[0].href && (
+                        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-gradient-to-b from-accent via-accent to-accent/50 rounded-r-full shadow-[0_0_8px_rgba(79,209,255,0.6)]" />
+                      )}
 
-                            {/* Active Indicator Bar */}
-                            {isActive && (
-                              <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-7 bg-gradient-to-b from-accent via-accent to-accent/50 rounded-r-full shadow-[0_0_8px_rgba(79,209,255,0.6)]" />
-                            )}
-
-                            {/* Icon */}
-                            <span className={`relative z-10 flex-shrink-0 transition-colors duration-200 ${
-                              isActive ? 'text-accent' : 'text-text-muted group-hover:text-accent'
-                            }`}>
-                              {getIcon(item.icon)}
-                            </span>
-
-                            {/* Label */}
-                            <div className="relative z-10 flex-1 min-w-0">
-                              <div className={`truncate ${isActive ? 'font-semibold' : 'font-medium'}`}>
-                                {item.name}
-                              </div>
-                            </div>
-
-                            {/* Badge */}
-                            {item.badge && (
-                              <span className="relative z-10 ml-auto px-2 py-0.5 text-[10px] font-bold rounded-full bg-accent/20 text-accent flex-shrink-0 border border-accent/30">
-                                {item.badge}
-                              </span>
-                            )}
-                          </Link>
-                        </motion.div>
-                      );
-                    })}
-                  </div>
-
-                  {/* Section Divider with Blue Glow */}
-                  {sectionIndex < navigationSections.length - 1 && (
-                    <div className="mt-6 px-3">
-                      <div className="h-px bg-gradient-to-r from-transparent via-border/40 to-transparent relative">
-                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-accent/20 to-transparent blur-sm" />
-                      </div>
-                    </div>
+                      <span className="relative z-10">{section.label}</span>
+                    </Link>
                   )}
+
+                  {/* Submenu Items */}
+                  <AnimatePresence initial={false}>
+                    {hasSubmenu && isOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{
+                          duration: 0.25,
+                          ease: [0.22, 1, 0.36, 1]
+                        }}
+                        className="overflow-hidden"
+                      >
+                        <div className="mt-1 ml-3 pl-3 border-l border-border/30 space-y-0.5">
+                          {section.items.map((item) => {
+                            const isItemActive = pathname === item.href;
+                            return (
+                              <Link
+                                key={item.href}
+                                href={item.href}
+                                className={`relative group block w-full py-2.5 px-3 text-sm font-medium rounded-lg transition-all duration-200 ease-apple cursor-pointer ${
+                                  isItemActive
+                                    ? 'text-accent bg-gradient-to-r from-accent/10 to-accent/5 shadow-[0_0_12px_rgba(79,209,255,0.1)]'
+                                    : 'text-text-secondary hover:bg-accent/8 hover:text-accent hover:translate-x-1 hover:shadow-[0_0_8px_rgba(79,209,255,0.06)]'
+                                }`}
+                              >
+                                {/* Glow effect on active */}
+                                {isItemActive && (
+                                  <div className="absolute inset-0 rounded-lg bg-accent/5 blur-sm pointer-events-none" />
+                                )}
+
+                                <div className="relative z-10 flex items-center gap-3">
+                                  {/* Icon */}
+                                  <span className={`flex-shrink-0 transition-colors duration-200 ${
+                                    isItemActive ? 'text-accent' : 'text-text-muted group-hover:text-accent'
+                                  }`}>
+                                    {getIcon(item.icon)}
+                                  </span>
+
+                                  {/* Label */}
+                                  <span className={`flex-1 truncate transition-colors duration-200 ${
+                                    isItemActive ? 'font-semibold' : 'font-medium'
+                                  }`}>
+                                    {item.name}
+                                  </span>
+
+                                  {/* Badge */}
+                                  {item.badge && (
+                                    <span className="ml-auto px-2 py-0.5 text-[10px] font-bold rounded-full bg-accent/20 text-accent border border-accent/30 flex-shrink-0">
+                                      {item.badge}
+                                    </span>
+                                  )}
+                                </div>
+                              </Link>
+                            );
+                          })}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
               );
             })}
