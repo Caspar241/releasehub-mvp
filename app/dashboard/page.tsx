@@ -24,10 +24,13 @@ export default function DashboardPage() {
   const panelConfig: Record<string, { featureName: string }> = {
     tasks: { featureName: 'Tasks' },
     calendar: { featureName: 'Calendar' },
+    roadmap: { featureName: 'Roadmap' },
     'smart-links': { featureName: 'Smart Links' },
     campaigns: { featureName: 'Campaign Builder' },
     playlists: { featureName: 'Playlist Outreach' },
     forecasting: { featureName: 'Release Forecasting' },
+    insights: { featureName: 'Audience Insights' },
+    revenue: { featureName: 'Revenue Analytics' },
   };
 
   const currentPanelConfig = activePanel ? panelConfig[activePanel] : null;

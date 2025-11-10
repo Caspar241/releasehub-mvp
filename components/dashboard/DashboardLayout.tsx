@@ -39,10 +39,13 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const panelNavigationMap: Record<string, string> = {
     '/dashboard/plan/tasks': 'tasks',
     '/dashboard/plan/calendar': 'calendar',
+    '/dashboard/roadmap': 'roadmap',
     '/dashboard/scale/smart-links': 'smart-links',
     '/dashboard/scale/campaigns': 'campaigns',
     '/dashboard/scale/playlists': 'playlists',
     '/dashboard/scale/forecasting': 'forecasting',
+    '/dashboard/analytics/audience': 'insights',
+    '/dashboard/analytics/revenue': 'revenue',
   };
 
   // Handle panel navigation
