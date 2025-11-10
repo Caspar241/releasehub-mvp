@@ -1,17 +1,31 @@
+import Link from 'next/link';
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
 import AllReleasesList from '@/components/dashboard/AllReleasesList';
+import PageHeader from '@/components/common/PageHeader';
+import * as LucideIcons from 'lucide-react';
 
 export default function ReleasesPage() {
   return (
     <DashboardLayout>
-      <div className="space-y-8">
-        <div>
-          <h1 className="text-5xl md:text-6xl font-bold text-text-primary mb-3">Alle Releases</h1>
-          <p className="text-lg text-text-secondary/90">Verwalte all deine veröffentlichten Songs und Alben.</p>
-        </div>
+      <PageHeader
+        title="Meine Releases"
+        description="Verwalte all deine veröffentlichten Songs und Alben"
+        breadcrumbs={[
+          { label: 'Dashboard', href: '/dashboard' },
+          { label: 'Releases' },
+        ]}
+        actions={
+          <Link
+            href="/dashboard/releases/new"
+            className="inline-flex items-center gap-2 px-4 py-2.5 bg-accent hover:bg-accent-hover text-white font-medium rounded-xl transition-all duration-200 shadow-soft hover:shadow-card"
+          >
+            <LucideIcons.PlusCircle size={18} strokeWidth={2} />
+            + Neues Release
+          </Link>
+        }
+      />
 
-        <AllReleasesList />
-      </div>
+      <AllReleasesList />
     </DashboardLayout>
   );
 }

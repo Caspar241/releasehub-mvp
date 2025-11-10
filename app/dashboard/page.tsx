@@ -8,6 +8,7 @@ import ReleaseOverview from '@/components/dashboard/ReleaseOverview';
 import QuickStats from '@/components/dashboard/QuickStats';
 import AlertsSection from '@/components/dashboard/AlertsSection';
 import TasksPlaceholder from '@/components/dashboard/TasksPlaceholder';
+import DashboardQuickActions from '@/components/dashboard/DashboardQuickActions';
 
 export const dynamic = 'force-dynamic';
 
@@ -47,9 +48,10 @@ export default function DashboardPage() {
           />
         ) : (
           <div key="dashboard-content" className="space-y-6">
-            {/* Page Title - Smaller, matches sidebar */}
-            <div>
+            {/* Page Title & Quick Actions */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <h1 className="text-3xl md:text-4xl font-bold text-text-primary">Dashboard</h1>
+              <DashboardQuickActions />
             </div>
 
             {/* Quick Stats KPIs - KEY METRICS AT TOP */}
