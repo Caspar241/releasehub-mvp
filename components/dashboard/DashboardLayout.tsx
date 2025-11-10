@@ -93,6 +93,17 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     return openSections.includes(sectionId);
   };
 
+  // Auto-open section when navigating to an item in it
+  useEffect(() => {
+    // Find which section contains the active item
+    const activeSection = navigationSections.find((section) => isSectionActive(section));
+
+    if (activeSection && !openSections.includes(activeSection.id)) {
+      // Open the section containing the active item
+      setOpenSections((prev) => [...prev, activeSection.id]);
+    }
+  }, [pathname, searchParams]); // Run when route changes
+
   // Client-side mounting
   useEffect(() => {
     setMounted(true);
@@ -293,11 +304,34 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                         {hasSubmenu && isOpen && (
                           <motion.div
                             initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: "auto", opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            transition={{
-                              duration: 0.25,
-                              ease: [0.22, 1, 0.36, 1],
+                            animate={{
+                              height: "auto",
+                              opacity: 1,
+                              transition: {
+                                height: {
+                                  duration: 0.3,
+                                  ease: [0.22, 1, 0.36, 1],
+                                },
+                                opacity: {
+                                  duration: 0.25,
+                                  ease: "easeOut",
+                                  delay: 0.05,
+                                }
+                              }
+                            }}
+                            exit={{
+                              height: 0,
+                              opacity: 0,
+                              transition: {
+                                height: {
+                                  duration: 0.25,
+                                  ease: [0.22, 1, 0.36, 1],
+                                },
+                                opacity: {
+                                  duration: 0.15,
+                                  ease: "easeIn",
+                                }
+                              }
                             }}
                             className="overflow-hidden"
                           >
