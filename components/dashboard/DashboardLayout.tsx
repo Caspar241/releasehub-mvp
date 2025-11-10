@@ -30,6 +30,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const [notificationMenuOpen, setNotificationMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const hasInitialized = useRef(false); // Track if we've already initialized menus
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -81,9 +82,17 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
   // Check if a section contains the active page or active panel
   const isSectionActive = (section: any) => {
+    const currentPanel = searchParams?.get('panel');
+
     return section.items.some((item: any) => {
       const panelName = panelNavigationMap[item.href];
-      const isPanelActive = panelName && searchParams?.get('panel') === panelName;
+      const isPanelActive = panelName && currentPanel === panelName;
+
+      // For dashboard: only active if on /dashboard with NO panel
+      if (item.href === '/dashboard') {
+        return pathname === '/dashboard' && !currentPanel;
+      }
+
       return pathname === item.href || isPanelActive;
     });
   };
@@ -95,15 +104,16 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
   // Auto-open the section containing the active item on initial load only
   useEffect(() => {
-    // Only auto-open if no sections are open yet (initial load)
-    if (openSections.length === 0 && navigationSections) {
+    // Only auto-open once on initial load
+    if (!hasInitialized.current && navigationSections) {
       const activeSection = navigationSections.find((section) => isSectionActive(section));
-      if (activeSection && !openSections.includes(activeSection.id)) {
+      if (activeSection) {
         setOpenSections([activeSection.id]);
+        hasInitialized.current = true; // Mark as initialized
       }
     }
-    // After initial load, do nothing (manual control only)
-  }, [pathname, searchParams]); // Run when route changes, but only opens on first load
+    // After initialization, do nothing (manual control only)
+  }, [pathname, searchParams, isSectionActive]); // Run when route changes, but only initializes once
 
   // Client-side mounting
   useEffect(() => {
