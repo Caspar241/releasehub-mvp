@@ -64,7 +64,11 @@
       "Bash(git config:*)",
       "Bash(git restore:*)",
       "Bash(npx prettier:*)",
-      "Bash(xargs:*)"
+      "Bash(xargs:*)",
+      "Bash(timeout 10 curl:*)",
+      "Bash(npm prune:*)",
+      "Bash(git checkout:*)",
+      "Bash(timeout 60 npm run dev:*)"
     ],
     "deny": [],
     "ask": []

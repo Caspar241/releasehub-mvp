@@ -1,7 +1,5 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { fadeInUp } from '@/lib/animations';
 import Image from 'next/image';
 
 interface TestimonialProps {
@@ -22,13 +20,7 @@ export default function Testimonial({
   className = '',
 }: TestimonialProps) {
   return (
-    <motion.div
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: '-50px' }}
-      variants={fadeInUp}
-      className={`glass-card p-8 shadow-e2 hover:shadow-e3 transition-all duration-300 ${className}`}
-    >
+    <div className={`glass-card p-8 shadow-e2 hover:shadow-e3 transition-all duration-300 ${className}`}>
       {/* Rating Stars */}
       {rating > 0 && (
         <div className="flex gap-1 mb-4">
@@ -77,6 +69,6 @@ export default function Testimonial({
           <div className="text-body-sm text-text-muted">{role}</div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }

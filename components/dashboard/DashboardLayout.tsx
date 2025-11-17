@@ -10,7 +10,6 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import { navigationSections } from "@/config/dashboard-navigation";
 import CommandPalette from "./CommandPalette";
 import FloatingActionButton from "./FloatingActionButton";
-import { motion, AnimatePresence } from "framer-motion";
 import * as LucideIcons from "lucide-react";
 
 interface DashboardLayoutProps {
@@ -260,14 +259,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                           </span>
 
                           {/* Chevron Icon */}
-                          <motion.div
-                            animate={{ rotate: isOpen ? 90 : 0 }}
-                            transition={{
-                              duration: 0.2,
-                              ease: "easeInOut"
-                            }}
-                            className="relative z-10 flex-shrink-0"
-                          >
+                          <div className="relative z-10 flex-shrink-0">
                             <LucideIcons.ChevronRight
                               size={16}
                               strokeWidth={2.5}
@@ -277,7 +269,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                                   : "text-text-tertiary group-hover:text-accent"
                               }
                             />
-                          </motion.div>
+                          </div>
                         </button>
                       ) : (
                         // Dashboard (no submenu)
@@ -318,28 +310,8 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                       )}
 
                       {/* Submenu Items */}
-                      <AnimatePresence initial={false}>
                         {hasSubmenu && isOpen && (
-                          <motion.div
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{
-                              height: "auto",
-                              opacity: 1,
-                              transition: {
-                                duration: 0.2,
-                                ease: "easeInOut"
-                              }
-                            }}
-                            exit={{
-                              height: 0,
-                              opacity: 0,
-                              transition: {
-                                duration: 0.2,
-                                ease: "easeInOut"
-                              }
-                            }}
-                            className="overflow-hidden"
-                          >
+                          <div className="overflow-hidden">
                             <div className="mt-1 ml-3 pl-3 border-l border-border space-y-0.5">
                               {section.items.map((item) => {
                                 const panelName = panelNavigationMap[item.href];
@@ -469,9 +441,8 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                                 );
                               })}
                             </div>
-                          </motion.div>
+                          </div>
                         )}
-                      </AnimatePresence>
                       </div>
                     </div>
                   );
@@ -691,161 +662,152 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           {mounted &&
             userButtonRef.current &&
             createPortal(
-              <AnimatePresence>
-                {userMenuOpen && (
-                  <motion.div
-                    ref={userMenuRef}
-                    initial={{ opacity: 0, y: -6 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -6 }}
-                    transition={{
-                      duration: 0.22,
-                      ease: [0.22, 1, 0.36, 1],
-                    }}
-                    className="fixed w-64 rounded-xl backdrop-blur-glass-lg z-50"
-                    style={{
-                      top: `${userButtonRef.current.getBoundingClientRect().bottom + 8}px`,
-                      right: `${window.innerWidth - userButtonRef.current.getBoundingClientRect().right}px`,
-                      background:
-                        "linear-gradient(180deg, #141519 0%, #101114 100%)",
-                      border: "1px solid rgba(255, 255, 255, 0.05)",
-                      boxShadow: "0 8px 24px rgba(0, 0, 0, 0.35)",
-                    }}
-                    onMouseEnter={() => {
-                      if (window.matchMedia("(pointer: fine)").matches) {
-                        clearTimeout(userMenuHoverTimeout);
-                      }
-                    }}
-                    onMouseLeave={() => {
-                      if (window.matchMedia("(pointer: fine)").matches) {
-                        setUserMenuOpen(false);
-                      }
-                    }}
-                    role="menu"
-                    aria-label="User menu"
-                  >
-                    <div className="p-2">
-                      {/* User Info Header */}
-                      <div className="px-3 py-2 border-b border-border mb-2">
-                        <p className="text-sm font-semibold text-text-primary">
-                          {user?.name || "Artist"}
-                        </p>
-                        <p className="text-xs text-text-muted">{user?.email}</p>
-                      </div>
-
-                      {/* Menu Items */}
-                      <Link
-                        href="/dashboard/settings"
-                        className="group relative flex items-center gap-2 px-3 py-2.5 rounded-lg text-text-secondary hover:text-accent transition-all duration-200 ease-apple"
-                        style={{
-                          transition:
-                            "background 0.2s ease-in-out, color 0.2s ease-in-out",
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.background =
-                            "rgba(46, 182, 232, 0.1)";
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.background = "";
-                        }}
-                        role="menuitem"
-                        onClick={() => setUserMenuOpen(false)}
-                      >
-                        <svg
-                          className="w-4 h-4 transition-colors"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                          />
-                        </svg>
-                        <span className="font-medium">Profil</span>
-                      </Link>
-
-                      <Link
-                        href="/dashboard/settings"
-                        className="group relative flex items-center gap-2 px-3 py-2.5 rounded-lg text-text-secondary hover:text-accent transition-all duration-200 ease-apple"
-                        style={{
-                          transition:
-                            "background 0.2s ease-in-out, color 0.2s ease-in-out",
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.background =
-                            "rgba(46, 182, 232, 0.1)";
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.background = "";
-                        }}
-                        role="menuitem"
-                        onClick={() => setUserMenuOpen(false)}
-                      >
-                        <svg
-                          className="w-4 h-4 transition-colors"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-                          />
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                          />
-                        </svg>
-                        <span className="font-medium">Einstellungen</span>
-                      </Link>
-
-                      <div className="border-t border-border my-2"></div>
-
-                      <button
-                        onClick={() => {
-                          handleSignOut();
-                          setUserMenuOpen(false);
-                        }}
-                        className="group relative flex items-center gap-2 w-full px-3 py-2.5 rounded-lg text-text-muted hover:text-accent transition-all duration-200 ease-apple"
-                        style={{
-                          transition:
-                            "background 0.2s ease-in-out, color 0.2s ease-in-out",
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.background =
-                            "rgba(46, 182, 232, 0.1)";
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.background = "";
-                        }}
-                        role="menuitem"
-                      >
-                        <svg
-                          className="w-4 h-4 transition-colors"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-                          />
-                        </svg>
-                        <span className="font-medium">Abmelden</span>
-                      </button>
+              userMenuOpen && (
+                <div
+                  ref={userMenuRef}
+                  className="fixed w-64 rounded-xl backdrop-blur-glass-lg z-50"
+                  style={{
+                    top: `${userButtonRef.current.getBoundingClientRect().bottom + 8}px`,
+                    right: `${window.innerWidth - userButtonRef.current.getBoundingClientRect().right}px`,
+                    background:
+                      "linear-gradient(180deg, #141519 0%, #101114 100%)",
+                    border: "1px solid rgba(255, 255, 255, 0.05)",
+                    boxShadow: "0 8px 24px rgba(0, 0, 0, 0.35)",
+                  }}
+                  onMouseEnter={() => {
+                    if (window.matchMedia("(pointer: fine)").matches) {
+                      clearTimeout(userMenuHoverTimeout);
+                    }
+                  }}
+                  onMouseLeave={() => {
+                    if (window.matchMedia("(pointer: fine)").matches) {
+                      setUserMenuOpen(false);
+                    }
+                  }}
+                  role="menu"
+                  aria-label="User menu"
+                >
+                  <div className="p-2">
+                    {/* User Info Header */}
+                    <div className="px-3 py-2 border-b border-border mb-2">
+                      <p className="text-sm font-semibold text-text-primary">
+                        {user?.name || "Artist"}
+                      </p>
+                      <p className="text-xs text-text-muted">{user?.email}</p>
                     </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>,
+
+                    {/* Menu Items */}
+                    <Link
+                      href="/dashboard/settings"
+                      className="group relative flex items-center gap-2 px-3 py-2.5 rounded-lg text-text-secondary hover:text-accent transition-all duration-200 ease-apple"
+                      style={{
+                        transition:
+                          "background 0.2s ease-in-out, color 0.2s ease-in-out",
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background =
+                          "rgba(46, 182, 232, 0.1)";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = "";
+                      }}
+                      role="menuitem"
+                      onClick={() => setUserMenuOpen(false)}
+                    >
+                      <svg
+                        className="w-4 h-4 transition-colors"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                        />
+                      </svg>
+                      <span className="font-medium">Profil</span>
+                    </Link>
+
+                    <Link
+                      href="/dashboard/settings"
+                      className="group relative flex items-center gap-2 px-3 py-2.5 rounded-lg text-text-secondary hover:text-accent transition-all duration-200 ease-apple"
+                      style={{
+                        transition:
+                          "background 0.2s ease-in-out, color 0.2s ease-in-out",
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background =
+                          "rgba(46, 182, 232, 0.1)";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = "";
+                      }}
+                      role="menuitem"
+                      onClick={() => setUserMenuOpen(false)}
+                    >
+                      <svg
+                        className="w-4 h-4 transition-colors"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                        />
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                        />
+                      </svg>
+                      <span className="font-medium">Einstellungen</span>
+                    </Link>
+
+                    <div className="border-t border-border my-2"></div>
+
+                    <button
+                      onClick={() => {
+                        handleSignOut();
+                        setUserMenuOpen(false);
+                      }}
+                      className="group relative flex items-center gap-2 w-full px-3 py-2.5 rounded-lg text-text-muted hover:text-accent transition-all duration-200 ease-apple"
+                      style={{
+                        transition:
+                          "background 0.2s ease-in-out, color 0.2s ease-in-out",
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background =
+                          "rgba(46, 182, 232, 0.1)";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = "";
+                      }}
+                      role="menuitem"
+                    >
+                      <svg
+                        className="w-4 h-4 transition-colors"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                        />
+                      </svg>
+                      <span className="font-medium">Abmelden</span>
+                    </button>
+                  </div>
+                </div>
+              ),
               document.body,
             )}
         </div>

@@ -1,7 +1,5 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { float, scaleUp } from '@/lib/animations';
 import Image from 'next/image';
 
 interface MockupFrameProps {
@@ -28,13 +26,7 @@ export default function MockupFrame({
   };
 
   return (
-    <motion.div
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: '-100px' }}
-      variants={scaleUp}
-      className={`relative ${variantStyles[variant]} border-surface-raised bg-surface-base shadow-3 overflow-hidden ${className}`}
-    >
+    <div className={`relative ${variantStyles[variant]} border-surface-raised bg-surface-base shadow-3 overflow-hidden ${className}`}>
       {/* Screen Content */}
       <div className="absolute inset-0 bg-gradient-to-br from-bg-secondary to-bg-tertiary">
         {imageSrc ? (
@@ -78,6 +70,6 @@ export default function MockupFrame({
       {variant === 'phone' && (
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-6 bg-surface-base rounded-b-2xl" />
       )}
-    </motion.div>
+    </div>
   );
 }

@@ -2,7 +2,6 @@
 
 import { Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { AnimatePresence } from 'framer-motion';
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
 import ReleaseOverview from '@/components/dashboard/ReleaseOverview';
 import QuickStats from '@/components/dashboard/QuickStats';
@@ -38,7 +37,6 @@ export default function DashboardPage() {
 
   return (
     <DashboardLayout>
-      <AnimatePresence mode="wait">
         {currentPanelConfig ? (
           <TasksPlaceholder
             key={`${activePanel}-panel`}
@@ -74,7 +72,6 @@ export default function DashboardPage() {
             </Suspense>
           </div>
         )}
-      </AnimatePresence>
     </DashboardLayout>
   );
 }

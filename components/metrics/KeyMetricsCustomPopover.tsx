@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef, RefObject } from 'react';
 import { createPortal } from 'react-dom';
-import { motion } from 'framer-motion';
 import { DayPicker, DateRange } from 'react-day-picker';
 import { de } from 'date-fns/locale';
 import { format, isValid, parse } from 'date-fns';
@@ -194,12 +193,8 @@ export default function KeyMetricsCustomPopover({ onClose, triggerRef }: KeyMetr
   if (!mounted) return null;
 
   const popoverContent = (
-    <motion.div
+    <div
       ref={popoverRef}
-      initial={{ opacity: 0, y: -10, scale: 0.98 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      exit={{ opacity: 0, y: -10, scale: 0.98 }}
-      transition={{ duration: 0.14, ease: [0.16, 1, 0.3, 1] }} // Apple easing curve
       className="fixed w-[320px] bg-[#0B0B0C]/90 backdrop-blur-md border border-[#1C1D20] rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.4)] p-3 text-[12px] leading-[1.3]"
       style={{
         top: position.top,
@@ -298,15 +293,12 @@ export default function KeyMetricsCustomPopover({ onClose, triggerRef }: KeyMetr
 
       {/* Error Message - Compact */}
       {error && (
-        <motion.div
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: 'auto' }}
-          exit={{ opacity: 0, height: 0 }}
+        <div
           role="alert"
           className="mb-2 px-2 py-1.5 text-[11px] text-red-400 bg-red-500/10 border border-red-500/30 rounded-lg"
         >
           {error}
-        </motion.div>
+        </div>
       )}
 
       {/* Actions - Compact */}
@@ -336,7 +328,7 @@ export default function KeyMetricsCustomPopover({ onClose, triggerRef }: KeyMetr
           Anwenden
         </button>
       </div>
-    </motion.div>
+    </div>
   );
 
   // Render popover at document body level using Portal

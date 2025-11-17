@@ -1,8 +1,5 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { fadeInUp } from '@/lib/animations';
-
 interface SectionHeaderProps {
   eyebrow?: string;
   title: string;
@@ -21,33 +18,22 @@ export default function SectionHeader({
   const alignmentClasses = alignment === 'center' ? 'text-center mx-auto' : 'text-left';
 
   return (
-    <motion.div
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: '-100px' }}
-      className={`max-w-3xl ${alignmentClasses} ${className}`}
-    >
+    <div className={`max-w-3xl ${alignmentClasses} ${className}`}>
       {eyebrow && (
-        <motion.div variants={fadeInUp} className="mb-4">
+        <div className="mb-4">
           <span className="badge">{eyebrow}</span>
-        </motion.div>
+        </div>
       )}
 
-      <motion.h2
-        variants={fadeInUp}
-        className="text-3xl md:text-4xl lg:text-5xl text-text-primary font-bold mb-6"
-      >
+      <h2 className="text-3xl md:text-4xl lg:text-5xl text-text-primary font-bold mb-6">
         {title}
-      </motion.h2>
+      </h2>
 
       {description && (
-        <motion.p
-          variants={fadeInUp}
-          className="text-lead text-text-secondary leading-relaxed"
-        >
+        <p className="text-lead text-text-secondary leading-relaxed">
           {description}
-        </motion.p>
+        </p>
       )}
-    </motion.div>
+    </div>
   );
 }

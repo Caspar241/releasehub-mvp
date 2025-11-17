@@ -2,8 +2,6 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
-import { cardHover, fadeInUp, scrollViewport } from '@/lib/animations';
 
 interface BlogCardProps {
   title: string;
@@ -27,18 +25,10 @@ export default function BlogCard({
   readTime,
 }: BlogCardProps) {
   return (
-    <motion.div
-      initial="hidden"
-      whileInView="visible"
-      viewport={scrollViewport}
-      variants={fadeInUp}
-    >
+    <div>
       <Link href={href}>
-        <motion.article
-          className="group glass-card rounded-xl overflow-hidden h-full transition-all duration-300"
-          initial="rest"
-          whileHover="hover"
-          variants={cardHover}
+        <article
+          className="group glass-card rounded-xl overflow-hidden h-full transition-all duration-300 hover:shadow-e3"
         >
           {/* Image */}
           {imageUrl && (
@@ -110,8 +100,8 @@ export default function BlogCard({
               </svg>
             </div>
           </div>
-        </motion.article>
+        </article>
       </Link>
-    </motion.div>
+    </div>
   );
 }

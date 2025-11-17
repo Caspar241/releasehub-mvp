@@ -58,6 +58,12 @@ export const navigationSections: NavSection[] = [
     defaultExpanded: false,
     items: [
       {
+        name: 'Templates',
+        href: '/dashboard/templates',
+        icon: 'FileStack',
+        description: 'Release- & Artist-Templates',
+      },
+      {
         name: 'Vorlagen & Workflows',
         href: '/dashboard/plan/workflows',
         icon: 'Workflow',
@@ -253,6 +259,15 @@ export const commandPaletteActions: CommandAction[] = [
     section: 'Navigation',
     keywords: ['releases', 'tracks', 'music', 'songs'],
     action: '/dashboard/releases',
+  },
+  {
+    id: 'nav-templates',
+    label: 'Go to Templates',
+    description: 'Browse release & artist templates',
+    icon: 'FileStack',
+    section: 'Navigation',
+    keywords: ['templates', 'vorlagen', 'release planning', 'workflows'],
+    action: '/dashboard/templates',
   },
   {
     id: 'nav-workflows',

@@ -16,13 +16,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Only run auth checks on client side
+    if (typeof window === 'undefined') {
+      setLoading(false);
+      return;
+    }
+
+    // Add timeout to prevent hanging
+    const timeoutId = setTimeout(() => {
+      console.warn('Auth check timed out');
+      setLoading(false);
+    }, 5000);
+
     // Check initial session with error handling
     getCurrentUser()
       .then((currentUser) => {
+        clearTimeout(timeoutId);
         setUser(currentUser);
         setLoading(false);
       })
       .catch((error) => {
+        clearTimeout(timeoutId);
         console.error('Auth initialization error:', error);
         setLoading(false);
       });
@@ -35,9 +49,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       });
 
       return () => {
+        clearTimeout(timeoutId);
         subscription.unsubscribe();
       };
     } catch (error) {
+      clearTimeout(timeoutId);
       console.error('Auth subscription error:', error);
       setLoading(false);
     }

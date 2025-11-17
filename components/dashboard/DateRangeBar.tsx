@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { DayPicker, DateRange } from 'react-day-picker';
 import { de } from 'date-fns/locale';
 import 'react-day-picker/dist/style.css';
@@ -208,14 +207,9 @@ export default function DateRangeBar() {
       </button>
 
       {/* Custom Date Popup */}
-      <AnimatePresence>
         {showCustomPopup && (
-          <motion.div
+          <div
             ref={popupRef}
-            initial={{ opacity: 0, y: -10, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -10, scale: 0.95 }}
-            transition={{ duration: 0.15, ease: 'easeOut' }}
             role="dialog"
             aria-label="Benutzerdefinierten Zeitraum wählen"
             className="absolute top-full right-0 mt-2 w-auto glass-card rounded-2xl p-5 shadow-lg z-[60] border border-[#232427]"
@@ -272,19 +266,14 @@ export default function DateRangeBar() {
             )}
 
             {/* Error Message */}
-            <AnimatePresence>
               {error && (
-                <motion.div
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0 }}
+                <div
                   role="alert"
                   className="text-xs text-red-400 bg-red-500/10 border border-red-500/30 rounded-lg px-3 py-2 mb-4"
                 >
                   {error}
-                </motion.div>
+                </div>
               )}
-            </AnimatePresence>
 
             {/* Actions */}
             <div className="flex items-center justify-end gap-3">
@@ -304,9 +293,8 @@ export default function DateRangeBar() {
                 Anwenden
               </button>
             </div>
-          </motion.div>
+          </div>
         )}
-      </AnimatePresence>
     </div>
   );
 }

@@ -1,7 +1,6 @@
 'use client';
 
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef, ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 interface ParallaxLayerProps {
   children: ReactNode;
@@ -16,36 +15,12 @@ export default function ParallaxLayer({
   className = '',
   direction = 'up',
 }: ParallaxLayerProps) {
-  const ref = useRef<HTMLDivElement>(null);
-
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ['start end', 'end start'],
-  });
-
-  // Speed multipliers
-  const speedMultipliers = {
-    slow: 50,
-    medium: 100,
-    fast: 150,
-  };
-
-  const multiplier = speedMultipliers[speed];
-  const directionMultiplier = direction === 'up' ? -1 : 1;
-
-  const y = useTransform(
-    scrollYProgress,
-    [0, 1],
-    [0, multiplier * directionMultiplier]
-  );
+  // Parallax effect removed - now static
+  // Speed and direction props kept for API compatibility but have no effect
 
   return (
-    <motion.div
-      ref={ref}
-      style={{ y }}
-      className={`parallax-slow ${className}`}
-    >
+    <div className={className}>
       {children}
-    </motion.div>
+    </div>
   );
 }

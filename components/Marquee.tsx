@@ -1,6 +1,5 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import { ReactNode } from 'react';
 
 interface MarqueeProps {
@@ -18,24 +17,13 @@ export default function Marquee({
   className = '',
   pauseOnHover = false,
 }: MarqueeProps) {
-  const directionValue = direction === 'left' ? -1 : 1;
-
   return (
     <div className={`overflow-hidden ${className}`}>
-      <motion.div
-        className="flex gap-8"
-        animate={{
-          x: directionValue === -1 ? [0, '-50%'] : ['-50%', 0],
+      <div
+        className={`flex gap-8 ${pauseOnHover ? 'hover:[animation-play-state:paused]' : ''}`}
+        style={{
+          animation: `marquee-${direction} ${speed}s linear infinite`,
         }}
-        transition={{
-          x: {
-            repeat: Infinity,
-            repeatType: 'loop',
-            duration: speed,
-            ease: 'linear',
-          },
-        }}
-        whileHover={pauseOnHover ? { animationPlayState: 'paused' } : undefined}
       >
         {/* First set */}
         <div className="flex gap-8 shrink-0">{children}</div>
@@ -43,7 +31,18 @@ export default function Marquee({
         <div className="flex gap-8 shrink-0" aria-hidden="true">
           {children}
         </div>
-      </motion.div>
+      </div>
+
+      <style jsx>{`
+        @keyframes marquee-left {
+          from { transform: translateX(0); }
+          to { transform: translateX(-50%); }
+        }
+        @keyframes marquee-right {
+          from { transform: translateX(-50%); }
+          to { transform: translateX(0); }
+        }
+      `}</style>
     </div>
   );
 }

@@ -1,8 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { fadeInUp, staggerContainer, scaleUp } from '@/lib/animations';
 import MockupFrame from './MockupFrame';
 import AnimatedBadge from './AnimatedBadge';
 
@@ -20,46 +18,29 @@ export default function Hero({ variant = 'A' }: HeroProps) {
       <div className="container-custom">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left Content */}
-          <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            animate="visible"
-            className="text-center lg:text-left"
-          >
-            <motion.div variants={fadeInUp} className="mb-6">
+          <div className="text-center lg:text-left">
+            <div className="mb-6">
               <AnimatedBadge text="0% Rights Taken" variant="primary" animate={false} />
-            </motion.div>
+            </div>
 
-            <motion.h1
-              variants={fadeInUp}
-              className="text-hero-mobile md:text-hero-desktop text-text-primary font-bold mb-6 leading-tight"
-            >
+            <h1 className="text-hero-mobile md:text-hero-desktop text-text-primary font-bold mb-6 leading-tight">
               We scale the new gen of artists
-            </motion.h1>
+            </h1>
 
-            <motion.p
-              variants={fadeInUp}
-              className="text-lead text-text-secondary mb-8 max-w-xl lg:mx-0 mx-auto"
-            >
+            <p className="text-lead text-text-secondary mb-8 max-w-xl lg:mx-0 mx-auto">
               Das erste Release-System, das Artists strukturiert, ohne einen einzigen Prozent ihrer Rechte zu nehmen. Europäisch. Fair. Gemacht für echte Arbeit.
-            </motion.p>
+            </p>
 
-            <motion.div
-              variants={fadeInUp}
-              className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
-            >
+            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
               <Link href="/pricing" className="btn-primary">
                 Dein Abo wählen →
               </Link>
               <Link href="/features" className="btn-secondary">
                 Features entdecken
               </Link>
-            </motion.div>
+            </div>
 
-            <motion.div
-              variants={fadeInUp}
-              className="mt-8 flex items-center gap-6 justify-center lg:justify-start text-text-muted text-body-sm"
-            >
+            <div className="mt-8 flex items-center gap-6 justify-center lg:justify-start text-text-muted text-body-sm">
               <div className="flex items-center gap-2">
                 <svg className="w-5 h-5 text-accent" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
@@ -72,16 +53,11 @@ export default function Hero({ variant = 'A' }: HeroProps) {
                 </svg>
                 <span>Monatlich kündbar</span>
               </div>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
 
           {/* Right Mockups */}
-          <motion.div
-            variants={scaleUp}
-            initial="hidden"
-            animate="visible"
-            className="relative hidden lg:block"
-          >
+          <div className="relative hidden lg:block">
             <div className="relative">
               {/* Main Desktop Mockup */}
               <div className="relative z-10">
@@ -116,7 +92,7 @@ export default function Hero({ variant = 'A' }: HeroProps) {
                 </MockupFrame>
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>

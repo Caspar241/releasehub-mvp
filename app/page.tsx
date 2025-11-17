@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
@@ -13,14 +12,6 @@ import Marquee from '@/components/Marquee';
 import ParallaxLayer from '@/components/ParallaxLayer';
 import MockupFrame from '@/components/MockupFrame';
 import CTAButton from '@/components/CTAButton';
-import {
-  fadeInUp,
-  fadeIn,
-  scaleUp,
-  staggerContainer,
-  scrollViewport,
-  float,
-} from '@/lib/animations';
 
 export default function Home() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -63,40 +54,26 @@ export default function Home() {
           <div className="container-wide relative z-10 py-20 md:py-28">
             <div className="grid lg:grid-cols-2 gap-16 items-center">
               {/* Left: Content */}
-              <motion.div
-                variants={staggerContainer}
-                initial="hidden"
-                animate="visible"
-                className="text-center lg:text-left"
-              >
+              <div className="text-center lg:text-left">
                 {/* Badge */}
-                <motion.div variants={fadeInUp} className="mb-8">
+                <div className="mb-8">
                   <span className="badge-accent">
                     0% RIGHTS TAKEN
                   </span>
-                </motion.div>
+                </div>
 
                 {/* EXACT HERO HEADLINE */}
-                <motion.h1
-                  variants={fadeInUp}
-                  className="text-hero-mobile md:text-hero-xl mb-8 leading-tight text-balance heading-default"
-                >
+                <h1 className="text-hero-mobile md:text-hero-xl mb-8 leading-tight text-balance heading-default">
                   We scale the new gen of <span className="text-gradient-blue">artists</span>
-                </motion.h1>
+                </h1>
 
                 {/* Subheadline */}
-                <motion.p
-                  variants={fadeInUp}
-                  className="text-lead text-text-secondary mb-10 max-w-xl lg:mx-0 mx-auto text-balance"
-                >
+                <p className="text-lead text-text-secondary mb-10 max-w-xl lg:mx-0 mx-auto text-balance">
                   Wir ersetzen das klassische Label-Modell durch Software: eine Plattform, auf der Artists ihren gesamten Workflow steuern – Plan · Release · Scale · Analyze – mit klaren Prozessen, echten Daten und voller Kontrolle über Rechte, Einnahmen und Wachstum.
-                </motion.p>
+                </p>
 
                 {/* CTAs */}
-                <motion.div
-                  variants={fadeInUp}
-                  className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-10"
-                >
+                <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-10">
                   <CTAButton
                     text="Start Free Trial"
                     onClick={() => setIsSignupOpen(true)}
@@ -114,13 +91,10 @@ export default function Home() {
                     variant="secondary"
                     size="lg"
                   />
-                </motion.div>
+                </div>
 
                 {/* Trust Indicators */}
-                <motion.div
-                  variants={fadeInUp}
-                  className="flex flex-wrap items-center justify-center lg:justify-start gap-6 text-text-muted text-sm"
-                >
+                <div className="flex flex-wrap items-center justify-center lg:justify-start gap-6 text-text-muted text-sm">
                   <div className="flex items-center gap-2">
                     <svg className="w-5 h-5 text-accent" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
@@ -139,23 +113,13 @@ export default function Home() {
                     </svg>
                     <span>Secure Payments</span>
                   </div>
-                </motion.div>
-              </motion.div>
+                </div>
+              </div>
 
               {/* Right: Floating Dashboard Mockup with Parallax */}
-              <motion.div
-                variants={fadeIn}
-                initial="hidden"
-                animate="visible"
-                className="relative hidden lg:block"
-              >
+              <div className="relative hidden lg:block">
                 <ParallaxLayer speed="slow">
-                  <motion.div
-                    initial="initial"
-                    animate="animate"
-                    variants={float}
-                    className="relative z-10"
-                  >
+                  <div className="relative z-10">
                     <MockupFrame variant="desktop" className="glow-hover">
                       <div className="bg-gradient-to-br from-surface-primary to-surface-raised p-8 space-y-6">
                         <div className="flex items-center justify-between">
@@ -177,17 +141,12 @@ export default function Home() {
                         </div>
                       </div>
                     </MockupFrame>
-                  </motion.div>
+                  </div>
                 </ParallaxLayer>
 
                 {/* Floating Phone Mockup */}
                 <ParallaxLayer speed="fast">
-                  <motion.div
-                    initial="initial"
-                    animate="animate"
-                    variants={float}
-                    className="absolute -bottom-12 -left-20 z-20"
-                  >
+                  <div className="absolute -bottom-12 -left-20 z-20">
                     <MockupFrame variant="phone" className="max-w-[180px] shadow-e4">
                       <div className="bg-surface-primary p-4 space-y-3">
                         <div className="h-6 w-20 bg-accent rounded mx-auto" />
@@ -196,24 +155,18 @@ export default function Home() {
                         <div className="glass-card p-3 rounded-lg h-16" />
                       </div>
                     </MockupFrame>
-                  </motion.div>
+                  </div>
                 </ParallaxLayer>
-              </motion.div>
+              </div>
             </div>
 
             {/* Scroll Indicator */}
-            <motion.div
-              variants={fadeIn}
-              initial="hidden"
-              animate="visible"
-              transition={{ delay: 1 }}
-              className="absolute bottom-10 left-1/2 -translate-x-1/2 scroll-indicator"
-            >
+            <div className="absolute bottom-10 left-1/2 -translate-x-1/2 scroll-indicator">
               <span className="text-xs uppercase tracking-wider">Scroll</span>
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
               </svg>
-            </motion.div>
+            </div>
           </div>
         </section>
 
@@ -262,13 +215,7 @@ export default function Home() {
               description="Built for artists who are serious about their career. Structured workflows, transparent analytics, and complete control over your music business."
             />
 
-            <motion.div
-              variants={staggerContainer}
-              initial="hidden"
-              whileInView="visible"
-              viewport={scrollViewport}
-              className="feature-grid"
-            >
+            <div className="feature-grid">
               <FeatureCard
                 icon={
                   <svg fill="currentColor" viewBox="0 0 20 20" className="w-10 h-10">
@@ -324,22 +271,16 @@ export default function Home() {
                 title="Release Timeline"
                 description="Structured release planning with automated task management. Never miss a deadline or promotional opportunity."
               />
-            </motion.div>
+            </div>
 
-            <motion.div
-              variants={fadeInUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={scrollViewport}
-              className="text-center mt-12"
-            >
+            <div className="text-center mt-12">
               <Link href="/features" className="btn-secondary btn-lg">
                 Explore All Features
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                 </svg>
               </Link>
-            </motion.div>
+            </div>
           </div>
         </section>
 
@@ -357,13 +298,7 @@ export default function Home() {
               description="Every release managed in one place. From contract signing to final payout. No spreadsheets. No chaos. Just structure."
             />
 
-            <motion.div
-              variants={scaleUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={scrollViewport}
-              className="relative max-w-5xl mx-auto"
-            >
+            <div className="relative max-w-5xl mx-auto">
               <ParallaxLayer speed="medium">
                 <MockupFrame variant="desktop" className="shadow-e4 glow">
                   <div className="bg-gradient-to-br from-surface-primary via-surface-secondary to-surface-raised p-10 space-y-8">
@@ -412,7 +347,7 @@ export default function Home() {
                   </div>
                 </MockupFrame>
               </ParallaxLayer>
-            </motion.div>
+            </div>
           </div>
         </section>
 
@@ -424,30 +359,24 @@ export default function Home() {
           <div className="absolute bottom-0 right-0 w-[400px] h-[400px] gradient-orb-blue opacity-15" />
 
           <div className="container-narrow relative z-10">
-            <motion.div
-              variants={staggerContainer}
-              initial="hidden"
-              whileInView="visible"
-              viewport={scrollViewport}
-              className="text-center"
-            >
-              <motion.h2 variants={fadeInUp} className="text-display mb-8 text-balance">
+            <div className="text-center">
+              <h2 className="text-display mb-8 text-balance">
                 Labels used to own the system.<br />
                 <span className="text-gradient">Now artists own the system.</span>
-              </motion.h2>
-              <motion.p variants={fadeInUp} className="text-lead text-text-secondary max-w-2xl mx-auto mb-8">
+              </h2>
+              <p className="text-lead text-text-secondary max-w-2xl mx-auto mb-8">
                 For decades, artists needed labels for infrastructure. Distribution. Marketing. Analytics.
                 That era is over. ReleaseHub gives you the same tools—without giving up your rights.
-              </motion.p>
-              <motion.div variants={fadeInUp}>
+              </p>
+              <div>
                 <Link href="/about" className="btn-ghost btn-lg">
                   Our Mission
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                   </svg>
                 </Link>
-              </motion.div>
-            </motion.div>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -462,13 +391,7 @@ export default function Home() {
               description="Join thousands of artists who took back control of their music business."
             />
 
-            <motion.div
-              variants={staggerContainer}
-              initial="hidden"
-              whileInView="visible"
-              viewport={scrollViewport}
-              className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
-            >
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               <Testimonial
                 quote="ReleaseHub gave me the structure I needed to manage 6 releases a year. Game changer."
                 author="Alex Rivera"
@@ -484,7 +407,7 @@ export default function Home() {
                 author="Jordan Smith"
                 role="Beat Maker & Label Owner"
               />
-            </motion.div>
+            </div>
           </div>
         </section>
 
@@ -502,21 +425,14 @@ export default function Home() {
               description="Choose your plan. Cancel anytime. Keep 100% of your rights and revenue."
             />
 
-            <motion.div
-              variants={staggerContainer}
-              initial="hidden"
-              whileInView="visible"
-              viewport={scrollViewport}
-              className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto mb-12"
-            >
+            <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto mb-12">
               {[
                 { name: 'Basic', price: 29, desc: 'For emerging artists' },
                 { name: 'Pro', price: 79, desc: 'For serious artists', highlighted: true },
                 { name: 'Label', price: 129, desc: 'For teams & labels' },
               ].map((tier) => (
-                <motion.div
+                <div
                   key={tier.name}
-                  variants={fadeInUp}
                   className={`card text-center ${tier.highlighted ? 'border-accent glow' : ''}`}
                 >
                   {tier.highlighted && (
@@ -536,24 +452,18 @@ export default function Home() {
                   >
                     View Details
                   </Link>
-                </motion.div>
+                </div>
               ))}
-            </motion.div>
+            </div>
 
-            <motion.div
-              variants={fadeInUp}
-              initial="hidden"
-              whileInView="visible"
-              viewport={scrollViewport}
-              className="text-center"
-            >
+            <div className="text-center">
               <Link href="/pricing" className="btn-ghost btn-lg">
                 Compare All Plans
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                 </svg>
               </Link>
-            </motion.div>
+            </div>
           </div>
         </section>
 
@@ -564,20 +474,15 @@ export default function Home() {
           </div>
 
           <div className="container-custom text-center relative z-10">
-            <motion.div
-              variants={staggerContainer}
-              initial="hidden"
-              whileInView="visible"
-              viewport={scrollViewport}
-            >
-              <motion.h2 variants={fadeInUp} className="text-display mb-8">
+            <div>
+              <h2 className="text-display mb-8">
                 Start building your artist business today
-              </motion.h2>
-              <motion.p variants={fadeInUp} className="text-lead text-text-secondary max-w-2xl mx-auto mb-10">
+              </h2>
+              <p className="text-lead text-text-secondary max-w-2xl mx-auto mb-10">
                 No labels. No revenue cuts. No excuses.<br />
                 Join the new generation of independent artists.
-              </motion.p>
-              <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
                 <CTAButton
                   text="Start Free Trial"
                   onClick={() => setIsSignupOpen(true)}
@@ -595,8 +500,8 @@ export default function Home() {
                   variant="ghost"
                   size="lg"
                 />
-              </motion.div>
-              <motion.div variants={fadeInUp} className="flex flex-wrap items-center justify-center gap-6 text-text-muted text-sm">
+              </div>
+              <div className="flex flex-wrap items-center justify-center gap-6 text-text-muted text-sm">
                 <span className="flex items-center gap-2">
                   <svg className="w-5 h-5 text-accent" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clipRule="evenodd" />
@@ -615,8 +520,8 @@ export default function Home() {
                   </svg>
                   Support: support@releasehub.com
                 </span>
-              </motion.div>
-            </motion.div>
+              </div>
+            </div>
           </div>
         </section>
       </main>

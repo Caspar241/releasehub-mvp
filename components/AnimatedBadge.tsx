@@ -1,8 +1,5 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { gentleRotate, fadeInUp } from '@/lib/animations';
-
 interface AnimatedBadgeProps {
   text: string;
   variant?: 'primary' | 'secondary' | 'success' | 'warning';
@@ -14,7 +11,6 @@ export default function AnimatedBadge({
   text,
   variant = 'primary',
   className = '',
-  animate = true,
 }: AnimatedBadgeProps) {
   const variantClasses = {
     primary: 'bg-accent text-text-inverse',
@@ -24,14 +20,10 @@ export default function AnimatedBadge({
   };
 
   return (
-    <motion.span
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true }}
-      variants={fadeInUp}
+    <span
       className={`inline-block px-4 py-1.5 rounded-full text-caption font-semibold uppercase tracking-wider ${variantClasses[variant]} ${className}`}
     >
       {text}
-    </motion.span>
+    </span>
   );
 }

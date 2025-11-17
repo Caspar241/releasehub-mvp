@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { useKeyMetrics } from '@/contexts/KeyMetricsContext';
 import KeyMetricsCustomPopover from './KeyMetricsCustomPopover';
 
@@ -149,14 +148,12 @@ export default function KeyMetricsControls() {
           </button>
 
           {/* Custom Popover - Inside the hover container */}
-          <AnimatePresence>
             {showCustomPopover && (
               <KeyMetricsCustomPopover
                 onClose={() => setShowCustomPopover(false)}
                 triggerRef={customButtonRef}
               />
             )}
-          </AnimatePresence>
         </div>
       </div>
     </div>

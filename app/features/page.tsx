@@ -4,8 +4,6 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { useState } from 'react';
 import AuthModals from '@/components/AuthModals';
-import { motion } from 'framer-motion';
-import { fadeInUp, scaleUp, staggerContainer, scrollViewport } from '@/lib/animations';
 import MockupFrame from '@/components/MockupFrame';
 import ParallaxLayer from '@/components/ParallaxLayer';
 import SectionHeader from '@/components/SectionHeader';
@@ -177,28 +175,24 @@ export default function FeaturesPage() {
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] gradient-orb-cyan pointer-events-none" />
 
           <div className="container-custom text-center relative z-10">
-            <motion.div
-              variants={staggerContainer}
-              initial="hidden"
-              animate="visible"
-            >
-              <motion.div variants={fadeInUp} className="mb-6">
+            <div>
+              <div className="mb-6">
                 <span className="badge bg-surface-raised text-accent border border-accent">
                   FULL FEATURE SET
                 </span>
-              </motion.div>
+              </div>
 
-              <motion.h1 variants={fadeInUp} className="mb-6">
+              <h1 className="mb-6">
                 Everything you need to release professionally
-              </motion.h1>
+              </h1>
 
-              <motion.p variants={fadeInUp} className="text-body-lg text-text-secondary max-w-3xl mx-auto mb-8">
+              <p className="text-body-lg text-text-secondary max-w-3xl mx-auto mb-8">
                 ReleaseHub isn't another tool with 100 features nobody uses.
                 Instead: A focused system that automates the most important workflows
                 and gives artists control over their careers.
-              </motion.p>
+              </p>
 
-              <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-4 justify-center">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <CTAButton
                   text="Start Free Trial"
                   onClick={() => setIsSignupOpen(true)}
@@ -216,48 +210,36 @@ export default function FeaturesPage() {
                   variant="secondary"
                   size="lg"
                 />
-              </motion.div>
-            </motion.div>
+              </div>
+            </div>
           </div>
         </section>
 
         {/* Core Platform */}
         <section className="section-spacing bg-bg-secondary">
           <div className="container-custom">
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={scrollViewport}
-              variants={staggerContainer}
-              className="text-center mb-12"
-            >
-              <motion.div variants={fadeInUp} className="mb-4">
+            <div className="text-center mb-12">
+              <div className="mb-4">
                 <span className="badge bg-accent text-text-inverse">CORE PLATFORM</span>
-              </motion.div>
-              <motion.h2 variants={fadeInUp} className="mb-4">Core Platform</motion.h2>
-              <motion.p variants={fadeInUp} className="text-body-lg text-text-secondary max-w-2xl mx-auto">
+              </div>
+              <h2 className="mb-4">Core Platform</h2>
+              <p className="text-body-lg text-text-secondary max-w-2xl mx-auto">
                 The foundation: Release management, tasks, splits, and royalty tracking.
-              </motion.p>
-            </motion.div>
+              </p>
+            </div>
 
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={scrollViewport}
-              variants={staggerContainer}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-            >
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {coreFeatures.map((feature, index) => (
-                <motion.div key={index} variants={fadeInUp}>
+                <div key={index}>
                   <div className="glass-card rounded-xl p-8 h-full hover:border-accent transition-all duration-300 glow-hover">
                     <div className="text-4xl mb-4">{feature.icon}</div>
                     <h3 className="text-xl font-semibold mb-2">{feature.name}</h3>
                     <p className="text-text-secondary mb-3">{feature.description}</p>
                     <p className="text-sm text-accent font-medium">{feature.benefit}</p>
                   </div>
-                </motion.div>
+                </div>
               ))}
-            </motion.div>
+            </div>
           </div>
         </section>
 
@@ -277,31 +259,19 @@ export default function FeaturesPage() {
           </div>
 
           <div className="container-custom relative z-10">
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={scrollViewport}
-              variants={staggerContainer}
-              className="text-center mb-12"
-            >
-              <motion.div variants={fadeInUp} className="mb-4">
+            <div className="text-center mb-12">
+              <div className="mb-4">
                 <span className="badge bg-surface-raised text-accent border border-accent">BUSINESS TOOLS</span>
-              </motion.div>
-              <motion.h2 variants={fadeInUp} className="mb-4">Business & Financials</motion.h2>
-              <motion.p variants={fadeInUp} className="text-body-lg text-text-secondary max-w-2xl mx-auto">
+              </div>
+              <h2 className="mb-4">Business & Financials</h2>
+              <p className="text-body-lg text-text-secondary max-w-2xl mx-auto">
                 Revenue, payouts, budgets, and rights management – all transparent and automated.
-              </motion.p>
-            </motion.div>
+              </p>
+            </div>
 
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={scrollViewport}
-              variants={staggerContainer}
-              className="grid grid-cols-1 md:grid-cols-2 gap-6"
-            >
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {businessFeatures.map((feature, index) => (
-                <motion.div key={index} variants={fadeInUp}>
+                <div key={index}>
                   <div className="glass-card rounded-xl p-8 h-full hover:border-accent transition-all duration-300 glow-hover">
                     <div className="flex items-start gap-4">
                       <div className="text-4xl">{feature.icon}</div>
@@ -312,9 +282,9 @@ export default function FeaturesPage() {
                       </div>
                     </div>
                   </div>
-                </motion.div>
+                </div>
               ))}
-            </motion.div>
+            </div>
           </div>
         </section>
 
@@ -416,20 +386,15 @@ export default function FeaturesPage() {
           </div>
 
           <div className="container-custom text-center relative z-10">
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={scrollViewport}
-              variants={staggerContainer}
-            >
-              <motion.h2 variants={fadeInUp} className="mb-6">
+            <div>
+              <h2 className="mb-6">
                 Ready for structured release management?
-              </motion.h2>
-              <motion.p variants={fadeInUp} className="text-body-lg mb-8 max-w-2xl mx-auto">
+              </h2>
+              <p className="text-body-lg mb-8 max-w-2xl mx-auto">
                 No labels. No revenue cuts. No excuses. <br />
                 Choose your plan and start professionally.
-              </motion.p>
-              <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-4 justify-center">
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <CTAButton
                   text="Start Free Trial"
                   onClick={() => setIsSignupOpen(true)}
@@ -447,13 +412,13 @@ export default function FeaturesPage() {
                   variant="ghost"
                   size="lg"
                 />
-              </motion.div>
-              <motion.div variants={fadeInUp} className="mt-12 text-text-secondary space-y-2">
+              </div>
+              <div className="mt-12 text-text-secondary space-y-2">
                 <p>🔒 Secure payments via Stripe</p>
                 <p>🇪🇺 European company, GDPR compliant</p>
                 <p>📧 Support: support@releasehub.com</p>
-              </motion.div>
-            </motion.div>
+              </div>
+            </div>
           </div>
         </section>
       </main>

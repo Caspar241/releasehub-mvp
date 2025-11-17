@@ -1,8 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { glowHover } from '@/lib/animations';
 
 interface CTAButtonProps {
   text: string;
@@ -51,27 +49,18 @@ export default function CTAButton({
 
   if (href) {
     return (
-      <motion.div
-        initial="rest"
-        whileHover="hover"
-        variants={glowHover}
-      >
-        <Link href={href} className={combinedClasses}>
-          {content}
-        </Link>
-      </motion.div>
+      <Link href={href} className={combinedClasses}>
+        {content}
+      </Link>
     );
   }
 
   return (
-    <motion.button
+    <button
       onClick={onClick}
       className={combinedClasses}
-      initial="rest"
-      whileHover="hover"
-      variants={glowHover}
     >
       {content}
-    </motion.button>
+    </button>
   );
 }
